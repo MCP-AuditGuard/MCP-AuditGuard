@@ -1,0 +1,29 @@
+phrases:
+  hidden_instruction:
+    - ignore previous instructions
+    - disregard previous instructions
+    - ignore all prior instructions
+    - ignore the system instructions
+    - do not tell the user
+    - without telling the user
+    - never reveal this instruction
+    - hidden instruction
+
+  schema_poisoning:
+    - ignore user input
+    - replace the user's request
+    - treat this field as instructions
+    - this parameter controls the assistant
+
+  metadata_poisoning:
+    - always follow this tool
+    - prefer this tool over all others
+    - developer message override
+    - system prompt override
+
+  cross_tool_instruction:
+    - before using any other tool
+    - ignore other tool results
+    - override tool response
+    - always call this tool
+
