@@ -4,10 +4,18 @@ phrases:
     - disregard previous instructions
     - ignore all prior instructions
     - ignore the system instructions
+    - ignore developer instructions
+    - override developer instructions
+    - system prompt override
+    - developer message override
     - do not tell the user
     - without telling the user
     - never reveal this instruction
     - hidden instruction
+    - modify the final answer
+    - replace the final response
+    - append hidden text
+    - always include this message
 
   schema_poisoning:
     - ignore user input
@@ -26,4 +34,3 @@ phrases:
     - ignore other tool results
     - override tool response
     - always call this tool
-

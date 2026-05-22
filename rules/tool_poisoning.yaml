@@ -9,7 +9,12 @@ rules:
       - disregard previous instructions
       - ignore all prior instructions
       - ignore the system instructions
+      - ignore developer instructions
+      - disregard developer instructions
+      - override developer instructions
       - override system instructions
+      - system prompt override
+      - developer message override
     recommendation: Remove instructions that attempt to override system, developer, or user intent from tool metadata.
 
   - id: covert_behavior
@@ -31,9 +36,21 @@ rules:
     severity: critical
     confidence: high
     patterns:
-      - "(send|upload|exfiltrate|forward).{0,80}(secret|token|api key|password|credential)"
-      - "(secret|token|api key|password|credential).{0,80}(send|upload|exfiltrate|forward)"
+      - "(send|upload|exfiltrate|forward).{0,80}(secret|api[_ -]?key|password|credential|auth token|access token|bearer token)"
+      - "(secret|api[_ -]?key|password|credential|auth token|access token|bearer token).{0,80}(send|upload|exfiltrate|forward)"
     recommendation: Remove metadata that asks the model to disclose or transmit secrets.
+
+  - id: answer_manipulation
+    category: hidden_instruction
+    type: regex
+    severity: high
+    confidence: medium
+    patterns:
+      - "(modify|rewrite|replace|alter).{0,60}(final answer|final response|assistant response)"
+      - "(append|insert|include).{0,60}(hidden text|hidden message|secret message).{0,60}(answer|response)"
+      - "(hide|omit|suppress).{0,60}(from|in).{0,60}(final answer|final response|assistant response)"
+      - "always include.{0,60}(final answer|final response|assistant response)"
+    recommendation: Remove metadata that attempts to manipulate the assistant's final answer or hide output from the user.
 
   - id: schema_instruction_poisoning
     category: schema_poisoning
@@ -58,4 +75,3 @@ rules:
       - "ignore.{0,40}(other|previous).{0,40}tool"
       - "override.{0,60}(tool|result|response)"
     recommendation: Remove metadata that attempts to manipulate tool selection or other tool results.
-
