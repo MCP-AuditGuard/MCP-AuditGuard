@@ -32,6 +32,7 @@ class Finding(BaseModel):
     severity: Severity
     confidence: Confidence
     title: str
+    tool_name: str | None = None
     target: str
     location: str
     evidence: str

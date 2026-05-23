@@ -173,6 +173,7 @@ def make_finding(
         severity=severity,  # type: ignore[arg-type]
         confidence=confidence,  # type: ignore[arg-type]
         title=title,
+        tool_name=tool.tool_name,
         target=f"{tool.server_name}.{tool.tool_name}",
         location=location,
         evidence=redacted_evidence,

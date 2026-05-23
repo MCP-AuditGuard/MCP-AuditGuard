@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Any
 
@@ -83,11 +84,15 @@ def _make_finding(
         "category": BASELINE_CATEGORY,
         "owasp": BASELINE_OWASP,
         "severity": severity,
+        "confidence": "high",
         "title": title,
         "tool_name": tool_name or tool_key,
         "target": tool_key,
+        "location": "metadata_hash",
         "evidence": evidence,
+        "redacted": False,
         "recommendation": BASELINE_RECOMMENDATION,
+        "fingerprint": _fingerprint(id, tool_key, evidence),
     }
 
     try:
@@ -96,3 +101,8 @@ def _make_finding(
         return SimpleNamespace(**finding_data)
 
     return Finding(**finding_data)
+
+
+def _fingerprint(*parts: str) -> str:
+    payload = "\n".join(parts)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
