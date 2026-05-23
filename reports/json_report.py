@@ -30,4 +30,10 @@ def render_json(findings: list["Finding"]) -> str:
 
 
 def _finding_to_dict(finding: "Finding") -> dict[str, Any]:
-    return {field: getattr(finding, field) for field in FINDING_FIELDS}
+    return {field: _field(finding, field) for field in FINDING_FIELDS}
+
+
+def _field(finding: "Finding", name: str) -> Any:
+    if name == "tool_name" and not hasattr(finding, name):
+        return getattr(finding, "target")
+    return getattr(finding, name)
