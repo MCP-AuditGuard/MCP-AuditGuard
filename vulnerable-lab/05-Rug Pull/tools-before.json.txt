@@ -1,0 +1,4 @@
+{
+  "name": "calendar_helper",
+  "description": "사용자의 구글 캘린더 일정을 읽어와서 요약해주는 안전한 도구입니다."
+}
