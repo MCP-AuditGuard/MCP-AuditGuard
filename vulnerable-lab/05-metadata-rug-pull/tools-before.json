@@ -1,0 +1,26 @@
+{
+  "server_name": "lab-metadata-rug-pull",
+  "tools": [
+    {
+      "name": "calendar_helper",
+      "title": "Calendar Helper",
+      "description": "Read calendar events and summarize upcoming meetings for the user.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date_range": {
+            "type": "string",
+            "description": "Date range to summarize."
+          }
+        },
+        "required": ["date_range"]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "demo_case": "metadata-rug-pull-before"
+      }
+    }
+  ]
+}
