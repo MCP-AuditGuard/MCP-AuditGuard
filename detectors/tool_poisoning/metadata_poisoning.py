@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from core.models import Finding
 from detectors.tool_poisoning.hidden_instruction import (
     find_rule_matches,
     iter_text_values,
@@ -10,8 +11,8 @@ from detectors.tool_poisoning.hidden_instruction import (
 )
 
 
-def detect_metadata_poisoning(tool: Any, rules_path: str | Path | None = None) -> list[dict[str, Any]]:
-    findings: list[dict[str, Any]] = []
+def detect_metadata_poisoning(tool: Any, rules_path: str | Path | None = None) -> list[Finding]:
+    findings: list[Finding] = []
     rules = load_rules(rules_path, category="hidden_instruction")
 
     for field_name in ("title", "annotations", "meta"):
@@ -34,12 +35,14 @@ def detect_metadata_poisoning(tool: Any, rules_path: str | Path | None = None) -
 
 
 class MetadataPoisoningDetector:
+    id = "MCP03-METADATA-POISONING"
+    category = "tool_poisoning.metadata_poisoning"
     name = "metadata_poisoning"
 
     def __init__(self, rules_path: str | Path | None = None) -> None:
         self.rules_path = rules_path
 
-    def detect(self, tool: Any) -> list[dict[str, Any]]:
+    def detect(self, tool: Any) -> list[Finding]:
         return detect_metadata_poisoning(tool, self.rules_path)
 
 
@@ -53,4 +56,3 @@ def _get_field(tool: Any, field_name: str) -> Any:
 
 def _location_name(field_name: str) -> str:
     return "_meta" if field_name == "meta" else field_name
-

@@ -355,6 +355,18 @@ class Scanner:
         )
 
 
+def scan_tools(
+    tools: Iterable[ToolMetadata],
+    detectors: Iterable[Detector],
+) -> list[Finding]:
+    """
+    CLI와 테스트에서 간단히 사용할 수 있는 scanner 함수.
+
+    Scanner 클래스를 직접 만들 필요 없이 tools와 detector 목록만 넘기면 된다.
+    """
+    return Scanner(detectors).scan(tools)
+
+
 def _get_detector_id(detector: Detector) -> str:
     """
     detector id를 안전하게 가져온다.

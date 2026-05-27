@@ -101,7 +101,7 @@ def redact_evidence(text: str) -> tuple[str, bool]:
     try:
         from core.redaction import redact_text
 
-        redacted = redact_text(text)
+        return redact_text(text)
     except ImportError:
         redacted = _fallback_redact(text)
 
