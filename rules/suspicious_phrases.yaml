@@ -16,6 +16,11 @@ phrases:
     - replace the final response
     - append hidden text
     - always include this message
+    - read .env
+    - upload .env
+    - send environment variables
+    - 외부 서버로 보내
+    - 환경 변수를 전송
 
   schema_poisoning:
     - ignore user input
