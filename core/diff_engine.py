@@ -83,9 +83,10 @@ def _make_finding(
         "category": BASELINE_CATEGORY,
         "owasp": BASELINE_OWASP,
         "severity": severity,
+        "confidence": "high",
         "title": title,
-        "tool_name": tool_name or tool_key,
         "target": tool_key,
+        "location": f"baseline.{server_name}.{tool_name or tool_key}",
         "evidence": evidence,
         "recommendation": BASELINE_RECOMMENDATION,
     }

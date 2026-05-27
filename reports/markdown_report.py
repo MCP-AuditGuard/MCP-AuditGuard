@@ -56,4 +56,9 @@ def _count_by_severity(findings: list["Finding"]) -> dict[str, int]:
 
 
 def _field(finding: "Finding", name: str) -> str:
-    return str(getattr(finding, name))
+    if hasattr(finding, name):
+        return str(getattr(finding, name))
+    if name == "tool_name":
+        target = str(getattr(finding, "target", ""))
+        return target.rsplit(".", 1)[-1].rsplit(":", 1)[-1]
+    return ""

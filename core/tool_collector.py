@@ -93,6 +93,22 @@ def load_tools_json(
     )
 
 
+def collect_from_tools_json(
+    path: str | Path,
+    *,
+    default_server_name: str = "unknown-server",
+) -> list[ToolMetadata]:
+    """
+    CLI가 기대하는 이름으로 tools.json collector를 노출한다.
+
+    load_tools_json이 실제 구현이고, 이 함수는 호출부 호환성을 위한 얇은 alias다.
+    """
+    return load_tools_json(
+        path,
+        default_server_name=default_server_name,
+    )
+
+
 def parse_tools_document(
     document: Any,
     *,

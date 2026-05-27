@@ -153,14 +153,45 @@ def _collect_tools(input_path: Path) -> list[Any]:
         raise UserFacingError(f"Could not read input file: {error}") from error
     except ValueError as error:
         raise UserFacingError(str(error)) from error
+    except Exception as error:
+        if error.__class__.__name__ == "ToolCollectionError":
+            message = str(error)
+            if message.startswith("invalid JSON file"):
+                raise UserFacingError(f"Could not parse tools JSON: {message}") from error
+            raise UserFacingError(message) from error
+        raise
 
 
 def _scan_tools(tools: list[Any]) -> list[Any]:
-    detectors: list[Any] = []
+    detectors = _default_detectors()
     try:
         return scan_tools(tools, detectors)
     except Exception as error:
         raise UserFacingError(f"Scanner failed: {error}") from error
+
+
+def _default_detectors() -> list[Any]:
+    from detectors.obfuscation.encoded_payload import EncodedPayloadDetector
+    from detectors.obfuscation.homoglyph import HomoglyphDetector
+    from detectors.obfuscation.html_comment import HtmlCommentDetector
+    from detectors.obfuscation.unicode_obfuscation import UnicodeObfuscationDetector
+    from detectors.tool_poisoning.cross_tool_instruction import CrossToolInstructionDetector
+    from detectors.tool_poisoning.hidden_instruction import HiddenInstructionDetector
+    from detectors.tool_poisoning.markdown_hidden_link import MarkdownHiddenLinkDetector
+    from detectors.tool_poisoning.metadata_poisoning import MetadataPoisoningDetector
+    from detectors.tool_poisoning.schema_poisoning import SchemaPoisoningDetector
+
+    return [
+        HiddenInstructionDetector(),
+        SchemaPoisoningDetector(),
+        MetadataPoisoningDetector(),
+        CrossToolInstructionDetector(),
+        MarkdownHiddenLinkDetector(),
+        UnicodeObfuscationDetector(),
+        EncodedPayloadDetector(),
+        HtmlCommentDetector(),
+        HomoglyphDetector(),
+    ]
 
 
 def _load_baseline(baseline_path: Path) -> dict[str, Any]:

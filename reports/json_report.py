@@ -30,4 +30,13 @@ def render_json(findings: list["Finding"]) -> str:
 
 
 def _finding_to_dict(finding: "Finding") -> dict[str, Any]:
-    return {field: getattr(finding, field) for field in FINDING_FIELDS}
+    return {field: _field(finding, field) for field in FINDING_FIELDS}
+
+
+def _field(finding: "Finding", name: str) -> Any:
+    if hasattr(finding, name):
+        return getattr(finding, name)
+    if name == "tool_name":
+        target = str(getattr(finding, "target", ""))
+        return target.rsplit(".", 1)[-1].rsplit(":", 1)[-1]
+    return ""
