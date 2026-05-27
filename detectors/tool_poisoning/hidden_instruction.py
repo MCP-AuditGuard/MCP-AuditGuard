@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-import hashlib
 import re
 from pathlib import Path
 from typing import Any
 
 import yaml
+
+from core.models import Finding
+from core.redaction import redact_text
 
 
 DEFAULT_RULES_PATH = Path(__file__).resolve().parents[2] / "rules" / "tool_poisoning.yaml"
@@ -23,7 +25,7 @@ def load_rules(path: str | Path | None = None, category: str | None = None) -> l
     return [rule for rule in rules if rule.get("category") == category]
 
 
-def detect_hidden_instructions(tool: Any, rules_path: str | Path | None = None) -> list[dict[str, Any]]:
+def detect_hidden_instructions(tool: Any, rules_path: str | Path | None = None) -> list[Finding]:
     text = _get_field(tool, "description")
     if not text:
         return []
@@ -38,12 +40,14 @@ def detect_hidden_instructions(tool: Any, rules_path: str | Path | None = None) 
 
 
 class HiddenInstructionDetector:
+    id = "MCP03-HIDDEN-INSTRUCTION"
+    category = "tool_poisoning.hidden_instruction"
     name = "hidden_instruction"
 
     def __init__(self, rules_path: str | Path | None = None) -> None:
         self.rules_path = rules_path
 
-    def detect(self, tool: Any) -> list[dict[str, Any]]:
+    def detect(self, tool: Any) -> list[Finding]:
         return detect_hidden_instructions(tool, self.rules_path)
 
 
@@ -53,8 +57,8 @@ def find_rule_matches(
     location: str,
     rules: list[dict[str, Any]],
     default_title: str,
-) -> list[dict[str, Any]]:
-    findings: list[dict[str, Any]] = []
+) -> list[Finding]:
+    findings: list[Finding] = []
 
     for rule in rules:
         for pattern in rule.get("patterns", []):
@@ -82,29 +86,27 @@ def build_finding(
     location: str,
     evidence: str,
     title: str,
-) -> dict[str, Any]:
-    redacted_evidence = _redact_secret_like(evidence)
+) -> Finding:
+    redacted_evidence, redacted = redact_text(evidence)
     target = _target_name(tool)
     finding_id = f"{OWASP_CATEGORY}-{rule.get('id', 'tool_poisoning')}"
-    fingerprint = _fingerprint(finding_id, target, location, redacted_evidence)
 
-    return {
-        "id": finding_id,
-        "category": rule.get("category", "tool_poisoning"),
-        "owasp": OWASP_CATEGORY,
-        "severity": rule.get("severity", "medium"),
-        "confidence": rule.get("confidence", "medium"),
-        "title": title,
-        "target": target,
-        "location": location,
-        "evidence": redacted_evidence,
-        "redacted": redacted_evidence != evidence,
-        "recommendation": rule.get(
+    return Finding(
+        id=finding_id,
+        category=rule.get("category", "tool_poisoning"),
+        owasp=OWASP_CATEGORY,
+        severity=rule.get("severity", "medium"),
+        confidence=rule.get("confidence", "medium"),
+        title=title,
+        target=target,
+        location=location,
+        evidence=redacted_evidence,
+        redacted=redacted,
+        recommendation=rule.get(
             "recommendation",
             "Review and remove suspicious instructions from tool metadata.",
         ),
-        "fingerprint": fingerprint,
-    }
+    )
 
 
 def iter_text_values(value: Any, prefix: str) -> list[tuple[str, str]]:
@@ -151,21 +153,4 @@ def _target_name(tool: Any) -> str:
 def _to_camel_case(value: str) -> str:
     parts = value.split("_")
     return parts[0] + "".join(part.title() for part in parts[1:])
-
-
-def _redact_secret_like(text: str) -> str:
-    patterns = [
-        r"(?i)(api[_-]?key|token|password|secret|credential)\s*[:=]\s*[A-Za-z0-9_\-./+=]{6,}",
-        r"(?i)(FAKE|TEST|DUMMY)_[A-Z0-9_\-]{6,}",
-    ]
-
-    redacted = text
-    for pattern in patterns:
-        redacted = re.sub(pattern, "[REDACTED]", redacted)
-    return redacted
-
-
-def _fingerprint(*parts: str) -> str:
-    joined = "\x1f".join(parts)
-    return hashlib.sha256(joined.encode("utf-8")).hexdigest()
 

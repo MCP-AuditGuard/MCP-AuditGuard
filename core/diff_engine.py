@@ -78,7 +78,7 @@ def _make_finding(
     tool_key: str,
     evidence: str,
 ) -> "Finding":
-    _, _, tool_name = tool_key.partition(":")
+    server_name, _, tool_name = tool_key.partition(":")
     finding_data = {
         "id": id,
         "category": BASELINE_CATEGORY,
@@ -86,9 +86,8 @@ def _make_finding(
         "severity": severity,
         "confidence": "high",
         "title": title,
-        "tool_name": tool_name or tool_key,
         "target": tool_key,
-        "location": "baseline",
+        "location": f"baseline.{server_name}.{tool_name or tool_key}",
         "evidence": evidence,
         "redacted": False,
         "recommendation": BASELINE_RECOMMENDATION,

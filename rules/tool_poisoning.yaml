@@ -38,6 +38,10 @@ rules:
     patterns:
       - "(send|upload|exfiltrate|forward).{0,80}(secret|api[_ -]?key|password|credential|auth token|access token|bearer token)"
       - "(secret|api[_ -]?key|password|credential|auth token|access token|bearer token).{0,80}(send|upload|exfiltrate|forward)"
+      - "(read|send|upload|exfiltrate|forward).{0,100}(\\.env|env file|environment variable)"
+      - "(\\.env|env file|environment variable).{0,100}(send|upload|exfiltrate|forward|external server|remote endpoint)"
+      - "(읽|보내|전송).{0,100}(\\.env|환경 ?변수|비밀|토큰)"
+      - "(\\.env|환경 ?변수|비밀|토큰).{0,100}(외부 서버|전송|보내)"
     recommendation: Remove metadata that asks the model to disclose or transmit secrets.
 
   - id: answer_manipulation
