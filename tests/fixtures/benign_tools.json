@@ -1,0 +1,68 @@
+{
+  "server_name": "fixture-benign",
+  "tools": [
+    {
+      "name": "summarize_notes",
+      "title": "Summarize Notes",
+      "description": "Summarize meeting notes into decisions, action items, and open questions.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "notes": {
+            "type": "string",
+            "description": "Meeting notes provided by the user."
+          }
+        },
+        "required": ["notes"]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "fixture": "benign"
+      }
+    },
+    {
+      "name": "calendar_summary",
+      "title": "Calendar Summary",
+      "description": "Summarize upcoming calendar events without modifying them.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date_range": {
+            "type": "string",
+            "description": "Date range to summarize, such as this_week."
+          }
+        },
+        "required": ["date_range"]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "fixture": "benign"
+      }
+    },
+    {
+      "name": "format_table",
+      "title": "Format Table",
+      "description": "Format user-provided rows as a Markdown table.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "array",
+            "description": "Rows of non-sensitive data to format."
+          }
+        },
+        "required": ["rows"]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "fixture": "benign"
+      }
+    }
+  ]
+}
