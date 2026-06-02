@@ -19,6 +19,44 @@ console = Console()
 
 SUPPORTED_FORMATS = {"markdown", "json"}
 
+AUDITGUARD_HELP_TEXT = """\
+MCP-AuditGuard Usage Guide
+
+Purpose
+  MCP-AuditGuard scans MCP tool metadata, descriptions, schemas,
+  annotations, and baseline changes for Tool Poisoning or suspicious
+  metadata tampering.
+
+Basic scan
+  python -m cli.scan scan --input tools.json
+  auditguard scan --input tools.json
+
+Output format
+  python -m cli.scan scan --input tools.json --format markdown
+  python -m cli.scan scan --input tools.json --format json
+
+Write a report file
+  python -m cli.scan scan --input tools.json --output report.md
+  python -m cli.scan scan --input tools.json --format json --output report.json
+
+Save a baseline
+  python -m cli.scan scan --input tools.json --save-baseline baseline.json
+
+Compare with a previous baseline
+  python -m cli.scan scan --input tools-new.json --baseline baseline.json
+
+Common options
+  --input, -i           Required path to tools.json.
+  --format, -f          Report format: markdown or json. Default: markdown.
+  --output, -o          Optional report output path.
+  --save-baseline       Optional path to save current metadata baseline.
+  --baseline            Optional previous baseline JSON path to compare.
+
+Built-in Typer help
+  python -m cli.scan --help
+  python -m cli.scan scan --help
+"""
+
 
 @app.callback()
 def main() -> None:
@@ -85,6 +123,14 @@ def scan_command(
 
     if output_path is None:
         console.print(report)
+
+
+@app.command("help")
+def help_command() -> None:
+    """Show MCP-AuditGuard usage examples and option guide."""
+    # This is intentionally separate from Typer's built-in --help.
+    # It gives users a task-oriented guide without changing existing CLI behavior.
+    console.print(AUDITGUARD_HELP_TEXT)
 
 
 def run_scan(
