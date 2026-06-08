@@ -138,6 +138,25 @@ def test_scan_reports_json_parse_error(tmp_path) -> None:
     assert "Could not parse tools JSON" in result.output
 
 
+def test_help_command_outputs_auditguard_usage_guide() -> None:
+    result = runner.invoke(cli_scan.app, ["help"])
+
+    assert result.exit_code == 0
+    assert "MCP-AuditGuard Usage Guide" in result.output
+    assert "python -m cli.scan scan --input tools.json" in result.output
+    assert "auditguard scan --input tools.json" in result.output
+    assert "--save-baseline" in result.output
+    assert "--baseline" in result.output
+
+
+def test_typer_builtin_help_still_works() -> None:
+    result = runner.invoke(cli_scan.app, ["--help"])
+
+    assert result.exit_code == 0
+    assert "scan" in result.output
+    assert "help" in result.output
+
+
 def test_scan_runs_default_detectors_without_monkeypatch(tmp_path) -> None:
     input_path = tmp_path / "tools.json"
     input_path.write_text(

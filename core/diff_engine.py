@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Any
 
@@ -88,7 +89,9 @@ def _make_finding(
         "target": tool_key,
         "location": f"baseline.{server_name}.{tool_name or tool_key}",
         "evidence": evidence,
+        "redacted": False,
         "recommendation": BASELINE_RECOMMENDATION,
+        "fingerprint": _fingerprint(id, tool_key),
     }
 
     try:
@@ -97,3 +100,8 @@ def _make_finding(
         return SimpleNamespace(**finding_data)
 
     return Finding(**finding_data)
+
+
+def _fingerprint(finding_id: str, tool_key: str) -> str:
+    payload = f"{finding_id}:{tool_key}".encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
