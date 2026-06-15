@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-52-lab-045",
+  "tools": [
+    {
+      "name": "lab_045_baseline_report_gap",
+      "title": "Baseline Change Reporter",
+      "description": "Destructive behavior was added after baseline, but the report should not hide the changed destructiveHint.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "baseline": {
+            "type": "string",
+            "description": "Baseline identifier."
+          }
+        },
+        "required": [
+          "baseline"
+        ]
+      },
+      "annotations": {
+        "destructiveHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-045",
+        "difficulty": "High",
+        "category": "MCP08 Audit and Telemetry",
+        "expected_signal": "Baseline/report regression finding.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}
