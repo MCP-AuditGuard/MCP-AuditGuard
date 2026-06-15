@@ -10,7 +10,7 @@ FindingTransformer = Callable[[Finding], Finding]
 
 
 @dataclass(frozen=True)
-class ScanError:
+class DetectorRunError:
     """
     Detector 실행 중 발생한 에러 정보를 담는 모델.
 
@@ -32,7 +32,7 @@ class ScanError:
 
 
 @dataclass(frozen=True)
-class ScanResult:
+class ScannerResult:
     """
     Scanner 실행 결과 전체를 담는 모델.
 
@@ -42,14 +42,14 @@ class ScanResult:
     errors:
         Detector 실행 중 발생한 에러 목록.
 
-    왜 list[Finding]만 반환하지 않고 ScanResult도 만들었나?
+    왜 list[Finding]만 반환하지 않고 ScannerResult도 만들었나?
     - 기본적으로 scanner.scan()은 list[Finding]을 반환하게 만들 것이다.
     - 하지만 CLI나 테스트에서는 에러 정보도 필요할 수 있다.
     - 그래서 scan_with_result()를 호출하면 findings + errors를 같이 받을 수 있게 한다.
     """
 
     findings: list[Finding] = field(default_factory=list)
-    errors: list[ScanError] = field(default_factory=list)
+    errors: list[DetectorRunError] = field(default_factory=list)
 
     @property
     def has_errors(self) -> bool:
@@ -158,7 +158,7 @@ class Scanner:
     - ToolMetadata 목록을 받는다.
     - 등록된 Detector들을 순서대로 실행한다.
     - Detector가 반환한 Finding들을 모은다.
-    - Detector 실행 중 에러가 나면 ScanError로 기록한다.
+    - Detector 실행 중 에러가 나면 DetectorRunError로 기록한다.
     - 필요하면 finding_transformer를 통해 Finding 후처리를 한다.
 
     Scanner가 하지 않는 일:
@@ -233,15 +233,15 @@ class Scanner:
         result = self.scan_with_result(tools)
         return result.findings
 
-    def scan_with_result(self, tools: Iterable[ToolMetadata]) -> ScanResult:
+    def scan_with_result(self, tools: Iterable[ToolMetadata]) -> ScannerResult:
         """
-        Finding과 ScanError를 함께 반환하는 스캔 함수.
+        Finding과 DetectorRunError를 함께 반환하는 스캔 함수.
 
         CLI나 integration test에서는 이 함수를 쓰는 것이 좋다.
         예를 들어 detector 일부가 실패했는지 확인할 수 있다.
         """
         findings: list[Finding] = []
-        errors: list[ScanError] = []
+        errors: list[DetectorRunError] = []
 
         for tool in tools:
             for detector in self.registry:
@@ -263,7 +263,7 @@ class Scanner:
 
                 findings.extend(detector_findings)
 
-        return ScanResult(
+        return ScannerResult(
             findings=findings,
             errors=errors,
         )
@@ -340,14 +340,14 @@ class Scanner:
         detector: Detector,
         tool: ToolMetadata,
         exc: Exception,
-    ) -> ScanError:
+    ) -> DetectorRunError:
         """
-        detector 실행 중 발생한 예외를 ScanError로 변환한다.
+        detector 실행 중 발생한 예외를 DetectorRunError로 변환한다.
 
         예외 객체를 그대로 밖으로 노출하지 않고,
         필요한 정보만 정리해서 담는다.
         """
-        return ScanError(
+        return DetectorRunError(
             detector_id=_get_detector_id(detector),
             detector_category=_get_detector_category(detector),
             target=tool.target,

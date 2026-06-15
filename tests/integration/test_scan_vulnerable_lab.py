@@ -48,18 +48,18 @@ def test_benign_and_malicious_fixtures_are_separated() -> None:
 
 
 def test_vulnerable_lab_recall_when_scanner_is_available() -> None:
-    cli_scan = pytest.importorskip("cli.scan")
+    detector_registry = pytest.importorskip("detectors.registry")
     scanner = pytest.importorskip("core.scanner")
     collector = pytest.importorskip("core.tool_collector")
 
     if (
         not hasattr(collector, "load_tools_json")
         or not hasattr(scanner, "scan_tools")
-        or not hasattr(cli_scan, "_default_detectors")
+        or not hasattr(detector_registry, "create_default_detectors")
     ):
         pytest.skip("Scanner integration API is not available yet.")
 
-    detectors = cli_scan._default_detectors()
+    detectors = detector_registry.create_default_detectors()
     detected = 0
     for case_path in LAB_CASES:
         tools = collector.load_tools_json(case_path)
@@ -71,18 +71,18 @@ def test_vulnerable_lab_recall_when_scanner_is_available() -> None:
 
 
 def test_benign_false_positive_rate_when_scanner_is_available() -> None:
-    cli_scan = pytest.importorskip("cli.scan")
+    detector_registry = pytest.importorskip("detectors.registry")
     scanner = pytest.importorskip("core.scanner")
     collector = pytest.importorskip("core.tool_collector")
 
     if (
         not hasattr(collector, "load_tools_json")
         or not hasattr(scanner, "scan_tools")
-        or not hasattr(cli_scan, "_default_detectors")
+        or not hasattr(detector_registry, "create_default_detectors")
     ):
         pytest.skip("Scanner integration API is not available yet.")
 
-    detectors = cli_scan._default_detectors()
+    detectors = detector_registry.create_default_detectors()
     tools = collector.load_tools_json(ROOT / "tests" / "fixtures" / "benign_tools.json")
     findings = scanner.scan_tools(tools, detectors)
 

@@ -27,4 +27,7 @@ dist/
 coverage.xml
 .coverage
 htmlcov/
+.pytest-tmp*/
 
+#로컬웹으로 생성된 스캔결과
+artifacts/reports/
