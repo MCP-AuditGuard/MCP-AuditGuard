@@ -62,17 +62,16 @@ def discover_samples(
     root: Path | None = None,
 ) -> list[SampleDefinition]:
     """
-    vulnerable-lab 바로 아래 폴더들을 자동으로 탐색한다.
+    vulnerable-lab 아래의 샘플 폴더들을 자동으로 탐색한다.
 
     탐색 조건:
-    - 바로 아래의 디렉터리만 검사
+    - vulnerable-lab 아래 모든 하위 디렉터리 검사
     - 숨김 폴더는 제외
     - tools*.json 파일이 하나 이상 있는 폴더만 샘플로 등록
 
     예:
-    - tools.json
-    - tools-before.json
-    - tools-after.json
+    - vulnerable-lab/01-hidden-description/tools.json
+    - vulnerable-lab/expanded-52/LAB-001-plain-env-secret/tools.json
     """
     lab_root = (root or VULNERABLE_LAB_ROOT).resolve()
 
@@ -81,27 +80,10 @@ def discover_samples(
 
     samples: list[SampleDefinition] = []
 
-    directories = sorted(
-        (
-            path
-            for path in lab_root.iterdir()
-            if path.is_dir()
-            and not path.name.startswith(".")
-        ),
-        key=lambda path: path.name.casefold(),
-    )
+    directories = _discover_sample_directories(lab_root)
 
     for directory in directories:
-        json_files = tuple(
-            sorted(
-                (
-                    path.resolve()
-                    for path in directory.glob("tools*.json")
-                    if path.is_file()
-                ),
-                key=lambda path: path.name.casefold(),
-            )
-        )
+        json_files = _find_tools_json_files(directory)
 
         # JSON 입력 파일이 없는 폴더는 샘플 목록에서 제외한다.
         if not json_files:
@@ -109,7 +91,10 @@ def discover_samples(
 
         samples.append(
             SampleDefinition(
-                id=directory.name,
+                id=_build_sample_id(
+                    lab_root,
+                    directory,
+                ),
                 title=_build_title(directory.name),
                 directory=directory.resolve(),
                 json_files=json_files,
@@ -124,7 +109,7 @@ def get_sample_definition(
 ) -> SampleDefinition | None:
     """
     현재 파일 시스템을 다시 탐색한 뒤,
-    sample_id와 같은 폴더 이름을 가진 샘플을 반환한다.
+    sample_id와 같은 상대 경로 id를 가진 샘플을 반환한다.
     """
     return next(
         (
@@ -188,6 +173,56 @@ def resolve_sample_json(
     )
 
 
+def _discover_sample_directories(
+    lab_root: Path,
+) -> list[Path]:
+    directories = {
+        path.parent.resolve()
+        for path in lab_root.rglob("tools*.json")
+        if path.is_file()
+        and not _has_hidden_part(path.relative_to(lab_root))
+    }
+
+    return sorted(
+        directories,
+        key=lambda path: _build_sample_id(
+            lab_root,
+            path,
+        ).casefold(),
+    )
+
+
+def _find_tools_json_files(
+    directory: Path,
+) -> tuple[Path, ...]:
+    return tuple(
+        sorted(
+            (
+                path.resolve()
+                for path in directory.glob("tools*.json")
+                if path.is_file()
+            ),
+            key=lambda path: path.name.casefold(),
+        )
+    )
+
+
+def _build_sample_id(
+    lab_root: Path,
+    directory: Path,
+) -> str:
+    return directory.relative_to(lab_root).as_posix()
+
+
+def _has_hidden_part(
+    path: Path,
+) -> bool:
+    return any(
+        part.startswith(".")
+        for part in path.parts
+    )
+
+
 def _build_title(folder_name: str) -> str:
     """
     폴더 이름에서 화면용 title을 만든다.
@@ -202,10 +237,17 @@ def _build_title(folder_name: str) -> str:
     07_새로운_샘플
         → 새로운 샘플
     """
+    without_lab_prefix = re.sub(
+        r"^lab[\s._-]*\d+[\s._-]*",
+        "",
+        folder_name,
+        flags=re.IGNORECASE,
+    )
+
     without_number_prefix = re.sub(
         r"^\d+[\s._-]*",
         "",
-        folder_name,
+        without_lab_prefix,
     )
 
     normalized = re.sub(

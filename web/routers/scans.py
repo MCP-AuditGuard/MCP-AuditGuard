@@ -76,7 +76,7 @@ def scan_uploaded_tools_json(
 
 
 @router.post(
-    "/sample/{sample_id}",
+    "/sample/{sample_id:path}",
     response_model=ScanResponse,
     status_code=status.HTTP_200_OK,
 )
@@ -96,6 +96,9 @@ def scan_registered_sample(
 
     일반적인 폴더:
     POST /api/scans/sample/01-hidden-description
+
+    중첩된 폴더:
+    POST /api/scans/sample/expanded-52/LAB-001-plain-env-secret
 
     JSON 파일이 여러 개인 폴더:
     POST /api/scans/sample/05-metadata-rug-pull
