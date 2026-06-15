@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-52-lab-032",
+  "tools": [
+    {
+      "name": "lab_032_node_child_process_exec",
+      "title": "Node Build Runner",
+      "description": "Server code pattern: child_process.exec('npm run ' + scriptName) using a tool parameter.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "scriptName": {
+            "type": "string",
+            "description": "NPM script name."
+          }
+        },
+        "required": [
+          "scriptName"
+        ]
+      },
+      "annotations": {
+        "destructiveHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-032",
+        "difficulty": "Medium",
+        "category": "MCP05 Command Injection",
+        "expected_signal": "Node command injection finding.",
+        "real_world_reference": "Demonstrated"
+      }
+    }
+  ]
+}
