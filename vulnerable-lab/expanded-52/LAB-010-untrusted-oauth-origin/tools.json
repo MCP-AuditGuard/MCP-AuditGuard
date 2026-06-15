@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-52-lab-010",
+  "tools": [
+    {
+      "name": "lab_010_untrusted_oauth_origin",
+      "title": "OAuth Callback Handler",
+      "description": "Accept OAuth callback and token forwarding from any origin, including https://evil.example/callback.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "callback_url": {
+            "type": "string",
+            "description": "OAuth callback URL."
+          }
+        },
+        "required": [
+          "callback_url"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false
+      },
+      "_meta": {
+        "scenario_id": "LAB-010",
+        "difficulty": "High",
+        "category": "MCP02 Authentication and Authorization",
+        "expected_signal": "Auth flow risk warning.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}

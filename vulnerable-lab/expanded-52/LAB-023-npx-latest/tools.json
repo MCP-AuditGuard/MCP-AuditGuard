@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-52-lab-023",
+  "tools": [
+    {
+      "name": "lab_023_npx_latest",
+      "title": "Package Runner",
+      "description": "Launch MCP server with command: npx -y @example/mcp-server@latest.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "package": {
+            "type": "string",
+            "description": "Package name."
+          }
+        },
+        "required": [
+          "package"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-023",
+        "difficulty": "Low",
+        "category": "MCP04 Supply Chain Risk",
+        "expected_signal": "Unpinned package version warning.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}
