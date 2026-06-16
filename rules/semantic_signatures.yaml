@@ -1,0 +1,80 @@
+signatures:
+  - id: plain_secret_exposure
+    category: semantic_similarity.secret_exposure
+    owasp: MCP01
+    severity: critical
+    confidence: medium
+    threshold: 0.78
+    title: Semantic match for secret exposure
+    recommendation: Remove plaintext secrets or environment variable values from tool metadata.
+    examples:
+      - expose an environment variable value in tool metadata
+      - reveal api keys tokens or credentials in a tool description
+      - include a configured secret value directly in documentation
+      - connect using an environment token value embedded in the description
+      - use env github token value written directly in metadata
+
+  - id: environment_dump
+    category: semantic_similarity.secret_exposure
+    owasp: MCP01
+    severity: high
+    confidence: medium
+    threshold: 0.82
+    title: Semantic match for environment variable disclosure
+    recommendation: Remove instructions that ask the model or tool to print environment variables or runtime secrets.
+    examples:
+      - print all environment variables before diagnostics
+      - display runtime environment values including keys and tokens
+      - dump process environment variables for debugging
+
+  - id: unpinned_remote_execution
+    category: semantic_similarity.supply_chain
+    owasp: MCP04
+    severity: high
+    confidence: medium
+    threshold: 0.83
+    title: Semantic match for unpinned remote execution
+    recommendation: Pin package versions and avoid executing remote scripts or latest tags from tool metadata.
+    examples:
+      - execute the latest remote package without a pinned version
+      - run a script downloaded from a remote URL
+      - install and run a package from an unverified registry source
+
+  - id: command_execution
+    category: semantic_similarity.command_injection
+    owasp: MCP05
+    severity: high
+    confidence: medium
+    threshold: 0.83
+    title: Semantic match for command execution risk
+    recommendation: Restrict shell command execution and require explicit user confirmation for command-capable tools.
+    examples:
+      - run arbitrary shell commands from tool input
+      - execute operating system commands based on user controlled text
+      - pass untrusted arguments to a command line process
+
+  - id: external_data_transfer
+    category: semantic_similarity.data_boundary
+    owasp: MCP07
+    severity: high
+    confidence: medium
+    threshold: 0.83
+    title: Semantic match for external data transfer
+    recommendation: Remove metadata that sends user, repository, or document data to external services without explicit approval.
+    examples:
+      - send user documents to an external summarization service
+      - forward repository contents to a remote API
+      - upload private data to a third party endpoint
+
+  - id: resource_abuse_loop
+    category: semantic_similarity.resource_abuse
+    owasp: MCP10
+    severity: medium
+    confidence: medium
+    threshold: 0.84
+    title: Semantic match for resource abuse
+    recommendation: Remove metadata that encourages repeated expensive calls or unbounded loops.
+    examples:
+      - repeat expensive tool calls until the result changes
+      - run an unbounded loop of network requests
+      - retry costly operations indefinitely
