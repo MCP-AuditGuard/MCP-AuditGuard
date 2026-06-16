@@ -347,23 +347,6 @@ class Finding(BaseModel):
         description="같은 finding을 추적하기 위한 안정적인 fingerprint",
     )
 
-    similarity_score: float | None = Field(
-        default=None,
-        ge=0.0,
-        le=1.0,
-        description="semantic detector가 계산한 cosine similarity 점수",
-    )
-
-    matched_reference: str | None = Field(
-        default=None,
-        description="semantic detector가 매칭한 위험 문장 샘플",
-    )
-
-    detector_type: str | None = Field(
-        default=None,
-        description="finding을 만든 detector 유형. 예: semantic_similarity",
-    )
-
     @field_validator("id", "category", "owasp", "title", "target", "location", "recommendation")
     @classmethod
     def strip_required_text(cls, value: str) -> str:
