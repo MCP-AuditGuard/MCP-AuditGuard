@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="860" viewBox="0 0 1500 860" role="img" aria-labelledby="title desc">
+  <title id="title">MCP AuditGuard Agent-connected Architecture</title>
+  <desc id="desc">A simplified architecture diagram for MCP AuditGuard scanning after connecting MCP servers to an AI agent.</desc>
+
+  <defs>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .panel { fill: #ffffff; stroke: #d8e0ec; stroke-width: 2; rx: 22; }
+      .box { fill: #ffffff; stroke-width: 2.4; rx: 18; }
+      .input { fill: #eaf3ff; stroke: #2f72d6; }
+      .agent { fill: #f1edff; stroke: #7357d8; }
+      .guard { fill: #fff5e6; stroke: #d47a12; }
+      .server { fill: #eaf8f0; stroke: #2c8b57; }
+      .risk { fill: #fff0f0; stroke: #d54545; }
+      .report { fill: #edf7ff; stroke: #1879a9; }
+      .title { font: 700 38px Arial, Helvetica, sans-serif; fill: #162033; }
+      .subtitle { font: 400 20px Arial, Helvetica, sans-serif; fill: #526071; }
+      .label { font: 700 24px Arial, Helvetica, sans-serif; fill: #1f2937; }
+      .small { font: 400 18px Arial, Helvetica, sans-serif; fill: #40506a; }
+      .tiny { font: 400 15px Arial, Helvetica, sans-serif; fill: #667085; }
+      .arrow { stroke: #59687d; stroke-width: 3.5; fill: none; marker-end: url(#arrowhead); }
+      .guard-arrow { stroke: #d47a12; stroke-width: 4; fill: none; marker-end: url(#guardhead); }
+      .dash { stroke-dasharray: 9 8; }
+    </style>
+
+    <marker id="arrowhead" markerWidth="13" markerHeight="13" refX="11" refY="6.5" orient="auto">
+      <path d="M2,2 L11,6.5 L2,11 Z" fill="#59687d"/>
+    </marker>
+    <marker id="guardhead" markerWidth="13" markerHeight="13" refX="11" refY="6.5" orient="auto">
+      <path d="M2,2 L11,6.5 L2,11 Z" fill="#d47a12"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1500" height="860"/>
+  <text x="70" y="70" class="title">MCP AuditGuard - Agent 연결 후 탐지 구조</text>
+  <text x="70" y="105" class="subtitle">MCP 서버를 AI Agent에 연결한 뒤, metadata와 실제 tool 호출 흐름을 함께 관찰하는 동적 점검 방식</text>
+
+  <rect x="55" y="145" width="1390" height="650" class="panel"/>
+
+  <!-- Main flow -->
+  <rect x="95" y="265" width="220" height="115" class="box input"/>
+  <text x="205" y="310" text-anchor="middle" class="label">사용자</text>
+  <text x="205" y="340" text-anchor="middle" class="small">질문 / 작업 요청</text>
+
+  <rect x="410" y="250" width="250" height="145" class="box agent"/>
+  <text x="535" y="295" text-anchor="middle" class="label">AI Agent</text>
+  <text x="535" y="327" text-anchor="middle" class="small">MCP tool 사용 판단</text>
+  <text x="535" y="354" text-anchor="middle" class="tiny">tool 선택 / 인자 생성</text>
+
+  <rect x="785" y="230" width="310" height="185" class="box guard"/>
+  <text x="940" y="278" text-anchor="middle" class="label">MCP AuditGuard</text>
+  <text x="940" y="312" text-anchor="middle" class="small">Agent-MCP 연결 감시 계층</text>
+  <text x="940" y="342" text-anchor="middle" class="tiny">metadata scan</text>
+  <text x="940" y="365" text-anchor="middle" class="tiny">tool call / arguments / response 관찰</text>
+  <text x="940" y="388" text-anchor="middle" class="tiny">정책 판단: 허용 / 주의 / 차단 권장</text>
+
+  <rect x="1210" y="250" width="220" height="145" class="box server"/>
+  <text x="1320" y="295" text-anchor="middle" class="label">MCP Server</text>
+  <text x="1320" y="327" text-anchor="middle" class="small">tools / resources</text>
+  <text x="1320" y="354" text-anchor="middle" class="tiny">tool 실행 결과 반환</text>
+
+  <line x1="315" y1="322" x2="410" y2="322" class="arrow"/>
+  <line x1="660" y1="322" x2="785" y2="322" class="guard-arrow"/>
+  <line x1="1095" y1="322" x2="1210" y2="322" class="guard-arrow"/>
+
+  <!-- Return flow -->
+  <path d="M1320 395 C1320 485 1035 485 940 415" class="arrow dash"/>
+  <path d="M785 360 C720 440 620 445 535 395" class="arrow dash"/>
+
+  <!-- Detection details -->
+  <rect x="145" y="535" width="260" height="120" class="box risk"/>
+  <text x="275" y="580" text-anchor="middle" class="label">Metadata 위험</text>
+  <text x="275" y="612" text-anchor="middle" class="small">Tool Poisoning</text>
+  <text x="275" y="638" text-anchor="middle" class="tiny">description / schema / _meta</text>
+
+  <rect x="470" y="535" width="260" height="120" class="box risk"/>
+  <text x="600" y="580" text-anchor="middle" class="label">Runtime 위험</text>
+  <text x="600" y="612" text-anchor="middle" class="small">위험 tool 호출</text>
+  <text x="600" y="638" text-anchor="middle" class="tiny">arguments / 권한 / 응답</text>
+
+  <rect x="795" y="535" width="260" height="120" class="box risk"/>
+  <text x="925" y="580" text-anchor="middle" class="label">변조 감지</text>
+  <text x="925" y="612" text-anchor="middle" class="small">Baseline Diff</text>
+  <text x="925" y="638" text-anchor="middle" class="tiny">added / removed / modified</text>
+
+  <rect x="1120" y="535" width="260" height="120" class="box report"/>
+  <text x="1250" y="580" text-anchor="middle" class="label">사용자 판단</text>
+  <text x="1250" y="612" text-anchor="middle" class="small">연결 가능 / 주의 / 차단 권장</text>
+  <text x="1250" y="638" text-anchor="middle" class="tiny">Markdown / JSON report</text>
+
+  <path d="M940 415 C900 505 340 500 275 535" class="arrow"/>
+  <path d="M940 415 C840 505 670 505 600 535" class="arrow"/>
+  <path d="M940 415 C930 480 925 500 925 535" class="arrow"/>
+  <path d="M1055 595 L1120 595" class="arrow"/>
+
+  <!-- Safety label -->
+  <rect x="515" y="690" width="470" height="50" fill="#fff" stroke="#d8e0ec" rx="14"/>
+  <text x="750" y="722" text-anchor="middle" class="small">핵심 변화: Agent에 연결된 MCP 사용 흐름을 AuditGuard가 중간에서 관찰</text>
+</svg>
