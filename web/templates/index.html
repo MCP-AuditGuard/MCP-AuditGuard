@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MCP-AuditGuard</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='/style.css') }}"
+    >
+    <script
+        src="{{ url_for('static', path='/app.js') }}"
+        defer
+    ></script>
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="container">
+            <div>
+                <h1>MCP-AuditGuard</h1>
+
+                <p class="subtitle">
+                    MCP Tool Metadata Security Scanner
+                </p>
+            </div>
+
+            <span class="scan-type-badge">
+                Static Scan
+            </span>
+        </div>
+    </header>
+
+    <main class="container main-content">
+
+        <!-- 입력 영역 -->
+        <section class="panel">
+            <div class="section-heading">
+                <div>
+                    <h2>검사 대상 선택</h2>
+
+                    <p>
+                        tools.json 파일을 업로드하거나
+                        실습 샘플을 선택하세요.
+                    </p>
+                </div>
+            </div>
+
+            <div class="input-grid">
+
+                <!-- 파일 업로드 -->
+                <div class="input-card">
+                    <label for="tools-file">
+                        tools.json 파일 업로드
+                    </label>
+
+                    <input
+                        id="tools-file"
+                        name="tools-file"
+                        type="file"
+                        accept=".json,application/json"
+                    >
+
+                    <p class="input-help">
+                        로컬 PC에 있는 MCP tools.json 파일을
+                        선택합니다.
+                    </p>
+                </div>
+
+                <!-- 샘플 선택 -->
+                <div class="input-card">
+                    <label for="sample-select">
+                        실습 샘플 선택
+                    </label>
+
+                    <select
+                        id="sample-select"
+                        name="sample-select"
+                    >
+                        <option value="">
+                            샘플을 선택하세요
+                        </option>
+                    </select>
+
+                    <p class="input-help">
+                        vulnerable-lab에서 발견된 샘플이
+                        여기에 표시됩니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="scan-actions">
+                <button
+                    id="scan-button"
+                    class="primary-button"
+                    type="button"
+                >
+                    Scan
+                </button>
+            </div>
+        </section>
+
+        <!-- 상태 및 오류 영역 -->
+        <section
+            id="status-panel"
+            class="status-panel"
+            aria-live="polite"
+        >
+            <span
+                id="status-indicator"
+                class="status-indicator status-idle"
+            ></span>
+
+            <span id="status-message">
+                검사할 파일이나 샘플을 선택하세요.
+            </span>
+        </section>
+
+        <!-- Summary 영역 -->
+        <section
+            id="summary-section"
+            class="panel"
+        >
+            <div class="section-heading">
+                <div>
+                    <h2>Scan Summary</h2>
+
+                    <p>
+                        검사 결과 요약이 여기에 표시됩니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="summary-grid">
+                <article class="summary-card">
+                    <span class="summary-label">
+                        Tools
+                    </span>
+
+                    <strong
+                        id="tool-count"
+                        class="summary-value"
+                    >
+                        -
+                    </strong>
+                </article>
+
+                <article class="summary-card">
+                    <span class="summary-label">
+                        Findings
+                    </span>
+
+                    <strong
+                        id="finding-count"
+                        class="summary-value"
+                    >
+                        -
+                    </strong>
+                </article>
+
+                <article class="summary-card">
+                    <span class="summary-label">
+                        Affected Targets
+                    </span>
+
+                    <strong
+                        id="affected-target-count"
+                        class="summary-value"
+                    >
+                        -
+                    </strong>
+                </article>
+
+                <article class="summary-card severity-critical">
+                    <span class="summary-label">
+                        Critical
+                    </span>
+
+                    <strong
+                        id="critical-count"
+                        class="summary-value"
+                    >
+                        -
+                    </strong>
+                </article>
+
+                <article class="summary-card severity-high">
+                    <span class="summary-label">
+                        High
+                    </span>
+
+                    <strong
+                        id="high-count"
+                        class="summary-value"
+                    >
+                        -
+                    </strong>
+                </article>
+
+                <article class="summary-card severity-medium">
+                    <span class="summary-label">
+                        Medium
+                    </span>
+
+                    <strong
+                        id="medium-count"
+                        class="summary-value"
+                    >
+                        -
+                    </strong>
+                </article>
+
+                <article class="summary-card severity-low">
+                    <span class="summary-label">
+                        Low
+                    </span>
+
+                    <strong
+                        id="low-count"
+                        class="summary-value"
+                    >
+                        -
+                    </strong>
+                </article>
+
+                <article class="summary-card severity-info">
+                    <span class="summary-label">
+                        Info
+                    </span>
+
+                    <strong
+                        id="info-count"
+                        class="summary-value"
+                    >
+                        -
+                    </strong>
+                </article>
+            </div>
+        </section>
+
+        <!-- Finding 영역 -->
+        <section
+            id="findings-section"
+            class="panel"
+        >
+            <div class="section-heading">
+                <div>
+                    <h2>Security Findings</h2>
+
+                    <p>
+                        탐지된 보안 이슈가 여기에 표시됩니다.
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="findings-empty"
+                class="empty-state"
+            >
+                아직 실행된 검사가 없습니다.
+            </div>
+
+            <div
+                id="findings-table-container"
+                class="table-container"
+                hidden
+            >
+                <table class="findings-table">
+                    <thead>
+                        <tr>
+                            <th>Severity</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Target</th>
+                            <th>Location</th>
+                            <th>Confidence</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="findings-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Finding 상세 영역 -->
+        <section
+            id="finding-detail-section"
+            class="panel"
+        >
+            <div class="section-heading">
+                <div>
+                    <h2>Finding Detail</h2>
+
+                    <p>
+                        Finding을 선택하면 상세 정보가 표시됩니다.
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="finding-detail-empty"
+                class="empty-state"
+            >
+                선택된 Finding이 없습니다.
+            </div>
+
+            <div
+                id="finding-detail"
+                class="finding-detail"
+                hidden
+            >
+            </div>
+        </section>
+
+        <!-- 다운로드 영역 -->
+        <section
+            id="download-section"
+            class="panel download-panel"
+        >
+            <div>
+                <h2>Report Download</h2>
+
+                <p>
+                    스캔 완료 후 Markdown 또는 JSON 리포트를
+                    다운로드할 수 있습니다.
+                </p>
+            </div>
+
+            <div class="download-actions">
+                <a
+                    id="markdown-download"
+                    class="secondary-button disabled"
+                    href="#"
+                    aria-disabled="true"
+                >
+                    Download Markdown
+                </a>
+
+                <a
+                    id="json-download"
+                    class="secondary-button disabled"
+                    href="#"
+                    aria-disabled="true"
+                >
+                    Download JSON
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            MCP-AuditGuard Local Web UI
+        </div>
+    </footer>
+</body>
+</html>

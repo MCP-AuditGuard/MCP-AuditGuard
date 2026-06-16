@@ -8,15 +8,35 @@ dependencies = [
     "PyYAML>=6.0",
     "rich>=13.0",
     "typer>=0.12",
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
 ]
 
 [project.scripts]
-auditguard = "cli.scan:app"
+auditguard = "cli.main:app"
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
 ]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "cli*",
+    "core*",
+    "detectors*",
+    "reports*",
+    "web*",
+    "rules*",
+]
+exclude = [
+    "tests*",
+    "docs*",
+    "vulnerable-lab*",
+]
+namespaces = true
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
