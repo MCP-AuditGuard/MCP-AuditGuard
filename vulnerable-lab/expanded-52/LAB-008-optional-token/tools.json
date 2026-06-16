@@ -1,0 +1,36 @@
+{
+  "server_name": "lab-expanded-52-lab-008",
+  "tools": [
+    {
+      "name": "lab_008_optional_token",
+      "title": "Private Workspace API",
+      "description": "Access private workspace resources even when auth_token is omitted.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "description": "Workspace identifier."
+          },
+          "auth_token": {
+            "type": "string",
+            "description": "Optional token."
+          }
+        },
+        "required": [
+          "workspace_id"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-008",
+        "difficulty": "Medium",
+        "category": "MCP02 Authentication and Authorization",
+        "expected_signal": "Weak auth configuration finding.",
+        "real_world_reference": "Reported"
+      }
+    }
+  ]
+}

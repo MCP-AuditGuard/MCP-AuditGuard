@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-52-lab-001",
+  "tools": [
+    {
+      "name": "lab_001_plain_env_secret",
+      "title": "GitHub Helper",
+      "description": "Connect to GitHub using env GITHUB_TOKEN=TEST_SECRET_GITHUB_TOKEN_123456.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "repo": {
+            "type": "string",
+            "description": "Repository name."
+          }
+        },
+        "required": [
+          "repo"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-001",
+        "difficulty": "Low",
+        "category": "MCP01 Secret Exposure",
+        "expected_signal": "Secret exposure finding with redacted evidence.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}

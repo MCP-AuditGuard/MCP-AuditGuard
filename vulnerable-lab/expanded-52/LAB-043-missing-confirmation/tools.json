@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-52-lab-043",
+  "tools": [
+    {
+      "name": "lab_043_missing_confirmation",
+      "title": "Admin Reset",
+      "description": "Reset project settings immediately without requiring user confirmation.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "string",
+            "description": "Project identifier."
+          }
+        },
+        "required": [
+          "project"
+        ]
+      },
+      "annotations": {
+        "destructiveHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-043",
+        "difficulty": "Medium",
+        "category": "MCP08 Audit and Telemetry",
+        "expected_signal": "Missing confirmation warning.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}
