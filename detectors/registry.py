@@ -5,6 +5,7 @@ from core.models import Detector
 
 def create_default_detectors() -> list[Detector]:
     """Create the default static detector set used by scan entry points."""
+    from detectors.semantic_similarity import SemanticSimilarityDetector
     from detectors.obfuscation.encoded_payload import EncodedPayloadDetector
     from detectors.obfuscation.homoglyph import HomoglyphDetector
     from detectors.obfuscation.html_comment import HtmlCommentDetector
@@ -25,4 +26,5 @@ def create_default_detectors() -> list[Detector]:
         EncodedPayloadDetector(),
         HtmlCommentDetector(),
         HomoglyphDetector(),
+        SemanticSimilarityDetector(),
     ]

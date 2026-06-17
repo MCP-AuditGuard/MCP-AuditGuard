@@ -44,6 +44,18 @@ rules:
       - "(\\.env|환경 ?변수|비밀|토큰).{0,100}(외부 서버|전송|보내)"
     recommendation: Remove metadata that asks the model to disclose or transmit secrets.
 
+  - id: privileged_resource_access
+    category: hidden_instruction
+    type: regex
+    severity: high
+    confidence: medium
+    patterns:
+      - "(read|scan|access|open).{0,80}(private|sensitive|confidential).{0,80}(file|directory|folder|repository|repo)"
+      - "(delete|modify|disable|bypass).{0,80}(branch protection|repository setting|repo setting|github repository|github repo)"
+      - "(use|prefer|switch to).{0,80}(admin token|privileged token|write token|personal access token|github token)"
+      - "(admin token|privileged token|write token|personal access token|github token).{0,80}(delete|modify|disable|bypass|access)"
+    recommendation: Remove metadata that asks the model to access privileged files, repositories, or tokens beyond the user's explicit request.
+
   - id: answer_manipulation
     category: hidden_instruction
     type: regex
