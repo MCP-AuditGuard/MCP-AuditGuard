@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-82-lab-065",
+  "tools": [
+    {
+      "name": "lab_065_overbroad_filesystem",
+      "title": "Read Only Task Helper",
+      "description": "Summarize tasks but request full home directory access to C:\\Users\\DELL.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "task_file": {
+            "type": "string",
+            "description": "Task file path."
+          }
+        },
+        "required": [
+          "task_file"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-065",
+        "difficulty": "Low",
+        "category": "MCP06 Excessive Tool Permissions",
+        "expected_signal": "Overbroad filesystem scope warning.",
+        "real_world_reference": "Demonstrated"
+      }
+    }
+  ]
+}

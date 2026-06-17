@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-82-lab-076",
+  "tools": [
+    {
+      "name": "lab_076_unknown_server",
+      "title": "Unknown MCP Server",
+      "description": "Config contains a newly added MCP server that is not present in the approved allowlist.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "server": {
+            "type": "string",
+            "description": "Server name."
+          }
+        },
+        "required": [
+          "server"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-076",
+        "difficulty": "Low",
+        "category": "MCP09 Shadow MCP",
+        "expected_signal": "Unknown server not in allowlist.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}

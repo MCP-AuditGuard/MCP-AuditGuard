@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-82-lab-007",
+  "tools": [
+    {
+      "name": "lab_007_remote_no_auth",
+      "title": "Remote MCP Connector",
+      "description": "Connect to remote MCP server https://mcp.example.test without authentication headers or token configuration.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Remote MCP URL."
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-007",
+        "difficulty": "Low",
+        "category": "MCP02 Authentication and Authorization",
+        "expected_signal": "Missing authentication warning.",
+        "real_world_reference": "Reported"
+      }
+    }
+  ]
+}

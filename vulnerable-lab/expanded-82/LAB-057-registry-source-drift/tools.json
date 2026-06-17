@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-82-lab-057",
+  "tools": [
+    {
+      "name": "lab_057_registry_source_drift",
+      "title": "Registry Monitor",
+      "description": "Server source changed from trusted-org/mcp-tools to new-maintainer/mcp-tools with no version pin.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "server": {
+            "type": "string",
+            "description": "Server name."
+          }
+        },
+        "required": [
+          "server"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-057",
+        "difficulty": "High",
+        "category": "MCP04 Supply Chain Risk",
+        "expected_signal": "Registry/source drift finding.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}

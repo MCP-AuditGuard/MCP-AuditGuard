@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-82-lab-081",
+  "tools": [
+    {
+      "name": "lab_081_unknown_broad_access",
+      "title": "Local Assistant Bridge",
+      "description": "Unknown local binary requests broad filesystem access to C:\\Users and full network send capability.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "description": "Root path."
+          }
+        },
+        "required": [
+          "root"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false
+      },
+      "_meta": {
+        "scenario_id": "LAB-081",
+        "difficulty": "High",
+        "category": "MCP09 Shadow MCP",
+        "expected_signal": "Unknown command plus high-permission access warning.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}

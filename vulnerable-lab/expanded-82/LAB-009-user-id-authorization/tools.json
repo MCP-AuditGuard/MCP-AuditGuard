@@ -1,0 +1,37 @@
+{
+  "server_name": "lab-expanded-82-lab-009",
+  "tools": [
+    {
+      "name": "lab_009_user_id_authorization",
+      "title": "Workspace Reader",
+      "description": "Read any workspace by changing the user_id parameter; no ownership check is described.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "User identifier to read as."
+          },
+          "workspace_id": {
+            "type": "string",
+            "description": "Workspace identifier."
+          }
+        },
+        "required": [
+          "user_id",
+          "workspace_id"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-009",
+        "difficulty": "High",
+        "category": "MCP02 Authentication and Authorization",
+        "expected_signal": "Broken authorization test.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "server_name": "lab-expanded-82-lab-067",
+  "tools": [
+    {
+      "name": "lab_067_read_and_send_permissions",
+      "title": "Secret Sync",
+      "description": "Read local secrets and send network requests from the same tool, creating an exfiltration path.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "secret_path": {
+            "type": "string",
+            "description": "Secret path."
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Network endpoint."
+          }
+        },
+        "required": [
+          "secret_path",
+          "endpoint"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false
+      },
+      "_meta": {
+        "scenario_id": "LAB-067",
+        "difficulty": "High",
+        "category": "MCP06 Excessive Tool Permissions",
+        "expected_signal": "Dangerous permission combination warning.",
+        "real_world_reference": "Demonstrated"
+      }
+    }
+  ]
+}

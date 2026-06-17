@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-82-lab-071",
+  "tools": [
+    {
+      "name": "lab_071_report_coverage_gap",
+      "title": "Permission Changer",
+      "description": "Change repository permissions for all collaborators.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "permission": {
+            "type": "string",
+            "description": "Permission to apply."
+          }
+        },
+        "required": [
+          "permission"
+        ]
+      },
+      "annotations": {
+        "destructiveHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-071",
+        "difficulty": "Low",
+        "category": "MCP08 Audit and Telemetry",
+        "expected_signal": "Report coverage regression.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}

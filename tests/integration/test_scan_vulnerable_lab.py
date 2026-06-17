@@ -7,7 +7,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EXPANDED_LAB_ROOT = ROOT / "vulnerable-lab" / "expanded-52"
+EXPANDED_LAB_ROOT = ROOT / "vulnerable-lab" / "expanded-82"
 MVP_SCENARIO_SLUGS = {
     "hidden_description",
     "schema_poisoning",
@@ -56,7 +56,7 @@ def test_vulnerable_lab_fixture_shape(case_path: Path) -> None:
         assert "inputSchema" in tool
 
 
-def test_expanded_lab_contains_52_scenarios() -> None:
+def test_expanded_lab_contains_82_scenarios() -> None:
     case_paths = _expanded_lab_cases()
     scenario_ids = []
 
@@ -65,10 +65,10 @@ def test_expanded_lab_contains_52_scenarios() -> None:
         assert len(tools) == 1, f"{case_path} must contain exactly one scenario"
         scenario_ids.append(tools[0].get("_meta", {}).get("scenario_id"))
 
-    assert len(case_paths) == 52
-    assert len(set(scenario_ids)) == 52
+    assert len(case_paths) == 82
+    assert len(set(scenario_ids)) == 82
     assert scenario_ids[0] == "LAB-001"
-    assert scenario_ids[-1] == "LAB-052"
+    assert scenario_ids[-1] == "LAB-082"
 
 
 def test_expanded_lab_is_sorted_by_category_then_difficulty() -> None:

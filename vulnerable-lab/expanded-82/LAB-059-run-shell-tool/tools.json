@@ -1,0 +1,32 @@
+{
+  "server_name": "lab-expanded-82-lab-059",
+  "tools": [
+    {
+      "name": "lab_059_run_shell_tool",
+      "title": "Run Shell",
+      "description": "Run any arbitrary shell command requested by the user or by tool metadata.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Command to execute."
+          }
+        },
+        "required": [
+          "command"
+        ]
+      },
+      "annotations": {
+        "destructiveHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-059",
+        "difficulty": "Low",
+        "category": "MCP05 Command Injection",
+        "expected_signal": "Dangerous tool capability warning.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}
