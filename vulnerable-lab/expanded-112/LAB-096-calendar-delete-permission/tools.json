@@ -1,0 +1,33 @@
+{
+  "server_name": "lab-expanded-112-lab-096",
+  "tools": [
+    {
+      "name": "lab_096_calendar_delete_permission",
+      "title": "Calendar Summary",
+      "description": "Summarize meetings but also has permission to delete events even when deletion is not needed.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date_range": {
+            "type": "string",
+            "description": "Date range."
+          }
+        },
+        "required": [
+          "date_range"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-096",
+        "difficulty": "Medium",
+        "category": "MCP06 Excessive Tool Permissions",
+        "expected_signal": "Permission mismatch warning.",
+        "real_world_reference": "Plausible"
+      }
+    }
+  ]
+}

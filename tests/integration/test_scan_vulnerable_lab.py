@@ -5,9 +5,14 @@ from pathlib import Path
 
 import pytest
 
+from detectors.obfuscation.encoded_payload import EncodedPayloadDetector
+from detectors.obfuscation.homoglyph import HomoglyphDetector
+from detectors.obfuscation.html_comment import HtmlCommentDetector
+from detectors.obfuscation.unicode_obfuscation import UnicodeObfuscationDetector
+
 
 ROOT = Path(__file__).resolve().parents[2]
-EXPANDED_LAB_ROOT = ROOT / "vulnerable-lab" / "expanded-52"
+EXPANDED_LAB_ROOT = ROOT / "vulnerable-lab" / "expanded-112"
 MVP_SCENARIO_SLUGS = {
     "hidden_description",
     "schema_poisoning",
@@ -17,6 +22,33 @@ MVP_SCENARIO_SLUGS = {
     "cross_tool_admin",
 }
 DIFFICULTY_ORDER = {"Low": 0, "Medium": 1, "High": 2}
+MEMBER3_OBFUSCATION_CASES = [
+    (
+        "LAB-036-base64-instruction",
+        EncodedPayloadDetector,
+        "obfuscation.base64",
+    ),
+    (
+        "LAB-037-zero-width-obfuscation",
+        UnicodeObfuscationDetector,
+        "obfuscation.zero_width_unicode",
+    ),
+    (
+        "LAB-046-html-comment-instruction",
+        HtmlCommentDetector,
+        "obfuscation.html_comment",
+    ),
+    (
+        "LAB-048-url-encoded-instruction",
+        EncodedPayloadDetector,
+        "obfuscation.url_encoding",
+    ),
+    (
+        "LAB-049-homoglyph-secret-request",
+        HomoglyphDetector,
+        "obfuscation.homoglyph",
+    ),
+]
 
 
 def _scenario_sort_key(case_path: Path) -> tuple[int, int, str]:
@@ -56,7 +88,7 @@ def test_vulnerable_lab_fixture_shape(case_path: Path) -> None:
         assert "inputSchema" in tool
 
 
-def test_expanded_lab_contains_52_scenarios() -> None:
+def test_expanded_lab_contains_112_scenarios() -> None:
     case_paths = _expanded_lab_cases()
     scenario_ids = []
 
@@ -65,10 +97,10 @@ def test_expanded_lab_contains_52_scenarios() -> None:
         assert len(tools) == 1, f"{case_path} must contain exactly one scenario"
         scenario_ids.append(tools[0].get("_meta", {}).get("scenario_id"))
 
-    assert len(case_paths) == 52
-    assert len(set(scenario_ids)) == 52
+    assert len(case_paths) == 112
+    assert len(set(scenario_ids)) == 112
     assert scenario_ids[0] == "LAB-001"
-    assert scenario_ids[-1] == "LAB-052"
+    assert scenario_ids[-1] == "LAB-112"
 
 
 def test_expanded_lab_is_sorted_by_category_then_difficulty() -> None:
@@ -116,6 +148,28 @@ def test_benign_and_malicious_fixtures_are_separated() -> None:
     assert "ignore previous instructions" not in benign_text
     assert "evil.example" in malicious_text
     assert "ignore" in malicious_text
+
+
+@pytest.mark.parametrize(
+    ("case_slug", "detector_class", "expected_category"),
+    MEMBER3_OBFUSCATION_CASES,
+)
+def test_member3_obfuscation_fixtures_trigger_specific_detectors(
+    case_slug: str,
+    detector_class: type,
+    expected_category: str,
+) -> None:
+    scanner = pytest.importorskip("core.scanner")
+    collector = pytest.importorskip("core.tool_collector")
+
+    if not hasattr(collector, "load_tools_json") or not hasattr(scanner, "scan_tools"):
+        pytest.skip("Scanner integration API is not available yet.")
+
+    tools = collector.load_tools_json(EXPANDED_LAB_ROOT / case_slug / "tools.json")
+    findings = scanner.scan_tools(tools, [detector_class()])
+    categories = {finding.category for finding in findings}
+
+    assert expected_category in categories
 
 
 def test_vulnerable_lab_recall_when_scanner_is_available() -> None:
