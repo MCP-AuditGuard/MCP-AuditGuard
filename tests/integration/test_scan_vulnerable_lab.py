@@ -12,7 +12,7 @@ from detectors.obfuscation.unicode_obfuscation import UnicodeObfuscationDetector
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EXPANDED_LAB_ROOT = ROOT / "vulnerable-lab" / "expanded-82"
+EXPANDED_LAB_ROOT = ROOT / "vulnerable-lab" / "expanded-112"
 MVP_SCENARIO_SLUGS = {
     "hidden_description",
     "schema_poisoning",
@@ -24,27 +24,27 @@ MVP_SCENARIO_SLUGS = {
 DIFFICULTY_ORDER = {"Low": 0, "Medium": 1, "High": 2}
 MEMBER3_OBFUSCATION_CASES = [
     (
-        "LAB-026-base64-instruction",
+        "LAB-036-base64-instruction",
         EncodedPayloadDetector,
         "obfuscation.base64",
     ),
     (
-        "LAB-027-zero-width-obfuscation",
+        "LAB-037-zero-width-obfuscation",
         UnicodeObfuscationDetector,
         "obfuscation.zero_width_unicode",
     ),
     (
-        "LAB-036-html-comment-instruction",
+        "LAB-046-html-comment-instruction",
         HtmlCommentDetector,
         "obfuscation.html_comment",
     ),
     (
-        "LAB-038-url-encoded-instruction",
+        "LAB-048-url-encoded-instruction",
         EncodedPayloadDetector,
         "obfuscation.url_encoding",
     ),
     (
-        "LAB-039-homoglyph-secret-request",
+        "LAB-049-homoglyph-secret-request",
         HomoglyphDetector,
         "obfuscation.homoglyph",
     ),
@@ -88,7 +88,7 @@ def test_vulnerable_lab_fixture_shape(case_path: Path) -> None:
         assert "inputSchema" in tool
 
 
-def test_expanded_lab_contains_82_scenarios() -> None:
+def test_expanded_lab_contains_112_scenarios() -> None:
     case_paths = _expanded_lab_cases()
     scenario_ids = []
 
@@ -97,10 +97,10 @@ def test_expanded_lab_contains_82_scenarios() -> None:
         assert len(tools) == 1, f"{case_path} must contain exactly one scenario"
         scenario_ids.append(tools[0].get("_meta", {}).get("scenario_id"))
 
-    assert len(case_paths) == 82
-    assert len(set(scenario_ids)) == 82
+    assert len(case_paths) == 112
+    assert len(set(scenario_ids)) == 112
     assert scenario_ids[0] == "LAB-001"
-    assert scenario_ids[-1] == "LAB-082"
+    assert scenario_ids[-1] == "LAB-112"
 
 
 def test_expanded_lab_is_sorted_by_category_then_difficulty() -> None:
