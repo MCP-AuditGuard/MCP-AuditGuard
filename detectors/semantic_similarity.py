@@ -186,12 +186,25 @@ def load_keyword_rule_signatures() -> list[SemanticSignature]:
 
     for rule in load_rules():
         rule_id = str(rule.get("id", "rule"))
-        if rule.get("type", "keyword") != "keyword":
+        semantic_examples = rule.get("semantic_examples")
+        if semantic_examples is not None:
+            examples = tuple(
+                str(example).strip()
+                for example in semantic_examples
+                if str(example).strip()
+            )
+        elif rule.get("type", "keyword") == "keyword":
+            examples = tuple(
+                str(pattern).strip()
+                for pattern in rule.get("patterns", [])
+                if str(pattern).strip()
+            )
+        else:
             continue
 
         examples = tuple(
             str(pattern).strip()
-            for pattern in rule.get("patterns", [])
+            for pattern in examples
             if str(pattern).strip()
         )
         if not examples:
@@ -201,10 +214,10 @@ def load_keyword_rule_signatures() -> list[SemanticSignature]:
             SemanticSignature(
                 id=f"keyword_{rule_id}",
                 category=f"semantic_similarity.{rule.get('category', 'tool_poisoning')}",
-                owasp="MCP03",
+                owasp=str(rule.get("owasp", "MCP03")),
                 severity=str(rule.get("severity", "medium")),
                 confidence="medium",
-                threshold=KEYWORD_RULE_THRESHOLD,
+                threshold=float(rule.get("semantic_threshold", KEYWORD_RULE_THRESHOLD)),
                 title=f"Semantic match for {rule_id} keyword rule",
                 recommendation=str(
                     rule.get(

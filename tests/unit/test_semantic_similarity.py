@@ -32,9 +32,16 @@ def test_keyword_rule_semantic_expansion_uses_keyword_rules() -> None:
     assert set(by_id) == {
         "keyword_ignore_previous_instructions",
         "keyword_covert_behavior",
+        "keyword_secret_exfiltration",
+        "keyword_secret_disclosure",
+        "keyword_unpinned_or_remote_execution",
+        "keyword_command_execution",
         "keyword_schema_instruction_poisoning",
     }
-    assert all(signature.threshold == 0.76 for signature in signatures)
+    assert by_id["keyword_ignore_previous_instructions"].threshold == 0.76
+    assert by_id["keyword_secret_disclosure"].threshold == 0.82
+    assert by_id["keyword_unpinned_or_remote_execution"].owasp == "MCP04"
+    assert by_id["keyword_command_execution"].owasp == "MCP05"
 
 
 def test_semantic_similarity_detector_skips_when_model_is_unavailable(

@@ -7,13 +7,13 @@ from core.models import Finding
 from detectors.tool_poisoning.hidden_instruction import (
     find_rule_matches,
     iter_text_values,
-    load_rules,
+    load_static_metadata_rules,
 )
 
 
 def detect_metadata_poisoning(tool: Any, rules_path: str | Path | None = None) -> list[Finding]:
     findings: list[Finding] = []
-    rules = load_rules(rules_path, category="hidden_instruction")
+    rules = load_static_metadata_rules(rules_path)
 
     for field_name in ("title", "annotations", "meta"):
         value = _get_field(tool, field_name)

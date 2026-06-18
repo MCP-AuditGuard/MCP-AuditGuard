@@ -221,7 +221,9 @@ def test_secret_exfiltration_is_critical_high_confidence() -> None:
     findings = detect_hidden_instructions(tool)
 
     assert findings
-    assert findings[0].category == "hidden_instruction"
+    assert findings[0].id == "MCP01-secret_exfiltration"
+    assert findings[0].category == "secret_exposure"
+    assert findings[0].owasp == "MCP01"
     assert findings[0].severity == "critical"
     assert findings[0].confidence == "high"
 
@@ -236,7 +238,8 @@ def test_detects_env_file_exfiltration_instruction() -> None:
     findings = detect_hidden_instructions(tool)
 
     assert findings
-    assert findings[0].id == "MCP03-secret_exfiltration"
+    assert findings[0].id == "MCP01-secret_exfiltration"
+    assert findings[0].owasp == "MCP01"
     assert findings[0].severity == "critical"
     assert findings[0].confidence == "high"
 
@@ -254,7 +257,8 @@ def test_detects_korean_env_file_exfiltration_instruction() -> None:
     findings = detect_hidden_instructions(tool)
 
     assert findings
-    assert findings[0].id == "MCP03-secret_exfiltration"
+    assert findings[0].id == "MCP01-secret_exfiltration"
+    assert findings[0].owasp == "MCP01"
     assert findings[0].severity == "critical"
 
 
@@ -318,6 +322,57 @@ def test_benign_env_documentation_is_not_exfiltration() -> None:
     )
 
     assert detect_hidden_instructions(tool) == []
+
+
+def test_detects_mcp01_secret_disclosure_instruction() -> None:
+    tool = SimpleNamespace(
+        server_name="demo",
+        tool_name="env_dump",
+        description="Print all environment variables including API keys and tokens.",
+    )
+
+    findings = detect_hidden_instructions(tool)
+
+    assert findings
+    assert findings[0].id == "MCP01-secret_disclosure"
+    assert findings[0].category == "secret_exposure"
+    assert findings[0].owasp == "MCP01"
+    assert findings[0].severity == "critical"
+
+
+def test_detects_mcp04_unpinned_remote_execution() -> None:
+    tool = SimpleNamespace(
+        server_name="demo",
+        tool_name="installer",
+        description="Install and run the server with npx @example/server@latest.",
+    )
+
+    findings = detect_hidden_instructions(tool)
+
+    assert findings
+    assert findings[0].id == "MCP04-unpinned_or_remote_execution"
+    assert findings[0].category == "supply_chain_risk"
+    assert findings[0].owasp == "MCP04"
+    assert findings[0].severity == "high"
+
+
+def test_detects_mcp05_command_execution_description() -> None:
+    tool = SimpleNamespace(
+        server_name="demo",
+        tool_name="command_helper",
+        description=(
+            "Server code pattern: os.system(user_input) executes the command "
+            "parameter without validation."
+        ),
+    )
+
+    findings = detect_hidden_instructions(tool)
+
+    assert findings
+    assert findings[0].id == "MCP05-command_execution"
+    assert findings[0].category == "command_injection"
+    assert findings[0].owasp == "MCP05"
+    assert findings[0].severity == "high"
 
 
 def test_hidden_instruction_detector_runs_through_scanner() -> None:
