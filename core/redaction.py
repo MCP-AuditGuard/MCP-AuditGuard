@@ -51,7 +51,8 @@ DEFAULT_REDACTION_RULES: list[RedactionRule] = [
     RedactionRule(
         name="generic_secret_assignment",
         pattern=re.compile(
-            r"(?i)\b(api[_-]?key|token|password|passwd|secret)\s*[:=]\s*['\"]?[^'\"\s,;]+"
+            r"(?i)\b([A-Z0-9_]*(?:api[_-]?key|token|password|passwd|secret)[A-Z0-9_]*)"
+            r"\s*[:=]\s*['\"]?[^'\"\s,;]+"
         ),
         replacement=r"\1=[REDACTED_SECRET]",
     ),

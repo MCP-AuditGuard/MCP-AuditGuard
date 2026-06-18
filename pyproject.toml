@@ -1,5 +1,5 @@
 [project]
-name = "mcp-tpguard"
+name = "mcp-auditguard"
 version = "0.1.0"
 description = "MCP Tool Poisoning detection and tool metadata integrity scanner"
 requires-python = ">=3.11"
@@ -19,6 +19,9 @@ auditguard = "cli.main:app"
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
+]
+semantic = [
+    "sentence-transformers>=3.0",
 ]
 
 [tool.setuptools.packages.find]

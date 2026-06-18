@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from detectors.semantic_similarity import SemanticSimilarityDetector
 from detectors.obfuscation.encoded_payload import EncodedPayloadDetector
 from detectors.obfuscation.homoglyph import HomoglyphDetector
 from detectors.obfuscation.html_comment import HtmlCommentDetector
@@ -22,6 +23,7 @@ EXPECTED_DETECTOR_CLASSES = [
     EncodedPayloadDetector,
     HtmlCommentDetector,
     HomoglyphDetector,
+    SemanticSimilarityDetector,
 ]
 
 

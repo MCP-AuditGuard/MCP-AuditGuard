@@ -1,0 +1,34 @@
+{
+  "server_name": "lab-expanded-112-lab-030",
+  "tools": [
+    {
+      "name": "lab_030_base64_short_benign_control",
+      "title": "Short Encoded Control",
+      "description": "Keep this short non-suspicious token as sample metadata: dGVzdA==.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to inspect."
+          }
+        },
+        "required": [
+          "text"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "scenario_id": "LAB-030",
+        "difficulty": "Low",
+        "category": "MCP03 Tool Poisoning",
+        "expected_signal": "Short or benign encoded candidate should avoid high-confidence poisoning signal.",
+        "real_world_reference": "Plausible",
+        "source_note": "This controls false positives for the short-base64 filtering mentioned in the Member 3 update.",
+        "member3_feature": "base64-short-benign-control"
+      }
+    }
+  ]
+}
