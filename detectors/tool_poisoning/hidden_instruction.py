@@ -12,12 +12,6 @@ from core.redaction import redact_text
 
 DEFAULT_RULES_PATH = Path(__file__).resolve().parents[2] / "rules" / "tool_poisoning.yaml"
 OWASP_CATEGORY = "MCP03"
-STATIC_METADATA_RULE_CATEGORIES = (
-    "hidden_instruction",
-    "secret_exposure",
-    "supply_chain_risk",
-    "command_injection",
-)
 
 
 def load_rules(path: str | Path | None = None, category: str | None = None) -> list[dict[str, Any]]:
@@ -40,7 +34,7 @@ def detect_hidden_instructions(tool: Any, rules_path: str | Path | None = None) 
         text=str(text),
         tool=tool,
         location="description",
-        rules=load_static_metadata_rules(rules_path),
+        rules=load_rules(rules_path, category="hidden_instruction"),
         default_title="Hidden instruction in tool description",
     )
 
@@ -86,13 +80,6 @@ def find_rule_matches(
     return findings
 
 
-def load_static_metadata_rules(path: str | Path | None = None) -> list[dict[str, Any]]:
-    rules: list[dict[str, Any]] = []
-    for category in STATIC_METADATA_RULE_CATEGORIES:
-        rules.extend(load_rules(path, category=category))
-    return rules
-
-
 def build_finding(
     rule: dict[str, Any],
     tool: Any,
@@ -102,13 +89,12 @@ def build_finding(
 ) -> Finding:
     redacted_evidence, redacted = redact_text(evidence)
     target = _target_name(tool)
-    owasp = rule.get("owasp", OWASP_CATEGORY)
-    finding_id = f"{owasp}-{rule.get('id', 'tool_poisoning')}"
+    finding_id = f"{OWASP_CATEGORY}-{rule.get('id', 'tool_poisoning')}"
 
     return Finding(
         id=finding_id,
         category=rule.get("category", "tool_poisoning"),
-        owasp=owasp,
+        owasp=OWASP_CATEGORY,
         severity=rule.get("severity", "medium"),
         confidence=rule.get("confidence", "medium"),
         title=title,

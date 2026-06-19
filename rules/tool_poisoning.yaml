@@ -31,8 +31,7 @@ rules:
     recommendation: Remove covert behavior instructions from tool metadata.
 
   - id: secret_exfiltration
-    category: secret_exposure
-    owasp: MCP01
+    category: hidden_instruction
     type: regex
     severity: critical
     confidence: high
@@ -43,30 +42,7 @@ rules:
       - "(\\.env|env file|environment variable).{0,100}(send|upload|exfiltrate|forward|external server|remote endpoint)"
       - "(읽|보내|전송).{0,100}(\\.env|환경 ?변수|비밀|토큰)"
       - "(\\.env|환경 ?변수|비밀|토큰).{0,100}(외부 서버|전송|보내)"
-    semantic_threshold: 0.82
-    semantic_examples:
-      - send secrets or credentials to an external server
-      - upload environment variables or tokens to a remote endpoint
-      - forward api keys or bearer tokens outside the local system
     recommendation: Remove metadata that asks the model to disclose or transmit secrets.
-
-  - id: secret_disclosure
-    category: secret_exposure
-    owasp: MCP01
-    type: regex
-    severity: critical
-    confidence: high
-    patterns:
-      - "(print|dump|display|show|reveal|expose).{0,80}(secret|api[_ -]?key|password|credential|auth token|access token|bearer token|environment variable|env var)"
-      - "(secret|api[_ -]?key|password|credential|auth token|access token|bearer token|environment variable|env var).{0,80}(print|dump|display|show|reveal|expose)"
-      - "(github_token|openai_api_key|aws_secret_access_key|slack_bot_token|npm_token)"
-      - "(환경 ?변수|비밀|토큰|인증키).{0,80}(출력|노출|표시|보여)"
-    semantic_threshold: 0.82
-    semantic_examples:
-      - print all environment variables including api keys and tokens
-      - reveal configured credentials in the tool response
-      - expose secrets or passwords from the runtime environment
-    recommendation: Remove metadata that asks the model or tool to expose secrets, tokens, credentials, or environment variables.
 
   - id: privileged_resource_access
     category: hidden_instruction
@@ -91,46 +67,6 @@ rules:
       - "(hide|omit|suppress).{0,60}(from|in).{0,60}(final answer|final response|assistant response)"
       - "always include.{0,60}(final answer|final response|assistant response)"
     recommendation: Remove metadata that attempts to manipulate the assistant's final answer or hide output from the user.
-
-  - id: unpinned_or_remote_execution
-    category: supply_chain_risk
-    owasp: MCP04
-    type: regex
-    severity: high
-    confidence: medium
-    patterns:
-      - "(npx|npm|pnpm|yarn|pipx?|uvx).{0,80}(@latest|latest)"
-      - "(docker|container).{0,80}(:latest|latest tag)"
-      - "(curl|wget).{0,120}(\\|\\s*(bash|sh)|bash|sh)"
-      - "(download|fetch).{0,80}(script|binary|installer).{0,80}(run|execute|install)"
-      - "(unpinned|not pinned|floating).{0,80}(version|dependency|package|image|tag)"
-      - "(unverified|unknown|third[- ]party).{0,80}(registry|package|binary|script)"
-    semantic_threshold: 0.83
-    semantic_examples:
-      - execute the latest remote package without a pinned version
-      - run a downloaded install script from an unverified URL
-      - install a package or container image from an untrusted registry
-    recommendation: Pin package and container versions, and avoid executing remote scripts or binaries from tool metadata.
-
-  - id: command_execution
-    category: command_injection
-    owasp: MCP05
-    type: regex
-    severity: high
-    confidence: medium
-    patterns:
-      - "os\\.system\\s*\\([^)]*(user|input|command|cmd|args?|parameter)"
-      - "subprocess\\.(run|call|popen|check_output)\\s*\\([^)]*shell\\s*=\\s*true"
-      - "child_process\\.(exec|execSync)\\s*\\("
-      - "(run|execute|invoke).{0,80}(arbitrary|raw|user[- ]controlled|unvalidated).{0,80}(shell )?(command|cmd)"
-      - "(shell )?(command|cmd).{0,80}(without validation|without sanitization|unsanitized|unvalidated|user[- ]controlled)"
-      - "(user|input|parameter|argument).{0,80}(passed|sent|forwarded).{0,80}(shell|command|cmd|os\\.system|subprocess)"
-    semantic_threshold: 0.83
-    semantic_examples:
-      - run arbitrary shell commands from user input
-      - execute operating system commands from unvalidated parameters
-      - pass user controlled command text to a shell process
-    recommendation: Avoid command execution from untrusted metadata or user-controlled input; validate arguments and avoid shell execution.
 
   - id: schema_instruction_poisoning
     category: schema_poisoning

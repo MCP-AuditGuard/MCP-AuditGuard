@@ -7,7 +7,6 @@ from core.models import Finding
 from detectors.tool_poisoning.hidden_instruction import (
     find_rule_matches,
     iter_text_values,
-    load_static_metadata_rules,
     load_rules,
 )
 
@@ -18,8 +17,8 @@ def detect_schema_poisoning(tool: Any, rules_path: str | Path | None = None) -> 
         return []
 
     findings: list[Finding] = []
-    rules = load_rules(rules_path, category="schema_poisoning") + load_static_metadata_rules(
-        rules_path
+    rules = load_rules(rules_path, category="schema_poisoning") + load_rules(
+        rules_path, category="hidden_instruction"
     )
 
     for location, text in iter_text_values(schema, "input_schema"):
