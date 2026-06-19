@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-076",
+  "tools": [
+    {
+      "name": "benign_076_meta_owner_field",
+      "title": "Metadata Owner Field",
+      "description": "Format owner and contact fields from metadata.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Metadata fields."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-076",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Metadata",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Metadata"
+      }
+    }
+  ]
+}

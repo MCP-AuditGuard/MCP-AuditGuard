@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-051",
+  "tools": [
+    {
+      "name": "benign_051_permission_matrix_summary",
+      "title": "Permission Matrix Summary",
+      "description": "Summarize a permission matrix without modifying any permissions.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Permission matrix."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-051",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Admin and Permission Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Admin and Permission Language"
+      }
+    }
+  ]
+}

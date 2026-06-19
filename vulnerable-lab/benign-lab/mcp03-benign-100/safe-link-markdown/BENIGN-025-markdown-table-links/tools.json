@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-025",
+  "tools": [
+    {
+      "name": "benign_025_markdown_table_links",
+      "title": "Markdown Table Link Formatter",
+      "description": "Format a table containing public URLs and labels.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Rows with public links."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-025",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Safe Link and Markdown",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Safe Link and Markdown"
+      }
+    }
+  ]
+}

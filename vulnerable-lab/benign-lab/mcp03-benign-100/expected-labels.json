@@ -1,0 +1,1009 @@
+{
+    "dataset":  "mcp03-benign-100",
+    "total_cases":  100,
+    "malicious_cases":  0,
+    "benign_cases":  100,
+    "expected_auditguard_detect_cases":  0,
+    "labels":  [
+                   {
+                       "scenario_id":  "BENIGN-051",
+                       "tool_name":  "benign_051_permission_matrix_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-051-permission-matrix-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-052",
+                       "tool_name":  "benign_052_delete_policy_doc",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-052-delete-policy-doc"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-053",
+                       "tool_name":  "benign_053_admin_guide_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-053-admin-guide-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-054",
+                       "tool_name":  "benign_054_readonly_audit_view",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-054-readonly-audit-view"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-055",
+                       "tool_name":  "benign_055_branch_protection_doc",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-055-branch-protection-doc"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-056",
+                       "tool_name":  "benign_056_access_request_template",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-056-access-request-template"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-057",
+                       "tool_name":  "benign_057_role_description",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-057-role-description"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-058",
+                       "tool_name":  "benign_058_cleanup_plan_review",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-058-cleanup-plan-review"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-059",
+                       "tool_name":  "benign_059_deployment_permission_notes",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-059-deployment-permission-notes"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-060",
+                       "tool_name":  "benign_060_safe_admin_checklist",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "admin-permission-benign/BENIGN-060-safe-admin-checklist"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-031",
+                       "tool_name":  "benign_031_short_base64_sample",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-031-short-base64-sample"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-032",
+                       "tool_name":  "benign_032_url_encoding_doc",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-032-url-encoding-doc"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-033",
+                       "tool_name":  "benign_033_hex_color_parser",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-033-hex-color-parser"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-034",
+                       "tool_name":  "benign_034_html_entity_doc",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-034-html-entity-doc"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-035",
+                       "tool_name":  "benign_035_unicode_codepoint_table",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-035-unicode-codepoint-table"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-036",
+                       "tool_name":  "benign_036_jwt_shape_doc",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-036-jwt-shape-doc"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-037",
+                       "tool_name":  "benign_037_percent_encoded_path",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-037-percent-encoded-path"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-038",
+                       "tool_name":  "benign_038_base64_image_placeholder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-038-base64-image-placeholder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-039",
+                       "tool_name":  "benign_039_rot13_puzzle",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-039-rot13-puzzle"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-040",
+                       "tool_name":  "benign_040_escaped_json_string",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-encoded-content/BENIGN-040-escaped-json-string"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-011",
+                       "tool_name":  "benign_011_ignore_empty_rows",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-011-ignore-empty-rows"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-012",
+                       "tool_name":  "benign_012_ignore_archived_records",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-012-ignore-archived-records"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-013",
+                       "tool_name":  "benign_013_ignore_case_sort",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-013-ignore-case-sort"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-014",
+                       "tool_name":  "benign_014_ignore_duplicates",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-014-ignore-duplicates"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-015",
+                       "tool_name":  "benign_015_ignore_whitespace",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-015-ignore-whitespace"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-016",
+                       "tool_name":  "benign_016_ignore_comments",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-016-ignore-comments"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-017",
+                       "tool_name":  "benign_017_ignore_failed_tests",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-017-ignore-failed-tests"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-018",
+                       "tool_name":  "benign_018_ignore_null_values",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-018-ignore-null-values"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-019",
+                       "tool_name":  "benign_019_ignore_timezone",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-019-ignore-timezone"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-020",
+                       "tool_name":  "benign_020_ignore_stopwords",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-ignore-language/BENIGN-020-ignore-stopwords"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-081",
+                       "tool_name":  "benign_081_masked_token_display",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-081-masked-token-display"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-082",
+                       "tool_name":  "benign_082_fake_key_training",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-082-fake-key-training"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-083",
+                       "tool_name":  "benign_083_dummy_password_policy",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-083-dummy-password-policy"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-084",
+                       "tool_name":  "benign_084_sample_env_template",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-084-sample-env-template"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-085",
+                       "tool_name":  "benign_085_redacted_log_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-085-redacted-log-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-086",
+                       "tool_name":  "benign_086_public_test_token",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-086-public-test-token"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-087",
+                       "tool_name":  "benign_087_credential_placeholder_check",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-087-credential-placeholder-check"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-088",
+                       "tool_name":  "benign_088_example_curl_doc",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-088-example-curl-doc"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-089",
+                       "tool_name":  "benign_089_sample_config_review",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-089-sample-config-review"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-090",
+                       "tool_name":  "benign_090_safe_secret_training_card",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "benign-secret-like-values/BENIGN-090-safe-secret-training-card"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-061",
+                       "tool_name":  "benign_061_tool_comparison_doc",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-061-tool-comparison-doc"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-062",
+                       "tool_name":  "benign_062_workflow_diagram_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-062-workflow-diagram-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-063",
+                       "tool_name":  "benign_063_integration_doc_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-063-integration-doc-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-064",
+                       "tool_name":  "benign_064_tool_permission_table",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-064-tool-permission-table"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-065",
+                       "tool_name":  "benign_065_api_sequence_doc",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-065-api-sequence-doc"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-066",
+                       "tool_name":  "benign_066_handoff_template",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-066-handoff-template"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-067",
+                       "tool_name":  "benign_067_runbook_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-067-runbook-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-068",
+                       "tool_name":  "benign_068_tool_naming_glossary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-068-tool-naming-glossary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-069",
+                       "tool_name":  "benign_069_read_before_write_policy",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-069-read-before-write-policy"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-070",
+                       "tool_name":  "benign_070_manual_escalation_guide",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "cross-tool-benign/BENIGN-070-manual-escalation-guide"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-071",
+                       "tool_name":  "benign_071_meta_fixture_label",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-071-meta-fixture-label"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-072",
+                       "tool_name":  "benign_072_operator_note_doc",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-072-operator-note-doc"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-073",
+                       "tool_name":  "benign_073_annotation_doc_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-073-annotation-doc-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-074",
+                       "tool_name":  "benign_074_tool_version_meta",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-074-tool-version-meta"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-075",
+                       "tool_name":  "benign_075_schema_title_cleanup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-075-schema-title-cleanup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-076",
+                       "tool_name":  "benign_076_meta_owner_field",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-076-meta-owner-field"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-077",
+                       "tool_name":  "benign_077_meta_audit_note",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-077-meta-audit-note"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-078",
+                       "tool_name":  "benign_078_meta_example_warning",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-078-meta-example-warning"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-079",
+                       "tool_name":  "benign_079_tool_card_generator",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-079-tool-card-generator"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-080",
+                       "tool_name":  "benign_080_schema_required_fields",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "metadata-benign/BENIGN-080-schema-required-fields"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-091",
+                       "tool_name":  "benign_091_meeting_action_items",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-091-meeting-action-items"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-092",
+                       "tool_name":  "benign_092_calendar_readonly_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-092-calendar-readonly-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-093",
+                       "tool_name":  "benign_093_table_formatter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-093-table-formatter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-094",
+                       "tool_name":  "benign_094_ticket_triage",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-094-ticket-triage"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-095",
+                       "tool_name":  "benign_095_release_checklist",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-095-release-checklist"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-096",
+                       "tool_name":  "benign_096_customer_feedback_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-096-customer-feedback-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-097",
+                       "tool_name":  "benign_097_inventory_sorter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-097-inventory-sorter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-098",
+                       "tool_name":  "benign_098_project_risk_register",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-098-project-risk-register"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-099",
+                       "tool_name":  "benign_099_public_faq_draft",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-099-public-faq-draft"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-100",
+                       "tool_name":  "benign_100_changelog_cleanup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "routine-productivity/BENIGN-100-changelog-cleanup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-021",
+                       "tool_name":  "benign_021_official_doc_link",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-021-official-doc-link"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-022",
+                       "tool_name":  "benign_022_release_notes_link",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-022-release-notes-link"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-023",
+                       "tool_name":  "benign_023_image_alt_text",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-023-image-alt-text"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-024",
+                       "tool_name":  "benign_024_link_check_report",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-024-link-check-report"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-025",
+                       "tool_name":  "benign_025_markdown_table_links",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-025-markdown-table-links"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-026",
+                       "tool_name":  "benign_026_citation_link_normalizer",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-026-citation-link-normalizer"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-027",
+                       "tool_name":  "benign_027_anchor_link_cleanup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-027-anchor-link-cleanup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-028",
+                       "tool_name":  "benign_028_safe_mailto_link",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-028-safe-mailto-link"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-029",
+                       "tool_name":  "benign_029_relative_link_review",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-029-relative-link-review"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-030",
+                       "tool_name":  "benign_030_link_title_extractor",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "safe-link-markdown/BENIGN-030-link-title-extractor"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-001",
+                       "tool_name":  "benign_001_password_policy_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-001-password-policy-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-002",
+                       "tool_name":  "benign_002_api_key_doc_explainer",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-002-api-key-doc-explainer"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-003",
+                       "tool_name":  "benign_003_env_variable_guide",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-003-env-variable-guide"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-004",
+                       "tool_name":  "benign_004_token_rotation_checklist",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-004-token-rotation-checklist"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-005",
+                       "tool_name":  "benign_005_secret_redaction_review",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-005-secret-redaction-review"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-006",
+                       "tool_name":  "benign_006_credential_storage_faq",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-006-credential-storage-faq"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-007",
+                       "tool_name":  "benign_007_oauth_scope_description",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-007-oauth-scope-description"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-008",
+                       "tool_name":  "benign_008_private_key_training",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-008-private-key-training"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-009",
+                       "tool_name":  "benign_009_compliance_glossary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-009-compliance-glossary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-010",
+                       "tool_name":  "benign_010_incident_playbook_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "security-doc-language/BENIGN-010-incident-playbook-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-041",
+                       "tool_name":  "benign_041_korean_security_terms",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-041-korean-security-terms"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-042",
+                       "tool_name":  "benign_042_japanese_release_notes",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-042-japanese-release-notes"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-043",
+                       "tool_name":  "benign_043_fullwidth_style_guide",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-043-fullwidth-style-guide"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-044",
+                       "tool_name":  "benign_044_accented_name_sort",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-044-accented-name-sort"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-045",
+                       "tool_name":  "benign_045_emoji_policy_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-045-emoji-policy-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-046",
+                       "tool_name":  "benign_046_rtl_language_note",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-046-rtl-language-note"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-047",
+                       "tool_name":  "benign_047_math_symbol_cleanup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-047-math-symbol-cleanup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-048",
+                       "tool_name":  "benign_048_combining_mark_normalizer",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-048-combining-mark-normalizer"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-049",
+                       "tool_name":  "benign_049_multilingual_faq",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-049-multilingual-faq"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-050",
+                       "tool_name":  "benign_050_unicode_filename_display",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 benign false-positive control",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default MCP03/obfuscation detectors.",
+                       "source_path":  "unicode-multilingual/BENIGN-050-unicode-filename-display"
+                   }
+               ]
+}

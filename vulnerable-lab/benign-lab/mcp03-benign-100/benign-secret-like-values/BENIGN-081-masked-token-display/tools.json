@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-081",
+  "tools": [
+    {
+      "name": "benign_081_masked_token_display",
+      "title": "Masked Token Display",
+      "description": "Display masked token examples such as TEST_****_TOKEN for documentation.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Masked examples."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-081",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

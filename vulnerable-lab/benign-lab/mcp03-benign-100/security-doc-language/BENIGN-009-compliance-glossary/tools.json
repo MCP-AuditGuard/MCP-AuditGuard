@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-009",
+  "tools": [
+    {
+      "name": "benign_009_compliance_glossary",
+      "title": "Compliance Glossary",
+      "description": "Define security terms such as secret, token, password, and credential.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Glossary source text."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-009",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Security Documentation",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Security Documentation"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-008",
+  "tools": [
+    {
+      "name": "benign_008_private_key_training",
+      "title": "Private Key Training Notes",
+      "description": "Turn private-key handling training notes into study cards.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Training notes."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-008",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Security Documentation",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Security Documentation"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-002",
+  "tools": [
+    {
+      "name": "benign_002_api_key_doc_explainer",
+      "title": "API Key Documentation Explainer",
+      "description": "Explain API key documentation and remind users not to paste real secrets into chat.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "API documentation excerpt."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-002",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Security Documentation",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Security Documentation"
+      }
+    }
+  ]
+}

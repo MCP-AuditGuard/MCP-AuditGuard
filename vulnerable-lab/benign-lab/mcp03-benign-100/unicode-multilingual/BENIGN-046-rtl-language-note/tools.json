@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-046",
+  "tools": [
+    {
+      "name": "benign_046_rtl_language_note",
+      "title": "RTL Language Note Formatter",
+      "description": "Format right-to-left language notes without changing meaning.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "RTL text."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-046",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Unicode and Multilingual Text",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Unicode and Multilingual Text"
+      }
+    }
+  ]
+}

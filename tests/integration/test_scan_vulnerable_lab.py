@@ -13,6 +13,8 @@ from detectors.obfuscation.unicode_obfuscation import UnicodeObfuscationDetector
 
 ROOT = Path(__file__).resolve().parents[2]
 EXPANDED_LAB_ROOT = ROOT / "vulnerable-lab" / "expanded-112"
+BENIGN_LAB_ROOT = ROOT / "vulnerable-lab" / "benign-lab" / "mcp03-benign-100"
+GENERAL_BENIGN_LAB_ROOT = ROOT / "vulnerable-lab" / "benign-lab" / "general-benign-100"
 MVP_SCENARIO_SLUGS = {
     "hidden_description",
     "schema_poisoning",
@@ -68,6 +70,25 @@ def _expanded_lab_cases() -> list[Path]:
     return sorted(
         EXPANDED_LAB_ROOT.glob("LAB-*/tools.json"),
         key=_scenario_sort_key,
+    )
+
+
+def _benign_sort_key(case_path: Path) -> str:
+    tool = _load_tools(case_path)[0]
+    return tool.get("_meta", {}).get("benign_id", "")
+
+
+def _benign_lab_cases() -> list[Path]:
+    return sorted(
+        BENIGN_LAB_ROOT.glob("*/*/tools.json"),
+        key=_benign_sort_key,
+    )
+
+
+def _general_benign_lab_cases() -> list[Path]:
+    return sorted(
+        GENERAL_BENIGN_LAB_ROOT.glob("*/*/tools.json"),
+        key=_benign_sort_key,
     )
 
 
@@ -150,6 +171,60 @@ def test_benign_and_malicious_fixtures_are_separated() -> None:
     assert "ignore" in malicious_text
 
 
+@pytest.mark.parametrize("case_path", _benign_lab_cases())
+def test_benign_lab_fixture_shape(case_path: Path) -> None:
+    tools = _load_tools(case_path)
+
+    assert len(tools) == 1
+    tool = tools[0]
+    meta = tool.get("_meta", {})
+
+    assert tool["name"]
+    assert tool["description"]
+    assert "inputSchema" in tool
+    assert meta.get("benign_id", "").startswith("BENIGN-")
+    assert meta.get("category") == "MCP03 benign false-positive control"
+    assert meta.get("expected_result") == "No finding from default MCP03/obfuscation detectors."
+
+
+def test_benign_lab_contains_100_scenarios() -> None:
+    case_paths = _benign_lab_cases()
+    benign_ids = [_load_tools(case_path)[0].get("_meta", {}).get("benign_id") for case_path in case_paths]
+
+    assert len(case_paths) == 100
+    assert len(set(benign_ids)) == 100
+    assert benign_ids[0] == "BENIGN-001"
+    assert benign_ids[-1] == "BENIGN-100"
+
+
+@pytest.mark.parametrize("case_path", _general_benign_lab_cases())
+def test_general_benign_lab_fixture_shape(case_path: Path) -> None:
+    tools = _load_tools(case_path)
+
+    assert len(tools) == 1
+    tool = tools[0]
+    meta = tool.get("_meta", {})
+
+    assert tool["name"]
+    assert tool["description"]
+    assert "inputSchema" in tool
+    assert meta.get("benign_id", "").startswith("BENIGN-")
+    assert meta.get("benign_set") == "General Benign Set"
+    assert meta.get("category") == "Market-like benign MCP server"
+    assert meta.get("market_group")
+    assert meta.get("expected_result") == "No finding from default detectors."
+
+
+def test_general_benign_lab_contains_100_scenarios() -> None:
+    case_paths = _general_benign_lab_cases()
+    benign_ids = [_load_tools(case_path)[0].get("_meta", {}).get("benign_id") for case_path in case_paths]
+
+    assert len(case_paths) == 100
+    assert len(set(benign_ids)) == 100
+    assert benign_ids[0] == "BENIGN-101"
+    assert benign_ids[-1] == "BENIGN-200"
+
+
 @pytest.mark.parametrize(
     ("case_slug", "detector_class", "expected_category"),
     MEMBER3_OBFUSCATION_CASES,
@@ -219,3 +294,55 @@ def test_benign_false_positive_rate_when_scanner_is_available() -> None:
 
     false_positive_rate = len(findings) / len(tools)
     assert false_positive_rate <= 0.20
+
+
+def test_benign_lab_false_positive_rate_when_scanner_is_available() -> None:
+    detector_registry = pytest.importorskip("detectors.registry")
+    scanner = pytest.importorskip("core.scanner")
+    collector = pytest.importorskip("core.tool_collector")
+
+    if (
+        not hasattr(collector, "load_tools_json")
+        or not hasattr(scanner, "scan_tools")
+        or not hasattr(detector_registry, "create_default_detectors")
+    ):
+        pytest.skip("Scanner integration API is not available yet.")
+
+    detectors = detector_registry.create_default_detectors()
+    total_tools = 0
+    total_findings = 0
+
+    for case_path in _benign_lab_cases():
+        tools = collector.load_tools_json(case_path)
+        findings = scanner.scan_tools(tools, detectors)
+        total_tools += len(tools)
+        total_findings += len(findings)
+
+    false_positive_rate = total_findings / total_tools
+    assert false_positive_rate <= 0.05
+
+
+def test_general_benign_lab_false_positive_rate_when_scanner_is_available() -> None:
+    detector_registry = pytest.importorskip("detectors.registry")
+    scanner = pytest.importorskip("core.scanner")
+    collector = pytest.importorskip("core.tool_collector")
+
+    if (
+        not hasattr(collector, "load_tools_json")
+        or not hasattr(scanner, "scan_tools")
+        or not hasattr(detector_registry, "create_default_detectors")
+    ):
+        pytest.skip("Scanner integration API is not available yet.")
+
+    detectors = detector_registry.create_default_detectors()
+    total_tools = 0
+    total_findings = 0
+
+    for case_path in _general_benign_lab_cases():
+        tools = collector.load_tools_json(case_path)
+        findings = scanner.scan_tools(tools, detectors)
+        total_tools += len(tools)
+        total_findings += len(findings)
+
+    false_positive_rate = total_findings / total_tools
+    assert false_positive_rate <= 0.05

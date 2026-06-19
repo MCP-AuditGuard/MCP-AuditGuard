@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-069",
+  "tools": [
+    {
+      "name": "benign_069_read_before_write_policy",
+      "title": "Read Before Write Policy",
+      "description": "Explain why teams should read documentation before using write tools.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Policy text."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-069",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Cross-tool Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Cross-tool Language"
+      }
+    }
+  ]
+}

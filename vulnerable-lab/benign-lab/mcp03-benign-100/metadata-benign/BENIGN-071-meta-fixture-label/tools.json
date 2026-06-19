@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-071",
+  "tools": [
+    {
+      "name": "benign_071_meta_fixture_label",
+      "title": "Fixture Label Reader",
+      "description": "Read _meta fields that label fixtures as benign examples.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Fixture metadata."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-071",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Metadata",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Metadata"
+      }
+    }
+  ]
+}

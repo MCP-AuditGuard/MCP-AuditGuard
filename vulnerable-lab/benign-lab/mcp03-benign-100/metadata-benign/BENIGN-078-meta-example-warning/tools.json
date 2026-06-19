@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-078",
+  "tools": [
+    {
+      "name": "benign_078_meta_example_warning",
+      "title": "Metadata Example Warning",
+      "description": "Convert metadata examples into documentation warnings.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Metadata examples."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-078",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Metadata",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Metadata"
+      }
+    }
+  ]
+}

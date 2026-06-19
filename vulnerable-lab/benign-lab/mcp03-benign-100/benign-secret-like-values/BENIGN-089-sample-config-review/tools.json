@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-089",
+  "tools": [
+    {
+      "name": "benign_089_sample_config_review",
+      "title": "Sample Config Review",
+      "description": "Review sample config values and confirm they are fake.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Sample config."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-089",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

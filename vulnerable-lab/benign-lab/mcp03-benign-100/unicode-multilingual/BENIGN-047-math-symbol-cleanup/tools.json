@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-047",
+  "tools": [
+    {
+      "name": "benign_047_math_symbol_cleanup",
+      "title": "Math Symbol Cleanup",
+      "description": "Clean mathematical symbols in lecture notes.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Lecture notes."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-047",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Unicode and Multilingual Text",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Unicode and Multilingual Text"
+      }
+    }
+  ]
+}

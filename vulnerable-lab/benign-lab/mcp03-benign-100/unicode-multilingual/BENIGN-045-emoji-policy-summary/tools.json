@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-045",
+  "tools": [
+    {
+      "name": "benign_045_emoji_policy_summary",
+      "title": "Emoji Policy Summary",
+      "description": "Summarize emoji usage policy for support messages.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Policy text."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-045",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Unicode and Multilingual Text",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Unicode and Multilingual Text"
+      }
+    }
+  ]
+}

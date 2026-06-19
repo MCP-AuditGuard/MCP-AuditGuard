@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-049",
+  "tools": [
+    {
+      "name": "benign_049_multilingual_faq",
+      "title": "Multilingual FAQ",
+      "description": "Summarize multilingual FAQ entries about account security.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "FAQ entries."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-049",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Unicode and Multilingual Text",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Unicode and Multilingual Text"
+      }
+    }
+  ]
+}

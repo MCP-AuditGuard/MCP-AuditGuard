@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-084",
+  "tools": [
+    {
+      "name": "benign_084_sample_env_template",
+      "title": "Sample Env Template",
+      "description": "Format a .env.template file with placeholder values only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Env template."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-084",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

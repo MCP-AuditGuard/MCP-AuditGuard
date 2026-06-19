@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-068",
+  "tools": [
+    {
+      "name": "benign_068_tool_naming_glossary",
+      "title": "Tool Naming Glossary",
+      "description": "Define tool names and aliases for onboarding documentation.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Glossary."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-068",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Cross-tool Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Cross-tool Language"
+      }
+    }
+  ]
+}

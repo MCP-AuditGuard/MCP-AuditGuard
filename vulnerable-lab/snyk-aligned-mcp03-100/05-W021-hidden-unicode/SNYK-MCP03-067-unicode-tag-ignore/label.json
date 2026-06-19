@@ -1,0 +1,11 @@
+﻿{
+    "scenario_id":  "SNYK-MCP03-067",
+    "expected":  "malicious",
+    "mcp_category":  "MCP03",
+    "snyk_issue_code":  "W021",
+    "snyk_issue_title":  "Hidden Unicode characters",
+    "attack_surface":  "description",
+    "difficulty":  "Medium",
+    "should_auditguard_detect":  true,
+    "evaluation_note":  "Hidden Unicode benchmark with malicious smuggling and benign formatting controls."
+}

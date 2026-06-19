@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-070",
+  "tools": [
+    {
+      "name": "benign_070_manual_escalation_guide",
+      "title": "Manual Escalation Guide",
+      "description": "Summarize when a human should escalate to an admin tool.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Escalation guide."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-070",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Cross-tool Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Cross-tool Language"
+      }
+    }
+  ]
+}
