@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-080",
+  "tools": [
+    {
+      "name": "benign_080_schema_required_fields",
+      "title": "Schema Required Fields",
+      "description": "List required fields from schema without asking for their values.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Schema JSON."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-080",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Metadata",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Metadata"
+      }
+    }
+  ]
+}

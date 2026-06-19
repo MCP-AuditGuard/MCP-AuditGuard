@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-091",
+  "tools": [
+    {
+      "name": "benign_091_meeting_action_items",
+      "title": "Meeting Action Items",
+      "description": "Extract decisions and action items from meeting notes.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Meeting notes."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-091",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Routine Productivity Tools",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Routine Productivity Tools"
+      }
+    }
+  ]
+}

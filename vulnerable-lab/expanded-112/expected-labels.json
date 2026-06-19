@@ -1,0 +1,1129 @@
+{
+    "dataset":  "expanded-112",
+    "total_cases":  112,
+    "malicious_cases":  109,
+    "benign_cases":  3,
+    "expected_auditguard_detect_cases":  69,
+    "labels":  [
+                   {
+                       "scenario_id":  "LAB-001",
+                       "tool_name":  "lab_001_plain_env_secret",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP01 Secret Exposure",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Secret exposure finding with redacted evidence.",
+                       "source_path":  "LAB-001-plain-env-secret"
+                   },
+                   {
+                       "scenario_id":  "LAB-002",
+                       "tool_name":  "lab_002_print_environment",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP01 Secret Exposure",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Secret exposure instruction finding.",
+                       "source_path":  "LAB-002-print-environment"
+                   },
+                   {
+                       "scenario_id":  "LAB-003",
+                       "tool_name":  "lab_003_sensitive_input_schema",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP01 Secret Exposure",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Sensitive-input schema warning.",
+                       "source_path":  "LAB-003-sensitive-input-schema"
+                   },
+                   {
+                       "scenario_id":  "LAB-004",
+                       "tool_name":  "lab_004_unredacted_report_secret",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP01 Secret Exposure",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Redaction regression test should fail before fix.",
+                       "source_path":  "LAB-004-unredacted-report-secret"
+                   },
+                   {
+                       "scenario_id":  "LAB-005",
+                       "tool_name":  "lab_005_file_read_webhook",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP01 Secret Exposure",
+                       "difficulty":  "High",
+                       "expected_signal":  "Secret exfiltration chain finding.",
+                       "source_path":  "LAB-005-file-read-webhook"
+                   },
+                   {
+                       "scenario_id":  "LAB-006",
+                       "tool_name":  "lab_006_calendar_secret_injection",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP01 Secret Exposure",
+                       "difficulty":  "High",
+                       "expected_signal":  "Indirect prompt injection plus secret exposure signal.",
+                       "source_path":  "LAB-006-calendar-secret-injection"
+                   },
+                   {
+                       "scenario_id":  "LAB-007",
+                       "tool_name":  "lab_007_remote_no_auth",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP02 Authentication and Authorization",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Missing authentication warning.",
+                       "source_path":  "LAB-007-remote-no-auth"
+                   },
+                   {
+                       "scenario_id":  "LAB-008",
+                       "tool_name":  "lab_008_optional_token",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP02 Authentication and Authorization",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Weak auth configuration finding.",
+                       "source_path":  "LAB-008-optional-token"
+                   },
+                   {
+                       "scenario_id":  "LAB-009",
+                       "tool_name":  "lab_009_user_id_authorization",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP02 Authentication and Authorization",
+                       "difficulty":  "High",
+                       "expected_signal":  "Broken authorization test.",
+                       "source_path":  "LAB-009-user-id-authorization"
+                   },
+                   {
+                       "scenario_id":  "LAB-010",
+                       "tool_name":  "lab_010_untrusted_oauth_origin",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP02 Authentication and Authorization",
+                       "difficulty":  "High",
+                       "expected_signal":  "Auth flow risk warning.",
+                       "source_path":  "LAB-010-untrusted-oauth-origin"
+                   },
+                   {
+                       "scenario_id":  "LAB-011",
+                       "tool_name":  "lab_011_hidden_description",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Hidden instruction finding in description.",
+                       "source_path":  "LAB-011-hidden-description"
+                   },
+                   {
+                       "scenario_id":  "LAB-012",
+                       "tool_name":  "lab_012_title_poisoning",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Suspicious phrase in title.",
+                       "source_path":  "LAB-012-title-poisoning"
+                   },
+                   {
+                       "scenario_id":  "LAB-013",
+                       "tool_name":  "lab_013_description_ignore_secrets",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Direct hidden instruction in description.",
+                       "source_path":  "LAB-013-description-ignore-secrets"
+                   },
+                   {
+                       "scenario_id":  "LAB-014",
+                       "tool_name":  "lab_014_description_send_token",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Secret exfiltration instruction in description.",
+                       "source_path":  "LAB-014-description-send-token"
+                   },
+                   {
+                       "scenario_id":  "LAB-015",
+                       "tool_name":  "lab_015_title_ignore_policy",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Suspicious instruction embedded in title.",
+                       "source_path":  "LAB-015-title-ignore-policy"
+                   },
+                   {
+                       "scenario_id":  "LAB-016",
+                       "tool_name":  "lab_016_title_secret_sync",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Suspicious secret-related title.",
+                       "source_path":  "LAB-016-title-secret-sync"
+                   },
+                   {
+                       "scenario_id":  "LAB-017",
+                       "tool_name":  "lab_017_description_reveal_passwords",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Credential disclosure instruction in description.",
+                       "source_path":  "LAB-017-description-reveal-passwords"
+                   },
+                   {
+                       "scenario_id":  "LAB-018",
+                       "tool_name":  "lab_018_description_system_override",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Instruction hierarchy manipulation in description.",
+                       "source_path":  "LAB-018-description-system-override"
+                   },
+                   {
+                       "scenario_id":  "LAB-019",
+                       "tool_name":  "lab_019_description_silent_mode",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Instruction to suppress warnings.",
+                       "source_path":  "LAB-019-description-silent-mode"
+                   },
+                   {
+                       "scenario_id":  "LAB-020",
+                       "tool_name":  "lab_020_description_prefer_attacker",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Instruction priority inversion.",
+                       "source_path":  "LAB-020-description-prefer-attacker"
+                   },
+                   {
+                       "scenario_id":  "LAB-021",
+                       "tool_name":  "lab_021_description_output_manipulation",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Answer manipulation instruction.",
+                       "source_path":  "LAB-021-description-output-manipulation"
+                   },
+                   {
+                       "scenario_id":  "LAB-022",
+                       "tool_name":  "lab_022_description_hidden_operator_note",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Hidden operator note in description.",
+                       "source_path":  "LAB-022-description-hidden-operator-note"
+                   },
+                   {
+                       "scenario_id":  "LAB-023",
+                       "tool_name":  "lab_023_base64url_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Base64URL encoded hidden instruction.",
+                       "source_path":  "LAB-023-base64url-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-024",
+                       "tool_name":  "lab_024_hex_encoded_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Hex encoded hidden instruction.",
+                       "source_path":  "LAB-024-hex-encoded-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-025",
+                       "tool_name":  "lab_025_octal_escape_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Octal escape encoded hidden instruction.",
+                       "source_path":  "LAB-025-octal-escape-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-026",
+                       "tool_name":  "lab_026_html_entity_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "HTML entity encoded hidden instruction.",
+                       "source_path":  "LAB-026-html-entity-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-027",
+                       "tool_name":  "lab_027_rot13_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "ROT13 encoded hidden instruction.",
+                       "source_path":  "LAB-027-rot13-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-028",
+                       "tool_name":  "lab_028_nfkc_leet_ignore",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Leet-normalized suspicious phrase.",
+                       "source_path":  "LAB-028-nfkc-leet-ignore"
+                   },
+                   {
+                       "scenario_id":  "LAB-029",
+                       "tool_name":  "lab_029_token_gap_system_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Token-gap suspicious phrase matching.",
+                       "source_path":  "LAB-029-token-gap-system-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-030",
+                       "tool_name":  "lab_030_base64_short_benign_control",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Short or benign encoded candidate should avoid high-confidence poisoning signal.",
+                       "source_path":  "LAB-030-base64-short-benign-control"
+                   },
+                   {
+                       "scenario_id":  "LAB-031",
+                       "tool_name":  "lab_031_html_comment_benign_control",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Markup comment detected without suspicious hidden instruction.",
+                       "source_path":  "LAB-031-html-comment-benign-control"
+                   },
+                   {
+                       "scenario_id":  "LAB-032",
+                       "tool_name":  "lab_032_mixed_script_benign_control",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Mixed-script or confusable character detected without hidden instruction.",
+                       "source_path":  "LAB-032-mixed-script-benign-control"
+                   },
+                   {
+                       "scenario_id":  "LAB-033",
+                       "tool_name":  "lab_033_schema_poisoning",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Schema poisoning finding in nested inputSchema.",
+                       "source_path":  "LAB-033-schema-poisoning"
+                   },
+                   {
+                       "scenario_id":  "LAB-034",
+                       "tool_name":  "lab_034_meta_poisoning",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Metadata poisoning finding in _meta.",
+                       "source_path":  "LAB-034-meta-poisoning"
+                   },
+                   {
+                       "scenario_id":  "LAB-035",
+                       "tool_name":  "lab_035_annotation_mismatch",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Annotation mismatch or metadata poisoning finding.",
+                       "source_path":  "LAB-035-annotation-mismatch"
+                   },
+                   {
+                       "scenario_id":  "LAB-036",
+                       "tool_name":  "lab_036_base64_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Base64 encoded malicious instruction finding.",
+                       "source_path":  "LAB-036-base64-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-037",
+                       "tool_name":  "lab_037_zero_width_obfuscation",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Zero-width Unicode obfuscation finding.",
+                       "source_path":  "LAB-037-zero-width-obfuscation"
+                   },
+                   {
+                       "scenario_id":  "LAB-038",
+                       "tool_name":  "lab_038_markdown_hidden_link",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Markdown hidden link finding.",
+                       "source_path":  "LAB-038-markdown-hidden-link"
+                   },
+                   {
+                       "scenario_id":  "LAB-039",
+                       "tool_name":  "lab_039_forced_tool_use",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Forced-tool-use phrase finding.",
+                       "source_path":  "LAB-039-forced-tool-use"
+                   },
+                   {
+                       "scenario_id":  "LAB-040",
+                       "tool_name":  "lab_040_schema_param_ignore_user",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Nested schema poisoning in parameter description.",
+                       "source_path":  "LAB-040-schema-param-ignore-user"
+                   },
+                   {
+                       "scenario_id":  "LAB-041",
+                       "tool_name":  "lab_041_schema_param_send_email",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Exfiltration instruction in schema parameter.",
+                       "source_path":  "LAB-041-schema-param-send-email"
+                   },
+                   {
+                       "scenario_id":  "LAB-042",
+                       "tool_name":  "lab_042_schema_required_secret",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Schema requests unnecessary sensitive input.",
+                       "source_path":  "LAB-042-schema-required-secret"
+                   },
+                   {
+                       "scenario_id":  "LAB-043",
+                       "tool_name":  "lab_043_meta_operator_override",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Poisoned instruction hidden in _meta.",
+                       "source_path":  "LAB-043-meta-operator-override"
+                   },
+                   {
+                       "scenario_id":  "LAB-044",
+                       "tool_name":  "lab_044_annotation_readonly_but_delete",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Annotation mismatch with destructive behavior.",
+                       "source_path":  "LAB-044-annotation-readonly-but-delete"
+                   },
+                   {
+                       "scenario_id":  "LAB-045",
+                       "tool_name":  "lab_045_meta_silent_exfiltration",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Silent exfiltration instruction hidden in _meta.",
+                       "source_path":  "LAB-045-meta-silent-exfiltration"
+                   },
+                   {
+                       "scenario_id":  "LAB-046",
+                       "tool_name":  "lab_046_html_comment_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Hidden HTML comment instruction.",
+                       "source_path":  "LAB-046-html-comment-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-047",
+                       "tool_name":  "lab_047_markdown_image_link_poisoning",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Markdown image/link hidden instruction.",
+                       "source_path":  "LAB-047-markdown-image-link-poisoning"
+                   },
+                   {
+                       "scenario_id":  "LAB-048",
+                       "tool_name":  "lab_048_url_encoded_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "URL-encoded malicious instruction.",
+                       "source_path":  "LAB-048-url-encoded-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-049",
+                       "tool_name":  "lab_049_homoglyph_secret_request",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Homoglyph-obfuscated suspicious phrase.",
+                       "source_path":  "LAB-049-homoglyph-secret-request"
+                   },
+                   {
+                       "scenario_id":  "LAB-050",
+                       "tool_name":  "lab_050_nested_base64_url_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "One-level nested Base64 then URL encoded hidden instruction.",
+                       "source_path":  "LAB-050-nested-base64-url-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-051",
+                       "tool_name":  "lab_051_bidi_control_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Bidirectional Unicode control character in metadata.",
+                       "source_path":  "LAB-051-bidi-control-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-052",
+                       "tool_name":  "lab_052_unicode_tag_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Unicode tag character in metadata.",
+                       "source_path":  "LAB-052-unicode-tag-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-053",
+                       "tool_name":  "lab_053_mathematical_alphanumeric_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Mathematical alphanumeric characters normalize to hidden instruction.",
+                       "source_path":  "LAB-053-mathematical-alphanumeric-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-054",
+                       "tool_name":  "lab_054_combining_mark_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Excessive combining marks in metadata.",
+                       "source_path":  "LAB-054-combining-mark-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-055",
+                       "tool_name":  "lab_055_homoglyph_skeleton_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Confusable skeleton reveals hidden instruction.",
+                       "source_path":  "LAB-055-homoglyph-skeleton-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-056",
+                       "tool_name":  "lab_056_fullwidth_latin_confusable",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Fullwidth Latin confusable characters normalize to hidden instruction.",
+                       "source_path":  "LAB-056-fullwidth-latin-confusable"
+                   },
+                   {
+                       "scenario_id":  "LAB-057",
+                       "tool_name":  "lab_057_css_comment_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "CSS comment hides tool poisoning instruction.",
+                       "source_path":  "LAB-057-css-comment-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-058",
+                       "tool_name":  "lab_058_script_tag_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Script tag hides tool poisoning instruction.",
+                       "source_path":  "LAB-058-script-tag-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-059",
+                       "tool_name":  "lab_059_ie_conditional_comment_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "IE conditional comment hides tool poisoning instruction.",
+                       "source_path":  "LAB-059-ie-conditional-comment-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-060",
+                       "tool_name":  "lab_060_cross_tool_admin",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Cross-tool poisoning finding.",
+                       "source_path":  "LAB-060-cross-tool-admin"
+                   },
+                   {
+                       "scenario_id":  "LAB-061",
+                       "tool_name":  "lab_061_multi_tool_exfiltration",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Multi-tool exfiltration chain finding.",
+                       "source_path":  "LAB-061-multi-tool-exfiltration"
+                   },
+                   {
+                       "scenario_id":  "LAB-062",
+                       "tool_name":  "lab_062_metadata_rug_pull",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Baseline diff plus suspicious metadata change.",
+                       "source_path":  "LAB-062-metadata-rug-pull"
+                   },
+                   {
+                       "scenario_id":  "LAB-063",
+                       "tool_name":  "lab_063_cross_tool_delete_repo",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Cross-tool instruction toward destructive admin tool.",
+                       "source_path":  "LAB-063-cross-tool-delete-repo"
+                   },
+                   {
+                       "scenario_id":  "LAB-064",
+                       "tool_name":  "lab_064_cross_tool_filesystem_email",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Multi-tool secret exfiltration chain.",
+                       "source_path":  "LAB-064-cross-tool-filesystem-email"
+                   },
+                   {
+                       "scenario_id":  "LAB-065",
+                       "tool_name":  "lab_065_rug_pull_readonly_to_destructive",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Rug-pull style metadata behavior change.",
+                       "source_path":  "LAB-065-rug-pull-readonly-to-destructive"
+                   },
+                   {
+                       "scenario_id":  "LAB-066",
+                       "tool_name":  "lab_066_cross_server_messenger_exfiltration",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Cross-server exfiltration steering.",
+                       "source_path":  "LAB-066-cross-server-messenger-exfiltration"
+                   },
+                   {
+                       "scenario_id":  "LAB-067",
+                       "tool_name":  "lab_067_chain_admin_after_reader",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Reader tool steers into high-privilege admin action.",
+                       "source_path":  "LAB-067-chain-admin-after-reader"
+                   },
+                   {
+                       "scenario_id":  "LAB-068",
+                       "tool_name":  "lab_068_staged_instruction_two_tools",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Staged multi-step poisoning instruction.",
+                       "source_path":  "LAB-068-staged-instruction-two-tools"
+                   },
+                   {
+                       "scenario_id":  "LAB-069",
+                       "tool_name":  "lab_069_poisoned_dependency_tool",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Tool metadata delegates trust to external untrusted metadata.",
+                       "source_path":  "LAB-069-poisoned-dependency-tool"
+                   },
+                   {
+                       "scenario_id":  "LAB-070",
+                       "tool_name":  "lab_070_baseline_annotation_flip",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Baseline-sensitive annotation flip.",
+                       "source_path":  "LAB-070-baseline-annotation-flip"
+                   },
+                   {
+                       "scenario_id":  "LAB-071",
+                       "tool_name":  "lab_071_hidden_admin_in_output_schema",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Poisoned instruction in output schema.",
+                       "source_path":  "LAB-071-hidden-admin-in-output-schema"
+                   },
+                   {
+                       "scenario_id":  "LAB-072",
+                       "tool_name":  "lab_072_tool_shadow_prefer_malicious",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Tool shadowing and trust override.",
+                       "source_path":  "LAB-072-tool-shadow-prefer-malicious"
+                   },
+                   {
+                       "scenario_id":  "LAB-073",
+                       "tool_name":  "lab_073_nested_rot13_html_entity_chain",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Nested HTML entity then ROT13 hidden instruction.",
+                       "source_path":  "LAB-073-nested-rot13-html-entity-chain"
+                   },
+                   {
+                       "scenario_id":  "LAB-074",
+                       "tool_name":  "lab_074_bidi_script_tag_chain",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Script tag and bidi control combine to hide instruction.",
+                       "source_path":  "LAB-074-bidi-script-tag-chain"
+                   },
+                   {
+                       "scenario_id":  "LAB-075",
+                       "tool_name":  "lab_075_homoglyph_css_comment_chain",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "CSS comment contains homoglyph-obfuscated hidden instruction.",
+                       "source_path":  "LAB-075-homoglyph-css-comment-chain"
+                   },
+                   {
+                       "scenario_id":  "LAB-076",
+                       "tool_name":  "lab_076_base64url_schema_description",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Base64URL hidden instruction in inputSchema description.",
+                       "source_path":  "LAB-076-base64url-schema-description"
+                   },
+                   {
+                       "scenario_id":  "LAB-077",
+                       "tool_name":  "lab_077_unicode_tag_meta_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Unicode tag hidden instruction in _meta field.",
+                       "source_path":  "LAB-077-unicode-tag-meta-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-078",
+                       "tool_name":  "lab_078_nfkc_fullwidth_system_gap",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "NFKC normalization and token-gap matching reveal hidden instruction.",
+                       "source_path":  "LAB-078-nfkc-fullwidth-system-gap"
+                   },
+                   {
+                       "scenario_id":  "LAB-079",
+                       "tool_name":  "lab_079_combining_mark_homoglyph_chain",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Combining marks and homoglyphs combine to hide instruction.",
+                       "source_path":  "LAB-079-combining-mark-homoglyph-chain"
+                   },
+                   {
+                       "scenario_id":  "LAB-080",
+                       "tool_name":  "lab_080_hex_output_schema_instruction",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Hex hidden instruction in outputSchema description.",
+                       "source_path":  "LAB-080-hex-output-schema-instruction"
+                   },
+                   {
+                       "scenario_id":  "LAB-081",
+                       "tool_name":  "lab_081_nested_base64_meta_rug_pull_note",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Nested encoded hidden instruction in metadata note.",
+                       "source_path":  "LAB-081-nested-base64-meta-rug-pull-note"
+                   },
+                   {
+                       "scenario_id":  "LAB-082",
+                       "tool_name":  "lab_082_multi_obfuscation_exfiltration_chain",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  true,
+                       "category":  "MCP03 Tool Poisoning",
+                       "difficulty":  "High",
+                       "expected_signal":  "Markup, NFKC confusable, and exfiltration instruction combine in one payload.",
+                       "source_path":  "LAB-082-multi-obfuscation-exfiltration-chain"
+                   },
+                   {
+                       "scenario_id":  "LAB-083",
+                       "tool_name":  "lab_083_npx_latest",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP04 Supply Chain Risk",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Unpinned package version warning.",
+                       "source_path":  "LAB-083-npx-latest"
+                   },
+                   {
+                       "scenario_id":  "LAB-084",
+                       "tool_name":  "lab_084_docker_latest",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP04 Supply Chain Risk",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Unpinned container image warning.",
+                       "source_path":  "LAB-084-docker-latest"
+                   },
+                   {
+                       "scenario_id":  "LAB-085",
+                       "tool_name":  "lab_085_curl_bash",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP04 Supply Chain Risk",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Remote script execution warning.",
+                       "source_path":  "LAB-085-curl-bash"
+                   },
+                   {
+                       "scenario_id":  "LAB-086",
+                       "tool_name":  "lab_086_typosquat_package",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP04 Supply Chain Risk",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Suspicious package name warning.",
+                       "source_path":  "LAB-086-typosquat-package"
+                   },
+                   {
+                       "scenario_id":  "LAB-087",
+                       "tool_name":  "lab_087_registry_source_drift",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP04 Supply Chain Risk",
+                       "difficulty":  "High",
+                       "expected_signal":  "Registry/source drift finding.",
+                       "source_path":  "LAB-087-registry-source-drift"
+                   },
+                   {
+                       "scenario_id":  "LAB-088",
+                       "tool_name":  "lab_088_binary_url_rug_pull",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP04 Supply Chain Risk",
+                       "difficulty":  "High",
+                       "expected_signal":  "Rug-pull style supply chain finding.",
+                       "source_path":  "LAB-088-binary-url-rug-pull"
+                   },
+                   {
+                       "scenario_id":  "LAB-089",
+                       "tool_name":  "lab_089_run_shell_tool",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP05 Command Injection",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Dangerous tool capability warning.",
+                       "source_path":  "LAB-089-run-shell-tool"
+                   },
+                   {
+                       "scenario_id":  "LAB-090",
+                       "tool_name":  "lab_090_python_os_system",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP05 Command Injection",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Command injection code pattern finding.",
+                       "source_path":  "LAB-090-python-os-system"
+                   },
+                   {
+                       "scenario_id":  "LAB-091",
+                       "tool_name":  "lab_091_subprocess_shell_true",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP05 Command Injection",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Shell execution risk finding.",
+                       "source_path":  "LAB-091-subprocess-shell-true"
+                   },
+                   {
+                       "scenario_id":  "LAB-092",
+                       "tool_name":  "lab_092_node_child_process_exec",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP05 Command Injection",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Node command injection finding.",
+                       "source_path":  "LAB-092-node-child-process-exec"
+                   },
+                   {
+                       "scenario_id":  "LAB-093",
+                       "tool_name":  "lab_093_git_argument_injection",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP05 Command Injection",
+                       "difficulty":  "High",
+                       "expected_signal":  "Argument injection finding.",
+                       "source_path":  "LAB-093-git-argument-injection"
+                   },
+                   {
+                       "scenario_id":  "LAB-094",
+                       "tool_name":  "lab_094_calendar_command_execution",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP05 Command Injection",
+                       "difficulty":  "High",
+                       "expected_signal":  "Prompt injection to command execution chain.",
+                       "source_path":  "LAB-094-calendar-command-execution"
+                   },
+                   {
+                       "scenario_id":  "LAB-095",
+                       "tool_name":  "lab_095_overbroad_filesystem",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP06 Excessive Tool Permissions",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Overbroad filesystem scope warning.",
+                       "source_path":  "LAB-095-overbroad-filesystem"
+                   },
+                   {
+                       "scenario_id":  "LAB-096",
+                       "tool_name":  "lab_096_calendar_delete_permission",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP06 Excessive Tool Permissions",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Permission mismatch warning.",
+                       "source_path":  "LAB-096-calendar-delete-permission"
+                   },
+                   {
+                       "scenario_id":  "LAB-097",
+                       "tool_name":  "lab_097_read_and_send_permissions",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP06 Excessive Tool Permissions",
+                       "difficulty":  "High",
+                       "expected_signal":  "Dangerous permission combination warning.",
+                       "source_path":  "LAB-097-read-and-send-permissions"
+                   },
+                   {
+                       "scenario_id":  "LAB-098",
+                       "tool_name":  "lab_098_external_summarization_api",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP07 Data Boundary Violation",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "External data transfer warning.",
+                       "source_path":  "LAB-098-external-summarization-api"
+                   },
+                   {
+                       "scenario_id":  "LAB-099",
+                       "tool_name":  "lab_099_external_doc_repo_exfiltration",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP07 Data Boundary Violation",
+                       "difficulty":  "High",
+                       "expected_signal":  "Indirect prompt injection plus data boundary finding.",
+                       "source_path":  "LAB-099-external-doc-repo-exfiltration"
+                   },
+                   {
+                       "scenario_id":  "LAB-100",
+                       "tool_name":  "lab_100_no_audit_destructive",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP08 Audit and Telemetry",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Missing audit hint warning.",
+                       "source_path":  "LAB-100-no-audit-destructive"
+                   },
+                   {
+                       "scenario_id":  "LAB-101",
+                       "tool_name":  "lab_101_report_coverage_gap",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP08 Audit and Telemetry",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Report coverage regression.",
+                       "source_path":  "LAB-101-report-coverage-gap"
+                   },
+                   {
+                       "scenario_id":  "LAB-102",
+                       "tool_name":  "lab_102_sensitive_log_exposure",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP08 Audit and Telemetry",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Sensitive log exposure warning.",
+                       "source_path":  "LAB-102-sensitive-log-exposure"
+                   },
+                   {
+                       "scenario_id":  "LAB-103",
+                       "tool_name":  "lab_103_missing_confirmation",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP08 Audit and Telemetry",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Missing confirmation warning.",
+                       "source_path":  "LAB-103-missing-confirmation"
+                   },
+                   {
+                       "scenario_id":  "LAB-104",
+                       "tool_name":  "lab_104_chain_without_audit",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP08 Audit and Telemetry",
+                       "difficulty":  "High",
+                       "expected_signal":  "Audit gap across tool chain.",
+                       "source_path":  "LAB-104-chain-without-audit"
+                   },
+                   {
+                       "scenario_id":  "LAB-105",
+                       "tool_name":  "lab_105_baseline_report_gap",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP08 Audit and Telemetry",
+                       "difficulty":  "High",
+                       "expected_signal":  "Baseline/report regression finding.",
+                       "source_path":  "LAB-105-baseline-report-gap"
+                   },
+                   {
+                       "scenario_id":  "LAB-106",
+                       "tool_name":  "lab_106_unknown_server",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP09 Shadow MCP",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Unknown server not in allowlist.",
+                       "source_path":  "LAB-106-unknown-server"
+                   },
+                   {
+                       "scenario_id":  "LAB-107",
+                       "tool_name":  "lab_107_temp_binary_server",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP09 Shadow MCP",
+                       "difficulty":  "Low",
+                       "expected_signal":  "Suspicious command path warning.",
+                       "source_path":  "LAB-107-temp-binary-server"
+                   },
+                   {
+                       "scenario_id":  "LAB-108",
+                       "tool_name":  "lab_108_lookalike_server",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP09 Shadow MCP",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Lookalike server warning.",
+                       "source_path":  "LAB-108-lookalike-server"
+                   },
+                   {
+                       "scenario_id":  "LAB-109",
+                       "tool_name":  "lab_109_tool_shadowing",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP09 Shadow MCP",
+                       "difficulty":  "Medium",
+                       "expected_signal":  "Tool shadowing warning.",
+                       "source_path":  "LAB-109-tool-shadowing"
+                   },
+                   {
+                       "scenario_id":  "LAB-110",
+                       "tool_name":  "lab_110_cross_server_shadowing",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP09 Shadow MCP",
+                       "difficulty":  "High",
+                       "expected_signal":  "Cross-server shadowing finding.",
+                       "source_path":  "LAB-110-cross-server-shadowing"
+                   },
+                   {
+                       "scenario_id":  "LAB-111",
+                       "tool_name":  "lab_111_unknown_broad_access",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP09 Shadow MCP",
+                       "difficulty":  "High",
+                       "expected_signal":  "Unknown command plus high-permission access warning.",
+                       "source_path":  "LAB-111-unknown-broad-access"
+                   },
+                   {
+                       "scenario_id":  "LAB-112",
+                       "tool_name":  "lab_112_repeated_expensive_loop",
+                       "expected":  "malicious",
+                       "should_auditguard_detect":  false,
+                       "category":  "MCP10 Denial of Service and Resource Abuse",
+                       "difficulty":  "High",
+                       "expected_signal":  "Loop/resource abuse warning.",
+                       "source_path":  "LAB-112-repeated-expensive-loop"
+                   }
+               ]
+}

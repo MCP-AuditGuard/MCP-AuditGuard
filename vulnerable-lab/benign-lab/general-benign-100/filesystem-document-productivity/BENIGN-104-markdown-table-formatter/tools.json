@@ -1,0 +1,43 @@
+﻿{
+    "server_name":  "filesystem-document-productivity-server",
+    "tools":  [
+                  {
+                      "name":  "markdown_table_formatter",
+                      "title":  "Markdown Table Formatter",
+                      "description":  "Provide a read-only markdown table formatter capability for local files, document libraries, notes, and knowledge work assistants. It returns structured summaries for normal business workflows.",
+                      "inputSchema":  {
+                                          "type":  "object",
+                                          "properties":  {
+                                                             "date_range":  {
+                                                                                "type":  "string",
+                                                                                "description":  "Normal user-provided date range value."
+                                                                            },
+                                                             "limit":  {
+                                                                           "type":  "integer",
+                                                                           "description":  "Maximum number of records to return.",
+                                                                           "minimum":  1,
+                                                                           "maximum":  100
+                                                                       }
+                                                         },
+                                          "required":  [
+                                                           "date_range"
+                                                       ]
+                                      },
+                      "annotations":  {
+                                          "readOnlyHint":  true,
+                                          "destructiveHint":  false,
+                                          "idempotentHint":  true,
+                                          "openWorldHint":  false
+                                      },
+                      "_meta":  {
+                                    "benign_id":  "BENIGN-104",
+                                    "benign_set":  "General Benign Set",
+                                    "category":  "Market-like benign MCP server",
+                                    "market_group":  "Filesystem and Document Productivity",
+                                    "market_context":  "Local files, document libraries, notes, and knowledge work assistants",
+                                    "expected_result":  "No finding from default detectors.",
+                                    "rationale":  "Represents a normal MCP server capability commonly found in productivity, business, developer, data, or operations workflows."
+                                }
+                  }
+              ]
+}

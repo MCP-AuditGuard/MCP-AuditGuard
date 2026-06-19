@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-074",
+  "tools": [
+    {
+      "name": "benign_074_tool_version_meta",
+      "title": "Tool Version Metadata",
+      "description": "Summarize tool version metadata and changelog references.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Version metadata."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-074",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Metadata",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Metadata"
+      }
+    }
+  ]
+}

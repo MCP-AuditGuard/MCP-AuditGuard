@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-044",
+  "tools": [
+    {
+      "name": "benign_044_accented_name_sort",
+      "title": "Accented Name Sorter",
+      "description": "Sort names with accents and preserve the original spelling.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Name list."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-044",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Unicode and Multilingual Text",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Unicode and Multilingual Text"
+      }
+    }
+  ]
+}

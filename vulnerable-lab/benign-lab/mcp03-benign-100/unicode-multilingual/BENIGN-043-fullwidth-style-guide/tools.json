@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-043",
+  "tools": [
+    {
+      "name": "benign_043_fullwidth_style_guide",
+      "title": "Fullwidth Style Guide",
+      "description": "Normalize fullwidth Latin characters in a typography style guide.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Typography sample."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-043",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Unicode and Multilingual Text",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Unicode and Multilingual Text"
+      }
+    }
+  ]
+}

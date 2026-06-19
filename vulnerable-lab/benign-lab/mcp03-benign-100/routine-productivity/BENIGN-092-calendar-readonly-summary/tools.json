@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-092",
+  "tools": [
+    {
+      "name": "benign_092_calendar_readonly_summary",
+      "title": "Calendar Readonly Summary",
+      "description": "Summarize upcoming public calendar events without modifying them.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Calendar export."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-092",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Routine Productivity Tools",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Routine Productivity Tools"
+      }
+    }
+  ]
+}

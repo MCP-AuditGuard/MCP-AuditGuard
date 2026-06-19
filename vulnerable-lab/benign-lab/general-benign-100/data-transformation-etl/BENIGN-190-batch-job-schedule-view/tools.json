@@ -1,0 +1,43 @@
+﻿{
+    "server_name":  "data-transformation-etl-server",
+    "tools":  [
+                  {
+                      "name":  "batch_job_schedule_view",
+                      "title":  "Batch Job Schedule View",
+                      "description":  "Provide a read-only batch job schedule view capability for csv cleanup, format conversion, schema mapping, import previews, and workflow utilities. It returns structured summaries for normal business workflows.",
+                      "inputSchema":  {
+                                          "type":  "object",
+                                          "properties":  {
+                                                             "query":  {
+                                                                           "type":  "string",
+                                                                           "description":  "Normal user-provided query value."
+                                                                       },
+                                                             "limit":  {
+                                                                           "type":  "integer",
+                                                                           "description":  "Maximum number of records to return.",
+                                                                           "minimum":  1,
+                                                                           "maximum":  100
+                                                                       }
+                                                         },
+                                          "required":  [
+                                                           "query"
+                                                       ]
+                                      },
+                      "annotations":  {
+                                          "readOnlyHint":  true,
+                                          "destructiveHint":  false,
+                                          "idempotentHint":  true,
+                                          "openWorldHint":  false
+                                      },
+                      "_meta":  {
+                                    "benign_id":  "BENIGN-190",
+                                    "benign_set":  "General Benign Set",
+                                    "category":  "Market-like benign MCP server",
+                                    "market_group":  "Data Transformation and ETL",
+                                    "market_context":  "CSV cleanup, format conversion, schema mapping, import previews, and workflow utilities",
+                                    "expected_result":  "No finding from default detectors.",
+                                    "rationale":  "Represents a normal MCP server capability commonly found in productivity, business, developer, data, or operations workflows."
+                                }
+                  }
+              ]
+}

@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-086",
+  "tools": [
+    {
+      "name": "benign_086_public_test_token",
+      "title": "Public Test Token Note",
+      "description": "Explain that TEST_TOKEN_123 is a public non-secret fixture value.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Fixture note."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-086",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

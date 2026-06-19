@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-056",
+  "tools": [
+    {
+      "name": "benign_056_access_request_template",
+      "title": "Access Request Template",
+      "description": "Format an access request template for manager review.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Template draft."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-056",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Admin and Permission Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Admin and Permission Language"
+      }
+    }
+  ]
+}
