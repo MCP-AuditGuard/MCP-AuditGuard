@@ -1,5 +1,23 @@
 from __future__ import annotations
 
+"""
+웹 대시보드용 report artifact 저장소.
+
+CLI는 리포트를 즉시 터미널에 출력하거나 지정 파일에 저장하지만, Web UI는
+스캔 결과를 다운로드할 수 있도록 scan_id별 Markdown/JSON 파일을 보관해야 한다.
+이 모듈은 그 저장 위치와 파일 쓰기 방식을 담당한다.
+
+Member5 담당 관점:
+- 기존 Markdown/JSON renderer를 Web UI에서도 재사용한다.
+- scan_id별 report.md/report.json 경로를 일관되게 만든다.
+
+보안/운영 관점:
+- 저장 경로는 기본적으로 로컬 프로젝트 내부 artifacts/reports를 사용한다.
+- 외부 서버 업로드는 하지 않는다.
+- atomic write를 사용해 중간에 프로세스가 멈춰도 깨진 report 파일이 남을
+  가능성을 줄인다.
+"""
+
 import os
 
 from dataclasses import dataclass
@@ -64,6 +82,7 @@ def save_report_artifacts(
             exist_ok=True,
         )
 
+        # CLI와 Web이 같은 renderer를 사용해야 두 출력의 내용이 어긋나지 않는다.
         markdown_text = render_markdown(result.findings)
         json_text = render_json(result.findings)
 
@@ -111,6 +130,11 @@ def get_report_artifact(
 def _build_artifact_paths(
     scan_id: UUID,
 ) -> ReportArtifactPaths:
+    """
+    scan_id 하나에 대응하는 report 저장 경로 묶음을 만든다.
+
+    scan_id별 디렉터리를 분리하면 여러 스캔 결과가 서로 덮어쓰지 않는다.
+    """
     scan_directory = get_reports_root() / str(scan_id)
 
     return ReportArtifactPaths(

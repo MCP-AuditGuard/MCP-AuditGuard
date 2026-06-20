@@ -1,5 +1,20 @@
 from __future__ import annotations
 
+"""
+MCP-AuditGuard CLI 최상위 진입점.
+
+이 모듈은 Typer app을 만들고 `help`, `scan`, `web` 명령을 등록한다.
+실제 scan 로직은 `cli.scan`, 웹 서버 실행은 `cli.web`에 두어 책임을 분리한다.
+
+Member5 담당 관점:
+- 사용자가 실행하는 명령어 표면을 구성한다.
+- Typer 기본 --help와 별도 `auditguard help` 사용 가이드를 함께 제공한다.
+
+유지보수 포인트:
+- 새로운 사용자 명령을 추가할 때는 이 파일에서 app.command로 등록한다.
+- 명령이 커지면 구현은 별도 모듈에 두고 여기서는 연결만 하는 구조를 유지한다.
+"""
+
 import typer
 from rich.console import Console
 
@@ -75,13 +90,19 @@ Built-in Typer help
 def main() -> None:
     """
     MCP-AuditGuard command line interface.
+
+    Typer callback은 app 자체의 공통 진입점이다. 현재는 별도 공통 옵션이 없지만,
+    추후 전역 verbose/debug 옵션을 추가할 때 이 함수가 확장 지점이 된다.
     """
 
 
 @app.command("help")
 def help_command() -> None:
     """
-    Show MCP-AuditGuard usage examples and option guide.
+    MCP-AuditGuard 사용 예시와 옵션 가이드를 출력한다.
+
+    Typer의 `--help`는 옵션 목록을 자동 생성하는 기술적 도움말이고,
+    이 명령은 데모/발표/일반 사용자 실행 흐름을 설명하는 작업 중심 가이드다.
     """
 
     # Typer가 제공하는 --help와 별도로,
