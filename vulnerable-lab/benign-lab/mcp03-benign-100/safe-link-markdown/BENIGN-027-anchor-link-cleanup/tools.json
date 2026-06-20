@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-027",
+  "tools": [
+    {
+      "name": "benign_027_anchor_link_cleanup",
+      "title": "Anchor Link Cleanup",
+      "description": "Clean local anchor links in a README file.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "README excerpt."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-027",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Safe Link and Markdown",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Safe Link and Markdown"
+      }
+    }
+  ]
+}

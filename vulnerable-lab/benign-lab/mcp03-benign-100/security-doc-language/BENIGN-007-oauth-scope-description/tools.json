@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-007",
+  "tools": [
+    {
+      "name": "benign_007_oauth_scope_description",
+      "title": "OAuth Scope Description",
+      "description": "Explain OAuth scopes and warn against overbroad permissions.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "OAuth scope text."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-007",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Security Documentation",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Security Documentation"
+      }
+    }
+  ]
+}

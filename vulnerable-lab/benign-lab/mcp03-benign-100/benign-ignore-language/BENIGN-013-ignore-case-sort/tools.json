@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-013",
+  "tools": [
+    {
+      "name": "benign_013_ignore_case_sort",
+      "title": "Case Insensitive Sort",
+      "description": "Sort names while ignoring case differences.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Names to sort."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-013",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Ignore Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Ignore Language"
+      }
+    }
+  ]
+}

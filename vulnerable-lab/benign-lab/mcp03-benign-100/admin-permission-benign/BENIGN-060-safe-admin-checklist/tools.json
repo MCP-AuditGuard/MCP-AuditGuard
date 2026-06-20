@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-060",
+  "tools": [
+    {
+      "name": "benign_060_safe_admin_checklist",
+      "title": "Safe Admin Checklist",
+      "description": "Create a checklist reminding admins to confirm destructive actions manually.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Checklist source."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-060",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Admin and Permission Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Admin and Permission Language"
+      }
+    }
+  ]
+}

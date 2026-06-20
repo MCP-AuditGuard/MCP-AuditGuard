@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-066",
+  "tools": [
+    {
+      "name": "benign_066_handoff_template",
+      "title": "Handoff Template",
+      "description": "Create a handoff template that lists optional tools for future manual review.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Handoff notes."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-066",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Cross-tool Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Cross-tool Language"
+      }
+    }
+  ]
+}

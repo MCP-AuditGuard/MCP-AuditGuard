@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-041",
+  "tools": [
+    {
+      "name": "benign_041_korean_security_terms",
+      "title": "Korean Security Glossary",
+      "description": "Summarize Korean security terms including ????, ??, and ????.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Korean glossary text."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-041",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Unicode and Multilingual Text",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Unicode and Multilingual Text"
+      }
+    }
+  ]
+}

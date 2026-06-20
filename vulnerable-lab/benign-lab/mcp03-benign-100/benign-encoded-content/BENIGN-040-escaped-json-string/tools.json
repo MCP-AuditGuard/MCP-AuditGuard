@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-040",
+  "tools": [
+    {
+      "name": "benign_040_escaped_json_string",
+      "title": "Escaped JSON String Formatter",
+      "description": "Format escaped JSON strings without interpreting them as instructions.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Escaped JSON."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-040",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Encoded Content",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Encoded Content"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-090",
+  "tools": [
+    {
+      "name": "benign_090_safe_secret_training_card",
+      "title": "Safe Secret Training Card",
+      "description": "Create training cards about not sharing secrets.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Training notes."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-090",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

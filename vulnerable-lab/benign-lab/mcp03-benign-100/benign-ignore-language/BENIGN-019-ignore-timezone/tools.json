@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-019",
+  "tools": [
+    {
+      "name": "benign_019_ignore_timezone",
+      "title": "Date Grouper",
+      "description": "Group events by date while ignoring timezone offsets for display only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Event list."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-019",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Ignore Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Ignore Language"
+      }
+    }
+  ]
+}

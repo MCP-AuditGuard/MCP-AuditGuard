@@ -31,3 +31,6 @@ htmlcov/
 
 #로컬웹으로 생성된 스캔결과
 artifacts/reports/
+
+# Local embedding model files
+models/embedding/

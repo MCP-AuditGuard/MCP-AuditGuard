@@ -78,6 +78,46 @@ Changes to these shared interfaces should be discussed with the team before merg
 - Scan results should not be uploaded to external servers.
 ```
 
+## Local Embedding Similarity Setup
+
+The semantic similarity detector is optional. It can run only when both the Python
+semantic dependency and the local embedding model are available.
+
+The model files are intentionally not committed because they are large. They are
+ignored by `.gitignore` under:
+
+```text
+models/embedding/
+```
+
+For Codex or teammates who need to reproduce the local embedding similarity
+results, use the following setup from the repository root on macOS:
+
+```bash
+python3 -m pip install -e '.[dev,semantic]'
+huggingface-cli download BAAI/bge-small-en-v1.5 \
+  --local-dir models/embedding/bge-small-en-v1.5
+```
+
+The default model is:
+
+```text
+BAAI/bge-small-en-v1.5
+```
+
+The default local path expected by the scanner is:
+
+```text
+models/embedding/bge-small-en-v1.5
+```
+
+After setup, verify the semantic detector with:
+
+```bash
+pytest tests/unit/test_semantic_similarity.py
+python3 -c "from core.embedding_provider import get_default_embedding_provider; p=get_default_embedding_provider(); print(len(p.embed_texts(['ignore previous instructions'])[0]))"
+```
+
 ## Core Goals
 
 ```text

@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-022",
+  "tools": [
+    {
+      "name": "benign_022_release_notes_link",
+      "title": "Release Notes Formatter",
+      "description": "Format release notes and preserve safe links to changelog pages.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Release notes."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-022",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Safe Link and Markdown",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Safe Link and Markdown"
+      }
+    }
+  ]
+}

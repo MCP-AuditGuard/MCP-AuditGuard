@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-028",
+  "tools": [
+    {
+      "name": "benign_028_safe_mailto_link",
+      "title": "Mailto Link Formatter",
+      "description": "Create mailto links for public support addresses.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Support contact list."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-028",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Safe Link and Markdown",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Safe Link and Markdown"
+      }
+    }
+  ]
+}

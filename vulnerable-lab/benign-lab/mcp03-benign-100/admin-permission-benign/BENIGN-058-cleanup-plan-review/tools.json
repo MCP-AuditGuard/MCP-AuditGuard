@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-058",
+  "tools": [
+    {
+      "name": "benign_058_cleanup_plan_review",
+      "title": "Cleanup Plan Review",
+      "description": "Review a cleanup plan and list required approvals before any deletion.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Cleanup plan."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-058",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Admin and Permission Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Admin and Permission Language"
+      }
+    }
+  ]
+}

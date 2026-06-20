@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-004",
+  "tools": [
+    {
+      "name": "benign_004_token_rotation_checklist",
+      "title": "Token Rotation Checklist",
+      "description": "Create a checklist for rotating tokens safely and revoking old credentials.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Rotation policy text."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-004",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Security Documentation",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Security Documentation"
+      }
+    }
+  ]
+}
