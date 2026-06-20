@@ -1,0 +1,11 @@
+﻿{
+    "scenario_id":  "SNYK-MCP03-056",
+    "expected":  "malicious",
+    "mcp_category":  "MCP03",
+    "snyk_issue_code":  "W001",
+    "snyk_issue_title":  "Suspicious words in tool description",
+    "attack_surface":  "description",
+    "difficulty":  "Medium",
+    "should_auditguard_detect":  true,
+    "evaluation_note":  "Suspicious wording benchmark; malicious cases test prompt-injection keywords, benign cases test false positives."
+}

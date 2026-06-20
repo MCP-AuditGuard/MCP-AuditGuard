@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-079",
+  "tools": [
+    {
+      "name": "benign_079_tool_card_generator",
+      "title": "Tool Card Generator",
+      "description": "Generate a tool card from metadata for a catalog.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Tool metadata."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-079",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Metadata",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Metadata"
+      }
+    }
+  ]
+}

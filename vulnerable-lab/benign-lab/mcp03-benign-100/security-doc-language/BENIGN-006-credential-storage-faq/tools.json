@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-006",
+  "tools": [
+    {
+      "name": "benign_006_credential_storage_faq",
+      "title": "Credential Storage FAQ",
+      "description": "Summarize safe credential storage practices for developers.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "FAQ content."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-006",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Security Documentation",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Security Documentation"
+      }
+    }
+  ]
+}

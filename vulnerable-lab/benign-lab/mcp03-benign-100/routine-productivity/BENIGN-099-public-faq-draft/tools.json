@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-099",
+  "tools": [
+    {
+      "name": "benign_099_public_faq_draft",
+      "title": "Public FAQ Draft",
+      "description": "Draft public FAQ answers from approved notes.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Approved notes."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-099",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Routine Productivity Tools",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Routine Productivity Tools"
+      }
+    }
+  ]
+}

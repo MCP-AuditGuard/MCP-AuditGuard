@@ -1,0 +1,43 @@
+﻿{
+    "server_name":  "developer-workflow-server",
+    "tools":  [
+                  {
+                      "name":  "package_version_lookup",
+                      "title":  "Package Version Lookup",
+                      "description":  "Provide a read-only package version lookup capability for git hosting, issue tracking, ci dashboards, package metadata, and code review helpers. It returns structured summaries for normal business workflows.",
+                      "inputSchema":  {
+                                          "type":  "object",
+                                          "properties":  {
+                                                             "query":  {
+                                                                           "type":  "string",
+                                                                           "description":  "Normal user-provided query value."
+                                                                       },
+                                                             "limit":  {
+                                                                           "type":  "integer",
+                                                                           "description":  "Maximum number of records to return.",
+                                                                           "minimum":  1,
+                                                                           "maximum":  100
+                                                                       }
+                                                         },
+                                          "required":  [
+                                                           "query"
+                                                       ]
+                                      },
+                      "annotations":  {
+                                          "readOnlyHint":  true,
+                                          "destructiveHint":  false,
+                                          "idempotentHint":  true,
+                                          "openWorldHint":  false
+                                      },
+                      "_meta":  {
+                                    "benign_id":  "BENIGN-115",
+                                    "benign_set":  "General Benign Set",
+                                    "category":  "Market-like benign MCP server",
+                                    "market_group":  "Developer Workflow",
+                                    "market_context":  "Git hosting, issue tracking, CI dashboards, package metadata, and code review helpers",
+                                    "expected_result":  "No finding from default detectors.",
+                                    "rationale":  "Represents a normal MCP server capability commonly found in productivity, business, developer, data, or operations workflows."
+                                }
+                  }
+              ]
+}

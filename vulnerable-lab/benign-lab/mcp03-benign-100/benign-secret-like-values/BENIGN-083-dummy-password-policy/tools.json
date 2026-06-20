@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-083",
+  "tools": [
+    {
+      "name": "benign_083_dummy_password_policy",
+      "title": "Dummy Password Policy",
+      "description": "Explain why DUMMY_PASSWORD should never be used outside tests.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Policy snippet."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-083",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

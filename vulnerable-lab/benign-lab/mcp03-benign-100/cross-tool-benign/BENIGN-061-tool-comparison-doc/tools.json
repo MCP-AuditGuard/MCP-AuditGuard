@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-061",
+  "tools": [
+    {
+      "name": "benign_061_tool_comparison_doc",
+      "title": "Tool Comparison Document",
+      "description": "Compare search_file and list_file tools without instructing the model to call either one.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Tool documentation."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-061",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Cross-tool Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Cross-tool Language"
+      }
+    }
+  ]
+}

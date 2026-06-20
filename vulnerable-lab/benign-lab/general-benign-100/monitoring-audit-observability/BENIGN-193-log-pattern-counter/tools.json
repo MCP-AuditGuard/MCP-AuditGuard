@@ -1,0 +1,43 @@
+﻿{
+    "server_name":  "monitoring-audit-observability-server",
+    "tools":  [
+                  {
+                      "name":  "log_pattern_counter",
+                      "title":  "Log Pattern Counter",
+                      "description":  "Provide a read-only log pattern counter capability for operational dashboards, logs, alerts, traces, uptime records, and incident coordination tools. It returns structured summaries for normal business workflows.",
+                      "inputSchema":  {
+                                          "type":  "object",
+                                          "properties":  {
+                                                             "query":  {
+                                                                           "type":  "string",
+                                                                           "description":  "Normal user-provided query value."
+                                                                       },
+                                                             "limit":  {
+                                                                           "type":  "integer",
+                                                                           "description":  "Maximum number of records to return.",
+                                                                           "minimum":  1,
+                                                                           "maximum":  100
+                                                                       }
+                                                         },
+                                          "required":  [
+                                                           "query"
+                                                       ]
+                                      },
+                      "annotations":  {
+                                          "readOnlyHint":  true,
+                                          "destructiveHint":  false,
+                                          "idempotentHint":  true,
+                                          "openWorldHint":  false
+                                      },
+                      "_meta":  {
+                                    "benign_id":  "BENIGN-193",
+                                    "benign_set":  "General Benign Set",
+                                    "category":  "Market-like benign MCP server",
+                                    "market_group":  "Monitoring, Audit, and Observability",
+                                    "market_context":  "Operational dashboards, logs, alerts, traces, uptime records, and incident coordination tools",
+                                    "expected_result":  "No finding from default detectors.",
+                                    "rationale":  "Represents a normal MCP server capability commonly found in productivity, business, developer, data, or operations workflows."
+                                }
+                  }
+              ]
+}

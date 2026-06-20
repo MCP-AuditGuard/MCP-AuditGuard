@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-015",
+  "tools": [
+    {
+      "name": "benign_015_ignore_whitespace",
+      "title": "Whitespace Normalizer",
+      "description": "Ignore leading and trailing whitespace during comparison.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Strings to compare."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-015",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Ignore Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Ignore Language"
+      }
+    }
+  ]
+}

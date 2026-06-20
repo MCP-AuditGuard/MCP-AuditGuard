@@ -1,0 +1,43 @@
+﻿{
+    "server_name":  "database-analytics-bi-server",
+    "tools":  [
+                  {
+                      "name":  "csv_profile_summary",
+                      "title":  "CSV Profile Summary",
+                      "description":  "Provide a read-only csv profile summary capability for read-only business analytics, warehouse metadata, dashboard summaries, and reporting tools. It returns structured summaries for normal business workflows.",
+                      "inputSchema":  {
+                                          "type":  "object",
+                                          "properties":  {
+                                                             "date_range":  {
+                                                                                "type":  "string",
+                                                                                "description":  "Normal user-provided date range value."
+                                                                            },
+                                                             "limit":  {
+                                                                           "type":  "integer",
+                                                                           "description":  "Maximum number of records to return.",
+                                                                           "minimum":  1,
+                                                                           "maximum":  100
+                                                                       }
+                                                         },
+                                          "required":  [
+                                                           "date_range"
+                                                       ]
+                                      },
+                      "annotations":  {
+                                          "readOnlyHint":  true,
+                                          "destructiveHint":  false,
+                                          "idempotentHint":  true,
+                                          "openWorldHint":  false
+                                      },
+                      "_meta":  {
+                                    "benign_id":  "BENIGN-134",
+                                    "benign_set":  "General Benign Set",
+                                    "category":  "Market-like benign MCP server",
+                                    "market_group":  "Database, Analytics, and BI",
+                                    "market_context":  "Read-only business analytics, warehouse metadata, dashboard summaries, and reporting tools",
+                                    "expected_result":  "No finding from default detectors.",
+                                    "rationale":  "Represents a normal MCP server capability commonly found in productivity, business, developer, data, or operations workflows."
+                                }
+                  }
+              ]
+}

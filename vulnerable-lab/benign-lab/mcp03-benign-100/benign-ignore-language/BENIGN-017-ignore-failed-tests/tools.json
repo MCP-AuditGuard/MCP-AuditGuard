@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-017",
+  "tools": [
+    {
+      "name": "benign_017_ignore_failed_tests",
+      "title": "Test Summary",
+      "description": "Ignore skipped tests and summarize only passed and failed tests.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Test report."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-017",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Ignore Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Ignore Language"
+      }
+    }
+  ]
+}

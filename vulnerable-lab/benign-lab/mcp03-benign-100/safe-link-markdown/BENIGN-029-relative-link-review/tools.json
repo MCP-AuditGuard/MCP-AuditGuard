@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-029",
+  "tools": [
+    {
+      "name": "benign_029_relative_link_review",
+      "title": "Relative Link Reviewer",
+      "description": "Review relative Markdown links for consistency.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Markdown document."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-029",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Safe Link and Markdown",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Safe Link and Markdown"
+      }
+    }
+  ]
+}

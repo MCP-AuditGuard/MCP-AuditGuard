@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-026",
+  "tools": [
+    {
+      "name": "benign_026_citation_link_normalizer",
+      "title": "Citation Link Normalizer",
+      "description": "Normalize citation links to a consistent Markdown style.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Citation list."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-026",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Safe Link and Markdown",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Safe Link and Markdown"
+      }
+    }
+  ]
+}

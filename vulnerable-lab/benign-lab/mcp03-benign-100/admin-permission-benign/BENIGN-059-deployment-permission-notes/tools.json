@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-059",
+  "tools": [
+    {
+      "name": "benign_059_deployment_permission_notes",
+      "title": "Deployment Permission Notes",
+      "description": "Summarize notes about deployment permissions and approval gates.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Deployment notes."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-059",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Admin and Permission Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Admin and Permission Language"
+      }
+    }
+  ]
+}

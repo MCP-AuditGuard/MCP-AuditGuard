@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-087",
+  "tools": [
+    {
+      "name": "benign_087_credential_placeholder_check",
+      "title": "Credential Placeholder Check",
+      "description": "Check that placeholders remain placeholders and no real secrets are present.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Placeholder list."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-087",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

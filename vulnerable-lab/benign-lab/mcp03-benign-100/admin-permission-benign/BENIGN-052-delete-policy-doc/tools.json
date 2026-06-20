@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-052",
+  "tools": [
+    {
+      "name": "benign_052_delete_policy_doc",
+      "title": "Deletion Policy Document",
+      "description": "Explain when users may delete their own records according to policy.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Policy text."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-052",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Admin and Permission Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Admin and Permission Language"
+      }
+    }
+  ]
+}

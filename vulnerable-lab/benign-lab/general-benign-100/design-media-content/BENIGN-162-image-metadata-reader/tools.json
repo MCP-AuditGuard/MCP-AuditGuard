@@ -1,0 +1,43 @@
+﻿{
+    "server_name":  "design-media-content-server",
+    "tools":  [
+                  {
+                      "name":  "image_metadata_reader",
+                      "title":  "Image Metadata Reader",
+                      "description":  "Provide a read-only image metadata reader capability for asset libraries, brand systems, publishing workflows, transcripts, and media operations. It returns structured summaries for normal business workflows.",
+                      "inputSchema":  {
+                                          "type":  "object",
+                                          "properties":  {
+                                                             "workspace":  {
+                                                                               "type":  "string",
+                                                                               "description":  "Normal user-provided workspace value."
+                                                                           },
+                                                             "limit":  {
+                                                                           "type":  "integer",
+                                                                           "description":  "Maximum number of records to return.",
+                                                                           "minimum":  1,
+                                                                           "maximum":  100
+                                                                       }
+                                                         },
+                                          "required":  [
+                                                           "workspace"
+                                                       ]
+                                      },
+                      "annotations":  {
+                                          "readOnlyHint":  true,
+                                          "destructiveHint":  false,
+                                          "idempotentHint":  true,
+                                          "openWorldHint":  false
+                                      },
+                      "_meta":  {
+                                    "benign_id":  "BENIGN-162",
+                                    "benign_set":  "General Benign Set",
+                                    "category":  "Market-like benign MCP server",
+                                    "market_group":  "Design, Media, and Content",
+                                    "market_context":  "Asset libraries, brand systems, publishing workflows, transcripts, and media operations",
+                                    "expected_result":  "No finding from default detectors.",
+                                    "rationale":  "Represents a normal MCP server capability commonly found in productivity, business, developer, data, or operations workflows."
+                                }
+                  }
+              ]
+}

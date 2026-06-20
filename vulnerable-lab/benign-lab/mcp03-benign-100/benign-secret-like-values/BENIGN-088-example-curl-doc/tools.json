@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-088",
+  "tools": [
+    {
+      "name": "benign_088_example_curl_doc",
+      "title": "Example Curl Documentation",
+      "description": "Format curl examples that use <TOKEN> placeholders.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Curl examples."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-088",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

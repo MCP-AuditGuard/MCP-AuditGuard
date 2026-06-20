@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-065",
+  "tools": [
+    {
+      "name": "benign_065_api_sequence_doc",
+      "title": "API Sequence Documentation",
+      "description": "Explain an API sequence without executing any step.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "API sequence text."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-065",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Cross-tool Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Cross-tool Language"
+      }
+    }
+  ]
+}

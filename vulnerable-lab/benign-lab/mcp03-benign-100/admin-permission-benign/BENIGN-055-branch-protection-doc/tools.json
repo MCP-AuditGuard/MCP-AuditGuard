@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-055",
+  "tools": [
+    {
+      "name": "benign_055_branch_protection_doc",
+      "title": "Branch Protection Documentation",
+      "description": "Explain branch protection settings from documentation.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Documentation excerpt."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-055",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Admin and Permission Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Admin and Permission Language"
+      }
+    }
+  ]
+}
