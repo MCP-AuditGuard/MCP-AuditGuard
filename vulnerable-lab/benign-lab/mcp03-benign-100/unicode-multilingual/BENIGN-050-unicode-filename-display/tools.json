@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-050",
+  "tools": [
+    {
+      "name": "benign_050_unicode_filename_display",
+      "title": "Unicode Filename Display",
+      "description": "Display Unicode filenames safely in a report.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Filename list."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-050",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Unicode and Multilingual Text",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Unicode and Multilingual Text"
+      }
+    }
+  ]
+}

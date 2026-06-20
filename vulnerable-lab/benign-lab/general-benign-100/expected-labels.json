@@ -1,0 +1,1009 @@
+{
+    "dataset":  "general-benign-100",
+    "total_cases":  100,
+    "malicious_cases":  0,
+    "benign_cases":  100,
+    "expected_auditguard_detect_cases":  0,
+    "labels":  [
+                   {
+                       "scenario_id":  "BENIGN-121",
+                       "tool_name":  "calendar_availability_view",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-121-calendar-availability-view"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-122",
+                       "tool_name":  "meeting_agenda_builder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-122-meeting-agenda-builder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-123",
+                       "tool_name":  "email_thread_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-123-email-thread-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-124",
+                       "tool_name":  "contact_directory_lookup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-124-contact-directory-lookup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-125",
+                       "tool_name":  "out_of_office_checker",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-125-out-of-office-checker"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-126",
+                       "tool_name":  "newsletter_digest_builder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-126-newsletter-digest-builder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-127",
+                       "tool_name":  "meeting_room_finder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-127-meeting-room-finder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-128",
+                       "tool_name":  "followup_reminder_lister",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-128-followup-reminder-lister"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-129",
+                       "tool_name":  "email_label_report",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-129-email-label-report"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-130",
+                       "tool_name":  "contact_group_export",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "calendar-email-contacts/BENIGN-130-contact-group-export"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-141",
+                       "tool_name":  "cloud_resource_inventory",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-141-cloud-resource-inventory"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-142",
+                       "tool_name":  "saas_user_directory",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-142-saas-user-directory"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-143",
+                       "tool_name":  "billing_usage_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-143-billing-usage-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-144",
+                       "tool_name":  "policy_setting_viewer",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-144-policy-setting-viewer"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-145",
+                       "tool_name":  "audit_log_filter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-145-audit-log-filter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-146",
+                       "tool_name":  "service_health_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-146-service-health-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-147",
+                       "tool_name":  "region_capacity_view",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-147-region-capacity-view"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-148",
+                       "tool_name":  "integration_catalog_view",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-148-integration-catalog-view"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-149",
+                       "tool_name":  "license_assignment_report",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-149-license-assignment-report"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-150",
+                       "tool_name":  "retention_policy_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "cloud-saas-admin-readonly/BENIGN-150-retention-policy-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-171",
+                       "tool_name":  "crm_account_lookup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-171-crm-account-lookup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-172",
+                       "tool_name":  "support_ticket_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-172-support-ticket-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-173",
+                       "tool_name":  "product_catalog_search",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-173-product-catalog-search"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-174",
+                       "tool_name":  "order_status_viewer",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-174-order-status-viewer"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-175",
+                       "tool_name":  "customer_feedback_digest",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-175-customer-feedback-digest"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-176",
+                       "tool_name":  "renewal_calendar_report",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-176-renewal-calendar-report"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-177",
+                       "tool_name":  "support_macro_finder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-177-support-macro-finder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-178",
+                       "tool_name":  "commerce_price_list_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-178-commerce-price-list-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-179",
+                       "tool_name":  "shipment_exception_report",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-179-shipment-exception-report"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-180",
+                       "tool_name":  "customer_health_snapshot",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "commerce-crm-support/BENIGN-180-customer-health-snapshot"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-131",
+                       "tool_name":  "sales_dashboard_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-131-sales-dashboard-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-132",
+                       "tool_name":  "warehouse_table_catalog",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-132-warehouse-table-catalog"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-133",
+                       "tool_name":  "metric_definition_lookup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-133-metric-definition-lookup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-134",
+                       "tool_name":  "csv_profile_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-134-csv-profile-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-135",
+                       "tool_name":  "query_result_exporter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-135-query-result-exporter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-136",
+                       "tool_name":  "dashboard_refresh_status",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-136-dashboard-refresh-status"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-137",
+                       "tool_name":  "cohort_report_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-137-cohort-report-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-138",
+                       "tool_name":  "data_dictionary_search",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-138-data-dictionary-search"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-139",
+                       "tool_name":  "kpi_snapshot_builder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-139-kpi-snapshot-builder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-140",
+                       "tool_name":  "chart_metadata_viewer",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "database-analytics-bi/BENIGN-140-chart-metadata-viewer"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-181",
+                       "tool_name":  "csv_to_json_preview",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-181-csv-to-json-preview"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-182",
+                       "tool_name":  "column_mapping_helper",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-182-column-mapping-helper"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-183",
+                       "tool_name":  "date_format_normalizer",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-183-date-format-normalizer"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-184",
+                       "tool_name":  "unit_conversion_table",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-184-unit-conversion-table"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-185",
+                       "tool_name":  "etl_run_status_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-185-etl-run-status-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-186",
+                       "tool_name":  "schema_diff_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-186-schema-diff-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-187",
+                       "tool_name":  "import_validation_report",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-187-import-validation-report"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-188",
+                       "tool_name":  "json_schema_documenter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-188-json-schema-documenter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-189",
+                       "tool_name":  "spreadsheet_cleaning_plan",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-189-spreadsheet-cleaning-plan"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-190",
+                       "tool_name":  "batch_job_schedule_view",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "data-transformation-etl/BENIGN-190-batch-job-schedule-view"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-161",
+                       "tool_name":  "brand_asset_finder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-161-brand-asset-finder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-162",
+                       "tool_name":  "image_metadata_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-162-image-metadata-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-163",
+                       "tool_name":  "transcript_timestamp_search",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-163-transcript-timestamp-search"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-164",
+                       "tool_name":  "content_calendar_view",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-164-content-calendar-view"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-165",
+                       "tool_name":  "style_guide_lookup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-165-style-guide-lookup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-166",
+                       "tool_name":  "asset_usage_report",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-166-asset-usage-report"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-167",
+                       "tool_name":  "video_caption_export",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-167-video-caption-export"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-168",
+                       "tool_name":  "campaign_brief_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-168-campaign-brief-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-169",
+                       "tool_name":  "cms_draft_lister",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-169-cms-draft-lister"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-170",
+                       "tool_name":  "localization_status_view",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "design-media-content/BENIGN-170-localization-status-view"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-111",
+                       "tool_name":  "repository_issue_lister",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-111-repository-issue-lister"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-112",
+                       "tool_name":  "pull_request_summary",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-112-pull-request-summary"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-113",
+                       "tool_name":  "release_notes_collector",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-113-release-notes-collector"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-114",
+                       "tool_name":  "ci_status_dashboard",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-114-ci-status-dashboard"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-115",
+                       "tool_name":  "package_version_lookup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-115-package-version-lookup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-116",
+                       "tool_name":  "code_owner_lookup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-116-code-owner-lookup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-117",
+                       "tool_name":  "changelog_section_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-117-changelog-section-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-118",
+                       "tool_name":  "test_report_parser",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-118-test-report-parser"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-119",
+                       "tool_name":  "dependency_license_table",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-119-dependency-license-table"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-120",
+                       "tool_name":  "branch_activity_overview",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "developer-workflow/BENIGN-120-branch-activity-overview"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-101",
+                       "tool_name":  "workspace_file_index",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-101-workspace-file-index"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-102",
+                       "tool_name":  "document_outline_builder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-102-document-outline-builder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-103",
+                       "tool_name":  "pdf_page_counter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-103-pdf-page-counter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-104",
+                       "tool_name":  "markdown_table_formatter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-104-markdown-table-formatter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-105",
+                       "tool_name":  "note_collection_search",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-105-note-collection-search"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-106",
+                       "tool_name":  "folder_size_report",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-106-folder-size-report"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-107",
+                       "tool_name":  "duplicate_filename_finder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-107-duplicate-filename-finder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-108",
+                       "tool_name":  "meeting_notes_exporter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-108-meeting-notes-exporter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-109",
+                       "tool_name":  "document_tag_suggester",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-109-document-tag-suggester"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-110",
+                       "tool_name":  "local_readme_browser",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "filesystem-document-productivity/BENIGN-110-local-readme-browser"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-191",
+                       "tool_name":  "uptime_status_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-191-uptime-status-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-192",
+                       "tool_name":  "alert_summary_view",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-192-alert-summary-view"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-193",
+                       "tool_name":  "log_pattern_counter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-193-log-pattern-counter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-194",
+                       "tool_name":  "incident_timeline_reader",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-194-incident-timeline-reader"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-195",
+                       "tool_name":  "slo_report_builder",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-195-slo-report-builder"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-196",
+                       "tool_name":  "trace_metadata_lookup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-196-trace-metadata-lookup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-197",
+                       "tool_name":  "runbook_index_search",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-197-runbook-index-search"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-198",
+                       "tool_name":  "change_event_calendar",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-198-change-event-calendar"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-199",
+                       "tool_name":  "audit_event_counter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-199-audit-event-counter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-200",
+                       "tool_name":  "on_call_schedule_view",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "monitoring-audit-observability/BENIGN-200-on-call-schedule-view"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-151",
+                       "tool_name":  "knowledge_base_search",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-151-knowledge-base-search"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-152",
+                       "tool_name":  "faq_answer_lookup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-152-faq-answer-lookup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-153",
+                       "tool_name":  "retrieval_index_stats",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-153-retrieval-index-stats"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-154",
+                       "tool_name":  "support_article_recommender",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-154-support-article-recommender"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-155",
+                       "tool_name":  "wiki_page_outline",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-155-wiki-page-outline"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-156",
+                       "tool_name":  "glossary_term_lookup",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-156-glossary-term-lookup"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-157",
+                       "tool_name":  "policy_document_search",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-157-policy-document-search"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-158",
+                       "tool_name":  "semantic_collection_browser",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-158-semantic-collection-browser"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-159",
+                       "tool_name":  "source_citation_formatter",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-159-source-citation-formatter"
+                   },
+                   {
+                       "scenario_id":  "BENIGN-160",
+                       "tool_name":  "training_material_locator",
+                       "expected":  "benign",
+                       "should_auditguard_detect":  false,
+                       "category":  "Market-like benign MCP server",
+                       "difficulty":  "",
+                       "expected_signal":  "No finding from default detectors.",
+                       "source_path":  "search-knowledge-rag/BENIGN-160-training-material-locator"
+                   }
+               ]
+}

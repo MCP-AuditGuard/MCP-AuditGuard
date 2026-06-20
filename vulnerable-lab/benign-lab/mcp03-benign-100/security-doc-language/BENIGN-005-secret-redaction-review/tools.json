@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-005",
+  "tools": [
+    {
+      "name": "benign_005_secret_redaction_review",
+      "title": "Secret Redaction Review",
+      "description": "Review text and confirm whether secret-looking values are already masked.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Text with masked values."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-005",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Security Documentation",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Security Documentation"
+      }
+    }
+  ]
+}

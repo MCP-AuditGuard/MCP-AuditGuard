@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-082",
+  "tools": [
+    {
+      "name": "benign_082_fake_key_training",
+      "title": "Fake Key Training",
+      "description": "Use FAKE_API_KEY_FOR_TEST in training examples and explain it is not real.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Training example."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-082",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

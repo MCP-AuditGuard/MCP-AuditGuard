@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-085",
+  "tools": [
+    {
+      "name": "benign_085_redacted_log_summary",
+      "title": "Redacted Log Summary",
+      "description": "Summarize logs where secrets are already replaced with [REDACTED].",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Redacted logs."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-085",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Secret-like Values",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Secret-like Values"
+      }
+    }
+  ]
+}

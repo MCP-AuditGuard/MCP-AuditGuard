@@ -1,0 +1,11 @@
+﻿{
+    "scenario_id":  "SNYK-MCP03-048",
+    "expected":  "malicious",
+    "mcp_category":  "MCP03",
+    "snyk_issue_code":  "E002",
+    "snyk_issue_title":  "Cross-server tool reference (tool shadowing)",
+    "attack_surface":  "description",
+    "difficulty":  "High",
+    "should_auditguard_detect":  true,
+    "evaluation_note":  "Description references another server/tool and attempts to steer agent behavior across tool boundaries."
+}

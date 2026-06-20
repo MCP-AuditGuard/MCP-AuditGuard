@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-048",
+  "tools": [
+    {
+      "name": "benign_048_combining_mark_normalizer",
+      "title": "Combining Mark Normalizer",
+      "description": "Normalize combining marks in user names for display comparison.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Names."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-048",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Unicode and Multilingual Text",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Unicode and Multilingual Text"
+      }
+    }
+  ]
+}

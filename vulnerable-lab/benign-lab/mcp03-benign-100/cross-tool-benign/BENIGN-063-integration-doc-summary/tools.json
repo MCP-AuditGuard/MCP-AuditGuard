@@ -1,0 +1,32 @@
+{
+  "server_name": "benign-mcp03-063",
+  "tools": [
+    {
+      "name": "benign_063_integration_doc_summary",
+      "title": "Integration Documentation Summary",
+      "description": "Summarize integration docs that describe when tools may be used by humans.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Integration docs."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "benign_id": "BENIGN-063",
+        "category": "MCP03 benign false-positive control",
+        "benign_group": "Benign Cross-tool Language",
+        "expected_result": "No finding from default MCP03/obfuscation detectors.",
+        "false_positive_focus": "Benign Cross-tool Language"
+      }
+    }
+  ]
+}
