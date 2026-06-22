@@ -1,13 +1,151 @@
 import json
+from dataclasses import fields
 from pathlib import Path
 
 import pytest
 
+from core import config_loader
 from core.config_loader import (
     ConfigLoadError,
+    McpServerConfig,
     load_mcp_config,
     parse_mcp_config_document,
+    parse_mcp_server_entry,
 )
+
+
+def test_parse_mcp_server_entry_loads_single_stdio_server():
+    raw_entry = {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-filesystem"],
+        "env": {"FILESYSTEM_ROOT": "C:\\Work"},
+        "cwd": "C:\\Work",
+        "customField": {"preserved": True},
+    }
+
+    config = parse_mcp_server_entry(
+        " filesystem ",
+        raw_entry,
+        source="codex:user",
+    )
+
+    assert config == McpServerConfig(
+        server_name="filesystem",
+        command="npx",
+        args=["-y", "@modelcontextprotocol/server-filesystem"],
+        env={"FILESYSTEM_ROOT": "C:\\Work"},
+        cwd="C:\\Work",
+        raw=raw_entry,
+        source="codex:user",
+    )
+    assert config.raw is not raw_entry
+
+
+def test_parse_mcp_server_entry_preserves_existing_model_contract():
+    config = parse_mcp_server_entry(
+        "remote-shaped-entry",
+        {
+            "url": "https://example.com/mcp",
+            "headers": {"Authorization": "Bearer TEST_TOKEN"},
+            "transport": "streamable-http",
+            "enabled_tools": ["search"],
+        },
+    )
+
+    assert [field.name for field in fields(McpServerConfig)] == [
+        "server_name",
+        "command",
+        "args",
+        "env",
+        "cwd",
+        "raw",
+        "source",
+    ]
+    assert config.command is None
+    assert config.raw["url"] == "https://example.com/mcp"
+    assert not hasattr(config, "url")
+    assert not hasattr(config, "headers")
+    assert not hasattr(config, "transport")
+    assert not hasattr(config, "tool_policy")
+
+
+def test_parse_mcp_server_entry_allows_discovery_to_isolate_entry_errors():
+    entries = {
+        "valid-before": {"command": "python", "args": ["before.py"]},
+        "invalid": {"command": 123},
+        "valid-after": {"command": "node", "args": ["after.js"]},
+    }
+    configs = []
+    errors = []
+
+    for server_name, raw_entry in entries.items():
+        try:
+            configs.append(
+                parse_mcp_server_entry(server_name, raw_entry)
+            )
+        except ConfigLoadError as error:
+            errors.append((server_name, str(error)))
+
+    assert [config.server_name for config in configs] == [
+        "valid-before",
+        "valid-after",
+    ]
+    assert errors == [
+        ("invalid", "invalid.command must be a string"),
+    ]
+
+
+def test_parse_mcp_config_document_reuses_public_entry_parser(monkeypatch):
+    parsed_server_names = []
+    original_parser = config_loader.parse_mcp_server_entry
+
+    def recording_parser(server_name, raw_server_config, *, source=None):
+        parsed_server_names.append(server_name)
+        return original_parser(
+            server_name,
+            raw_server_config,
+            source=source,
+        )
+
+    monkeypatch.setattr(
+        config_loader,
+        "parse_mcp_server_entry",
+        recording_parser,
+    )
+
+    configs = config_loader.parse_mcp_config_document(
+        {
+            "mcpServers": {
+                "first": {"command": "python"},
+                "second": {"command": "node"},
+            }
+        },
+        source="manual.json",
+    )
+
+    assert parsed_server_names == ["first", "second"]
+    assert [config.source for config in configs] == [
+        "manual.json",
+        "manual.json",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("server_name", "raw_entry", "message"),
+    [
+        (123, {}, "server name must be a string"),
+        ("   ", {}, "server name must not be empty"),
+        ("bad", "not-an-object", "config must be an object"),
+        ("bad", {"args": "not-an-array"}, "args must be an array"),
+    ],
+)
+def test_parse_mcp_server_entry_rejects_invalid_entry(
+    server_name,
+    raw_entry,
+    message,
+):
+    with pytest.raises(ConfigLoadError, match=message):
+        parse_mcp_server_entry(server_name, raw_entry)
 
 
 def test_parse_mcp_config_document_loads_servers():
