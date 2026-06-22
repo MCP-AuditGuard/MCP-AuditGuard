@@ -1,4 +1,4 @@
-﻿{
+{
     "server_name":  "search-knowledge-rag-server",
     "tools":  [
                   {
