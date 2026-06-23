@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import base64
 import binascii
+import codecs
+import html
 import re
 from dataclasses import dataclass
 from urllib.parse import unquote
@@ -16,13 +18,29 @@ from detectors.obfuscation.common import (
 )
 
 
-BASE64_RE = re.compile(r"\b[A-Za-z0-9+/]{20,}={0,2}\b")
+# metadata에 숨어 있을 수 있는 다양한 인코딩 표현을 찾는 정규식입니다.
+BASE64_RE = re.compile(r"\b[A-Za-z0-9+/]{8,}={0,2}\b")
+BASE64URL_RE = re.compile(r"\b[A-Za-z0-9_-]{8,}={0,2}\b")
 URL_ENCODED_RE = re.compile(r"%[0-9A-Fa-f]{2}")
+HEX_RE = re.compile(r"\b(?:0x)?(?:[0-9A-Fa-f]{2}){8,}\b")
+OCTAL_ESCAPE_RE = re.compile(r"(?:\\[0-7]{2,3}){3,}")
+HTML_ENTITY_RE = re.compile(
+    r"&(?:#[0-9]{2,7}|#x[0-9A-Fa-f]{2,6}|[A-Za-z][A-Za-z0-9]{1,31});"
+)
+
+# 오탐과 과도한 처리량을 줄이기 위한 안전 제한값입니다.
 MIN_PRINTABLE_RATIO = 0.85
+LONG_BASE64_CANDIDATE_LENGTH = 20
+MAX_DECODED_PAYLOADS = 20
+MAX_CANDIDATE_CHARS = 4096
+MAX_CANDIDATES_PER_ENCODING = 50
+MAX_ROT13_CHARS = 4096
+MAX_DECODE_DEPTH = 1
 
 
 @dataclass(frozen=True)
 class DecodedPayload:
+    # 원본 문자열이 어떤 방식으로 디코딩됐고, 결과가 무엇인지 담습니다.
     encoding: str
     original: str
     decoded: str
@@ -32,15 +50,16 @@ class EncodedPayloadDetector:
     name = "encoded_payload"
 
     def detect(self, tool: ToolMetadata) -> list[Finding]:
+        # metadata 문자열 안의 인코딩 페이로드를 디코딩하고 hidden instruction 여부를 판단합니다.
         findings: list[Finding] = []
 
         for field in iter_metadata_text(tool):
             for payload in find_decoded_payloads(field.value):
                 suspicious = contains_suspicious_phrase(payload.decoded)
-                if payload.encoding == "base64" and not suspicious:
+                if payload.encoding in {"base64", "base64url"} and not suspicious:
                     severity = "low"
                     confidence = "low"
-                    title = "Base64-like encoded payload found in tool metadata"
+                    title = f"{payload.encoding.upper()}-like encoded payload found in tool metadata"
                 elif suspicious:
                     severity = "high"
                     confidence = "high"
@@ -79,33 +98,117 @@ class EncodedPayloadDetector:
         return findings
 
 
-def find_decoded_payloads(text: str) -> list[DecodedPayload]:
+def find_decoded_payloads(text: str, *, max_depth: int = MAX_DECODE_DEPTH) -> list[DecodedPayload]:
+    # 여러 인코딩 후보를 찾고, 필요하면 한 단계 더 중첩 디코딩합니다.
     payloads: list[DecodedPayload] = []
     seen: set[tuple[str, str]] = set()
+    seen_decoded: set[tuple[str, str]] = set()
 
-    for candidate in BASE64_RE.findall(text):
-        decoded = decode_base64_candidate(candidate)
-        if decoded is None:
+    def add_payload(
+        encoding: str,
+        candidate: str,
+        decoded: str | None,
+        *,
+        require_suspicious: bool = False,
+    ) -> None:
+        # 디코딩 실패, 비가독 문자열, 중복 결과, 너무 긴 후보는 보고하지 않습니다.
+        if len(payloads) >= MAX_DECODED_PAYLOADS:
+            return
+        if decoded is None or decoded == candidate:
+            return
+        if len(candidate) > MAX_CANDIDATE_CHARS or not _looks_printable(decoded):
+            return
+        if require_suspicious and not contains_suspicious_phrase(decoded):
+            return
+
+        key = (encoding, candidate)
+        decoded_key = (encoding, decoded)
+        if key in seen or decoded_key in seen_decoded:
+            return
+
+        payloads.append(DecodedPayload(encoding, candidate, decoded))
+        seen.add(key)
+        seen_decoded.add(decoded_key)
+
+    for candidate in BASE64_RE.findall(text)[:MAX_CANDIDATES_PER_ENCODING]:
+        add_payload(
+            "base64",
+            candidate,
+            decode_base64_candidate(candidate),
+            require_suspicious=len(candidate.rstrip("=")) < LONG_BASE64_CANDIDATE_LENGTH,
+        )
+
+    for candidate in BASE64URL_RE.findall(text)[:MAX_CANDIDATES_PER_ENCODING]:
+        if "-" not in candidate and "_" not in candidate:
             continue
-        key = ("base64", candidate)
-        if key not in seen:
-            payloads.append(DecodedPayload("base64", candidate, decoded))
-            seen.add(key)
+        add_payload(
+            "base64url",
+            candidate,
+            decode_base64url_candidate(candidate),
+            require_suspicious=len(candidate.rstrip("=")) < LONG_BASE64_CANDIDATE_LENGTH,
+        )
 
-    for match in URL_ENCODED_RE.finditer(text):
+    for index, match in enumerate(URL_ENCODED_RE.finditer(text)):
+        if index >= MAX_CANDIDATES_PER_ENCODING:
+            break
         candidate = _expand_url_encoded_candidate(text, match.start(), match.end())
-        decoded = unquote(candidate)
-        if decoded == candidate or not _looks_printable(decoded):
-            continue
-        key = ("url_encoding", candidate)
-        if key not in seen:
-            payloads.append(DecodedPayload("url_encoding", candidate, decoded))
-            seen.add(key)
+        add_payload("url_encoding", candidate, unquote(candidate))
+
+    for candidate in HEX_RE.findall(text)[:MAX_CANDIDATES_PER_ENCODING]:
+        add_payload(
+            "hex",
+            candidate,
+            decode_hex_candidate(candidate),
+            require_suspicious=True,
+        )
+
+    for candidate in OCTAL_ESCAPE_RE.findall(text)[:MAX_CANDIDATES_PER_ENCODING]:
+        add_payload(
+            "octal_escape",
+            candidate,
+            decode_octal_escape_candidate(candidate),
+            require_suspicious=True,
+        )
+
+    for index, match in enumerate(HTML_ENTITY_RE.finditer(text)):
+        if index >= MAX_CANDIDATES_PER_ENCODING:
+            break
+        candidate = _expand_html_entity_candidate(text, match.start(), match.end())
+        add_payload(
+            "html_entity",
+            candidate,
+            html.unescape(candidate),
+            require_suspicious=True,
+        )
+
+    if len(text) <= MAX_ROT13_CHARS:
+        decoded_rot13 = codecs.decode(text, "rot_13")
+        add_payload(
+            "rot13",
+            text,
+            decoded_rot13,
+            require_suspicious=True,
+        )
+
+    if max_depth > 0:
+        for payload in list(payloads):
+            if len(payloads) >= MAX_DECODED_PAYLOADS:
+                break
+            for nested_payload in find_decoded_payloads(
+                payload.decoded,
+                max_depth=max_depth - 1,
+            ):
+                add_payload(
+                    nested_payload.encoding,
+                    nested_payload.original,
+                    nested_payload.decoded,
+                )
 
     return payloads
 
 
 def decode_base64_candidate(candidate: str) -> str | None:
+    # padding이 빠진 base64 후보도 보정해서 UTF-8 문자열로 디코딩합니다.
     padded = candidate + ("=" * (-len(candidate) % 4))
     try:
         raw = base64.b64decode(padded, validate=True)
@@ -126,7 +229,80 @@ def decode_base64_candidate(candidate: str) -> str | None:
     return decoded
 
 
+def decode_base64url_candidate(candidate: str) -> str | None:
+    # URL-safe base64(-, _) 후보를 UTF-8 문자열로 디코딩합니다.
+    padded = candidate + ("=" * (-len(candidate) % 4))
+    try:
+        raw = base64.b64decode(padded, altchars=b"-_", validate=True)
+    except (binascii.Error, ValueError):
+        return None
+
+    if not raw:
+        return None
+
+    try:
+        decoded = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
+
+    if not _looks_printable(decoded):
+        return None
+
+    return decoded
+
+
+def decode_hex_candidate(candidate: str) -> str | None:
+    # 0x prefix가 있거나 없는 hex byte 문자열을 UTF-8로 디코딩합니다.
+    normalized = candidate[2:] if candidate.lower().startswith("0x") else candidate
+    if len(normalized) % 2 != 0:
+        return None
+
+    try:
+        raw = bytes.fromhex(normalized)
+    except ValueError:
+        return None
+
+    if not raw:
+        return None
+
+    try:
+        decoded = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
+
+    if not _looks_printable(decoded):
+        return None
+
+    return decoded
+
+
+def decode_octal_escape_candidate(candidate: str) -> str | None:
+    # \151\147 같은 octal escape 연속 문자열을 byte로 바꾼 뒤 UTF-8로 디코딩합니다.
+    parts = re.findall(r"\\([0-7]{2,3})", candidate)
+    if not parts:
+        return None
+
+    try:
+        raw = bytes(int(part, 8) for part in parts)
+    except ValueError:
+        return None
+
+    if not raw:
+        return None
+
+    try:
+        decoded = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
+
+    if not _looks_printable(decoded):
+        return None
+
+    return decoded
+
+
 def _looks_printable(text: str) -> bool:
+    # 디코딩 결과 대부분이 출력 가능한 문자일 때만 유효한 payload로 봅니다.
     if not text:
         return False
     printable = sum(char.isprintable() or char in "\r\n\t" for char in text)
@@ -134,6 +310,7 @@ def _looks_printable(text: str) -> bool:
 
 
 def _expand_url_encoded_candidate(text: str, start: int, end: int) -> str:
+    # %xx 조각 하나에서 시작해 주변 URL-safe 문자까지 묶어 전체 인코딩 후보를 만듭니다.
     left = start
     right = end
     allowed = set("%0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_.~+")
@@ -142,5 +319,28 @@ def _expand_url_encoded_candidate(text: str, start: int, end: int) -> str:
         left -= 1
     while right < len(text) and text[right] in allowed:
         right += 1
+
+    return text[left:right]
+
+
+def _expand_html_entity_candidate(text: str, start: int, end: int) -> str:
+    # 연속된 HTML entity들을 하나의 후보로 묶어 한 번에 unescape합니다.
+    left = start
+    right = end
+
+    while True:
+        previous_match = None
+        for match in HTML_ENTITY_RE.finditer(text, 0, left):
+            if match.end() == left:
+                previous_match = match
+        if previous_match is None:
+            break
+        left = previous_match.start()
+
+    while True:
+        next_match = HTML_ENTITY_RE.match(text, right)
+        if next_match is None:
+            break
+        right = next_match.end()
 
     return text[left:right]
