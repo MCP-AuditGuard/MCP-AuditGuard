@@ -203,23 +203,76 @@ def parse_mcp_config_document(
     configs: list[McpServerConfig] = []
 
     for server_name, raw_server_config in raw_servers.items():
-        if not isinstance(server_name, str):
-            raise ConfigLoadError("MCP server name must be a string")
-
-        if not isinstance(raw_server_config, Mapping):
-            raise ConfigLoadError(
-                f"MCP server config must be an object. server={server_name}"
-            )
-
-        config = _to_mcp_server_config(
+        config = parse_mcp_server_entry(
             server_name=server_name,
-            raw_server_config=dict(raw_server_config),
+            raw_server_config=raw_server_config,
             source=source,
         )
 
         configs.append(config)
 
     return configs
+
+
+def parse_mcp_server_entry(
+    server_name: str,
+    raw_server_config: Mapping[str, Any],
+    *,
+    source: str | None = None,
+) -> McpServerConfig:
+    """
+    STDIO MCP 서버 설정 항목 하나를 검증하고 구조화한다.
+
+    전체 JSON 문서를 요구하지 않으므로 Discovery가 각 제품 설정에서 추출한
+    서버 항목을 독립적으로 파싱하고, 항목별 ConfigLoadError를 격리할 수 있다.
+
+    이 함수는 기존 McpServerConfig 계약만 생성한다.
+    URL, Header, Transport와 Tool Policy는 해석하거나 모델에 추가하지 않는다.
+    """
+    if not isinstance(server_name, str):
+        raise ConfigLoadError("MCP server name must be a string")
+
+    normalized_server_name = server_name.strip()
+
+    if not normalized_server_name:
+        raise ConfigLoadError("MCP server name must not be empty")
+
+    if not isinstance(raw_server_config, Mapping):
+        raise ConfigLoadError(
+            f"MCP server config must be an object. server={normalized_server_name}"
+        )
+
+    raw_entry = dict(raw_server_config)
+
+    command = _optional_string(
+        raw_entry.get("command"),
+        field_name=f"{normalized_server_name}.command",
+    )
+
+    args = _string_list(
+        raw_entry.get("args", []),
+        field_name=f"{normalized_server_name}.args",
+    )
+
+    env = _string_dict(
+        raw_entry.get("env", {}),
+        field_name=f"{normalized_server_name}.env",
+    )
+
+    cwd = _optional_string(
+        raw_entry.get("cwd"),
+        field_name=f"{normalized_server_name}.cwd",
+    )
+
+    return McpServerConfig(
+        server_name=normalized_server_name,
+        command=command,
+        args=args,
+        env=env,
+        cwd=cwd,
+        raw=raw_entry,
+        source=source,
+    )
 
 
 def _extract_mcp_servers(
@@ -246,51 +299,6 @@ def _extract_mcp_servers(
         raise ConfigLoadError("'mcpServers' must be an object")
 
     return raw_servers
-
-
-def _to_mcp_server_config(
-    *,
-    server_name: str,
-    raw_server_config: JsonDict,
-    source: str | None,
-) -> McpServerConfig:
-    """
-    server config dict 하나를 McpServerConfig로 변환한다.
-    """
-    normalized_server_name = server_name.strip()
-
-    if not normalized_server_name:
-        raise ConfigLoadError("MCP server name must not be empty")
-
-    command = _optional_string(
-        raw_server_config.get("command"),
-        field_name=f"{normalized_server_name}.command",
-    )
-
-    args = _string_list(
-        raw_server_config.get("args", []),
-        field_name=f"{normalized_server_name}.args",
-    )
-
-    env = _string_dict(
-        raw_server_config.get("env", {}),
-        field_name=f"{normalized_server_name}.env",
-    )
-
-    cwd = _optional_string(
-        raw_server_config.get("cwd"),
-        field_name=f"{normalized_server_name}.cwd",
-    )
-
-    return McpServerConfig(
-        server_name=normalized_server_name,
-        command=command,
-        args=args,
-        env=env,
-        cwd=cwd,
-        raw=dict(raw_server_config),
-        source=source,
-    )
 
 
 def _optional_string(

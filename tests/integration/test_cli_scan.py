@@ -35,7 +35,7 @@ def test_scan_outputs_markdown_to_terminal(monkeypatch, tmp_path) -> None:
     tool = make_tool()
 
     monkeypatch.setattr(scan_service, "collect_from_tools_json", lambda path: [tool])
-    monkeypatch.setattr(scan_service, "scan_tools", lambda tools, detectors: [])
+    monkeypatch.setattr(scan_service, "create_default_detectors", lambda: [])
 
     result = runner.invoke(cli_main.app, ["scan", "--input", str(input_path)])
 
@@ -51,7 +51,7 @@ def test_scan_writes_json_report_to_output(monkeypatch, tmp_path) -> None:
     tool = make_tool()
 
     monkeypatch.setattr(scan_service, "collect_from_tools_json", lambda path: [tool])
-    monkeypatch.setattr(scan_service, "scan_tools", lambda tools, detectors: [])
+    monkeypatch.setattr(scan_service, "create_default_detectors", lambda: [])
 
     result = runner.invoke(
         cli_main.app,
@@ -78,7 +78,7 @@ def test_scan_saves_baseline(monkeypatch, tmp_path) -> None:
     tool = make_tool(server_name="docs", tool_name="search")
 
     monkeypatch.setattr(scan_service, "collect_from_tools_json", lambda path: [tool])
-    monkeypatch.setattr(scan_service, "scan_tools", lambda tools, detectors: [])
+    monkeypatch.setattr(scan_service, "create_default_detectors", lambda: [])
 
     result = runner.invoke(
         cli_main.app,
@@ -107,7 +107,7 @@ def test_scan_adds_baseline_diff_findings(monkeypatch, tmp_path) -> None:
     )
 
     monkeypatch.setattr(scan_service, "collect_from_tools_json", lambda path: [changed_tool])
-    monkeypatch.setattr(scan_service, "scan_tools", lambda tools, detectors: [])
+    monkeypatch.setattr(scan_service, "create_default_detectors", lambda: [])
 
     result = runner.invoke(
         cli_main.app,

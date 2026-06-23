@@ -74,7 +74,7 @@ def load_tools_json(
         raise ToolCollectionError(f"path is not a file: {file_path}")
 
     try:
-        raw_text = file_path.read_text(encoding="utf-8")
+        raw_text = file_path.read_text(encoding="utf-8-sig")
     except OSError as exc:
         raise ToolCollectionError(f"failed to read tools.json: {file_path}") from exc
 
