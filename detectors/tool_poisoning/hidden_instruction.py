@@ -153,4 +153,3 @@ def _target_name(tool: Any) -> str:
 def _to_camel_case(value: str) -> str:
     parts = value.split("_")
     return parts[0] + "".join(part.title() for part in parts[1:])
-

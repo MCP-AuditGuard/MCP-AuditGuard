@@ -93,7 +93,7 @@ def _general_benign_lab_cases() -> list[Path]:
 
 
 def _load_tools(path: Path) -> list[dict]:
-    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload = json.loads(path.read_text(encoding="utf-8-sig"))
     assert "tools" in payload, f"{path} must use the MCP listTools-style tools array"
     assert payload["tools"], f"{path} must include at least one tool"
     return payload["tools"]

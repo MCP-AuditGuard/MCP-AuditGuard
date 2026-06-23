@@ -18,6 +18,7 @@ Member5 담당 관점:
 import typer
 from rich.console import Console
 
+from cli.mcp import app as mcp_app
 from cli.scan import scan_command
 from cli.web import web_command
 
@@ -124,6 +125,13 @@ app.command(
     name="web",
     help="Run the MCP-AuditGuard local web interface.",
 )(web_command)
+
+
+app.add_typer(
+    mcp_app,
+    name="mcp",
+    help="Discover and statically scan configured MCP servers.",
+)
 
 
 if __name__ == "__main__":
