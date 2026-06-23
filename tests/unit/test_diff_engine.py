@@ -2,8 +2,8 @@
 diff_engine 단위 테스트.
 
 이 테스트는 이전 baseline과 현재 metadata 비교 결과가 올바른 Finding으로 변환되는지
-검증한다. baseline diff Finding은 detector Finding과 같은 report pipeline에 들어가므로
-id/severity/title/evidence 같은 핵심 필드가 안정적이어야 한다.
+검증한다. diff 결과도 detector 결과와 같은 report pipeline을 타므로 id, severity,
+title, evidence가 안정적으로 유지되어야 한다.
 """
 
 from types import SimpleNamespace
@@ -33,7 +33,7 @@ def make_tool(
 
 
 def test_diff_baseline_detects_added_tool() -> None:
-    # 새 tool 추가는 예기치 않은 권한/기능 증가일 수 있어 medium finding으로 표시한다.
+    # 새 tool 추가는 예기치 않은 기능/권한 증가일 수 있어 medium finding으로 표시한다.
     old_tool = make_tool(tool_name="search")
     new_tool = make_tool(tool_name="send_email")
     old_baseline = create_baseline([old_tool])
@@ -49,7 +49,7 @@ def test_diff_baseline_detects_added_tool() -> None:
 
 
 def test_diff_baseline_detects_removed_tool() -> None:
-    # tool 삭제는 직접 공격은 아닐 수 있지만 shadowing/대체 흐름을 추적하는 단서가 된다.
+    # 삭제된 tool도 shadowing/대체 흐름을 추적하는 단서가 될 수 있다.
     kept_tool = make_tool(tool_name="search")
     removed_tool = make_tool(tool_name="send_email")
     old_baseline = create_baseline([kept_tool, removed_tool])

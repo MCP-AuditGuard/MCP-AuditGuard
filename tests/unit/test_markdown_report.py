@@ -1,9 +1,9 @@
 """
 Markdown report renderer 단위 테스트.
 
-Markdown 리포트는 사람이 직접 읽는 산출물이므로, severity 요약과 finding 상세 정보가
-빠지지 않는지 검증한다. 특히 evidence/recommendation은 보안 검토자가 판단과 조치를
-이해하는 데 필요한 핵심 필드다.
+Markdown report는 사람이 직접 읽는 산출물이므로 severity 요약과 finding 상세 정보가
+빠지지 않는지 검증한다. evidence/recommendation은 보안 검토와 발표 설명에 필요한
+핵심 필드다.
 """
 
 from types import SimpleNamespace
@@ -58,7 +58,7 @@ def test_render_markdown_includes_summary_counts_and_finding_details() -> None:
 
 
 def test_render_markdown_outputs_no_findings_message() -> None:
-    # finding이 없을 때도 빈 리포트가 아니라 명시적인 정상 메시지를 보여준다.
+    # finding이 없을 때도 빈 문서가 아니라 명시적인 정상 메시지를 보여준다.
     report = render_markdown([])
 
     assert "# MCP-AuditGuard Scan Report" in report
