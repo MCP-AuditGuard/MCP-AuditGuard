@@ -823,3 +823,215 @@ python3 -m pytest
 - `docs/member 2/benign_test/benign-lab-spec-2026-06-24.md`
 - `docs/member 2/vulnerable-lab-mcp03-spec-comparison-2026-06-24.md`
 - `docs/member 2/변경사항/member2-auditguard-changes-2026-06-20.md`
+
+## 2026-06-24 추가 변경 - 한국어 사용자용 탐지 결과 문구 정리
+
+### 작업 목적
+
+스캔 대상 도구 설명은 여전히 영어 metadata를 기준으로 검사하지만, 스캔 결과를 읽는 한국어 사용자가 finding의 의미와 확인 포인트를 바로 이해할 수 있도록 `title`과 `recommendation` 문구를 정리했습니다.
+
+이번 변경은 탐지 로직 변경이 아니라 사용자 노출 문구 개선입니다.
+
+유지한 값:
+
+- `id`
+- `category`
+- `severity`
+- `confidence`
+- `location`
+- `evidence`
+- `matched_rule`
+- `canonical_excerpt`
+
+변경한 값:
+
+- `title`
+- `recommendation`
+
+### Recommendation 작성 원칙
+
+모든 사용자 노출 recommendation을 다음 구조로 통일했습니다.
+
+```text
+[필드의 원래 역할] + [확인해야 할 위험 신호] + [문제가 맞을 때의 조치]
+```
+
+이 구조를 적용한 이유:
+
+- 정적 탐지 결과를 확정 취약점처럼 단정하지 않기 위해
+- 오탐 가능성이 있는 결과에서도 사용자가 확인할 기준을 갖게 하기 위해
+- “무조건 제거”가 아니라 “실제 기능 설명과 무관하면 수정/제거”하는 조건부 조치로 안내하기 위해
+- MCP03의 핵심인 도구 metadata가 모델 행동을 부당하게 조종하는지 확인하는 데 집중하기 위해
+
+예시:
+
+```text
+도구 설명은 도구의 기능, 사용 조건, 필요한 입력을 설명하는 용도입니다.
+시스템, 개발자, 사용자 지시를 무시하거나 덮어쓰도록 유도하는 문구가 포함되어 있는지 확인하세요.
+실제 기능 설명과 무관한 지시라면 제거하거나 안전한 설명으로 수정하세요.
+```
+
+### MCP03 rule metadata 한국어화
+
+`rules/tool_poisoning.yaml`에 있는 MCP03 키워드/정규식 룰에 한국어 `title`을 추가하고, 기존 영어 recommendation을 한국어 사용자용 문구로 바꿨습니다.
+
+추가/수정된 대표 title:
+
+- `기존 지시 무시 유도`
+- `은밀한 동작 유도`
+- `민감 정보 접근 또는 전송 유도`
+- `공급망 관련 작업 강제 유도`
+- `명령 실행 유도`
+- `권한 있는 리소스 접근 유도`
+- `최종 응답 조작 유도`
+- `입력 스키마 지시문 오염`
+- `도구 선택 또는 결과 조작 유도`
+
+### Semantic recommendation 중복 제거
+
+초기 한국어화 과정에서 semantic finding의 recommendation이 일반 룰 recommendation을 그대로 뒤에 붙이면서 문장이 중복되는 문제가 있었습니다.
+
+문제 예시:
+
+```text
+도구 메타데이터는 도구의 기능과 사용 조건을 설명하는 용도입니다.
+이 결과는 키워드/정규식 직접 매칭이 아니라 의미 유사도 기반 보조 탐지이므로...
+도구 설명은 도구의 기능, 사용 조건, 필요한 입력을 설명하는 용도입니다...
+```
+
+개선 후에는 semantic 전용 recommendation을 별도로 생성하도록 정리했습니다.
+
+개선된 semantic recommendation 형식:
+
+```text
+검사 대상 필드는 도구의 기능, 입력 의미, 사용 조건을 설명하는 용도입니다.
+이 결과는 키워드/정규식 직접 매칭이 아니라 의미 유사도 기반 보조 탐지이므로,
+매칭된 텍스트가 '{룰 title}' 위험 신호에 실제로 해당하는지 직접 확인하세요.
+실제 기능 설명과 무관한 위험 신호라면 제거하거나 안전한 설명으로 수정하세요.
+```
+
+이렇게 바꾼 이유:
+
+- semantic 탐지는 키워드/정규식 직접 매칭보다 근거가 약한 보조 탐지이기 때문
+- 일반 룰 recommendation과 의미가 겹쳐 보고서가 장황해지는 문제를 줄이기 위해
+- 사용자가 semantic finding을 “확정 탐지”가 아니라 “직접 확인해야 할 후보”로 이해하게 하기 위해
+
+### Obfuscation 및 구조형 finding 문구 정리
+
+사용자에게 finding으로 노출되는 obfuscation 계열 title/recommendation도 한국어 사용자용으로 정리했습니다.
+
+적용 대상:
+
+- encoded payload
+- unicode obfuscation
+- homoglyph
+- HTML/CSS/script/IE conditional comment
+- markdown hidden link
+- obfuscated hidden instruction
+
+예시:
+
+- `도구 메타데이터의 BASE64 유사 인코딩 페이로드`
+- `도구 메타데이터의 유니코드 난독화 문자`
+- `도구 메타데이터의 의심스러운 유사 문자`
+- `난독화 해제 후 숨겨진 지시문 발견`
+
+단, obfuscation detector는 원래 YAML 기반 MCP03 룰과 별도 로직이므로 일부 사용자 문구가 코드에 남아 있습니다. 향후 일관성을 더 높이려면 구조형 finding 메시지를 별도 YAML 또는 message registry로 분리하는 방안을 검토할 수 있습니다.
+
+### Korean 보고서 생성
+
+한국어 사용자용 title/recommendation이 실제 결과에 반영되는지 확인하기 위해 `korean` 보고서를 새로 생성했습니다.
+
+보고서:
+
+- `docs/member 2/vulnerable-lab-detected-mcp03-korean-2026-06-24.md`
+- `docs/member 2/benign_test/benign-lab-korean-2026-06-24.md`
+
+보고서에는 기존 상세 표에 `Title`과 `Recommendation` 열을 포함했습니다.
+
+Vulnerable Lab 결과:
+
+- 전체 사례: 112개
+- 탐지 사례: 45개
+- 미탐/무탐지 사례: 67개
+- 전체 Finding: 126개
+- 오류 사례: 0개
+
+Benign Lab 결과:
+
+- 전체 사례: 200개
+- 탐지 사례: 1개
+- 전체 Finding: 1개
+- 오류 사례: 0개
+
+남은 benign 오탐 후보:
+
+- `BENIGN-032-url-encoding-doc`
+- category: `obfuscation.url_encoding`
+- evidence: `hello%20world.` 문서 예시 URL encoding
+
+### Git 반영
+
+이번 변경사항은 다음 커밋으로 반영하고 원격 브랜치에 푸시했습니다.
+
+```text
+45cd840 feat: localize detection result guidance
+```
+
+대상 브랜치:
+
+```text
+feature/member2-tool-poisoning
+```
+
+### 검증 결과
+
+관련 테스트:
+
+```text
+pytest tests/unit/test_tool_poisoning.py tests/unit/test_encoded_payload.py tests/unit/test_obfuscation.py tests/unit/test_semantic_similarity.py tests/integration/test_cli_scan.py
+59 passed
+```
+
+vulnerable/benign lab 통합 테스트:
+
+```text
+pytest tests/integration/test_scan_vulnerable_lab.py
+327 passed
+```
+
+전체 테스트:
+
+```text
+pytest
+595 passed
+```
+
+### 이번 추가 변경에 포함된 파일
+
+코드:
+
+- `detectors/obfuscation/encoded_payload.py`
+- `detectors/obfuscation/homoglyph.py`
+- `detectors/obfuscation/html_comment.py`
+- `detectors/obfuscation/unicode_obfuscation.py`
+- `detectors/semantic_similarity.py`
+- `detectors/tool_poisoning/cross_tool_instruction.py`
+- `detectors/tool_poisoning/hidden_instruction.py`
+- `detectors/tool_poisoning/markdown_hidden_link.py`
+- `detectors/tool_poisoning/metadata_poisoning.py`
+- `detectors/tool_poisoning/obfuscated_hidden_instruction.py`
+- `detectors/tool_poisoning/schema_poisoning.py`
+- `rules/semantic_signatures.yaml`
+- `rules/tool_poisoning.yaml`
+
+테스트:
+
+- `tests/integration/test_cli_scan.py`
+- `tests/unit/test_tool_poisoning.py`
+
+문서:
+
+- `docs/member 2/vulnerable-lab-detected-mcp03-korean-2026-06-24.md`
+- `docs/member 2/benign_test/benign-lab-korean-2026-06-24.md`
+- `docs/member 2/변경사항/member2-auditguard-changes-2026-06-20.md`
