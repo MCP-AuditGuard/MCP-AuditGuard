@@ -12,10 +12,11 @@ from core.models import Finding, ToolMetadata
 from detectors.obfuscation.common import (
     contains_suspicious_phrase,
     excerpt,
-    iter_metadata_text,
+    iter_spec_metadata_text,
     json_evidence,
     make_finding,
 )
+from detectors.obfuscation.derived_text import DerivedMetadataText
 
 
 # metadata에 숨어 있을 수 있는 다양한 인코딩 표현을 찾는 정규식입니다.
@@ -44,26 +45,25 @@ class DecodedPayload:
     encoding: str
     original: str
     decoded: str
+    transformation_chain: tuple[str, ...] = ()
 
 
 class EncodedPayloadDetector:
     name = "encoded_payload"
 
     def detect(self, tool: ToolMetadata) -> list[Finding]:
-        # metadata 문자열 안의 인코딩 페이로드를 디코딩하고 hidden instruction 여부를 판단합니다.
+        # metadata 문자열 안의 인코딩 페이로드를 디코딩하되, MCP03 의도 판정은 별도 detector에 맡깁니다.
         findings: list[Finding] = []
 
-        for field in iter_metadata_text(tool):
+        for field in iter_spec_metadata_text(tool):
             for payload in find_decoded_payloads(field.value):
-                suspicious = contains_suspicious_phrase(payload.decoded)
-                if payload.encoding in {"base64", "base64url"} and not suspicious:
+                if payload.encoding == "rot13":
+                    continue
+
+                if payload.encoding in {"base64", "base64url"}:
                     severity = "low"
                     confidence = "low"
                     title = f"{payload.encoding.upper()}-like encoded payload found in tool metadata"
-                elif suspicious:
-                    severity = "high"
-                    confidence = "high"
-                    title = f"{payload.encoding.upper()} encoded hidden instruction found"
                 else:
                     severity = "medium"
                     confidence = "medium"
@@ -72,9 +72,9 @@ class EncodedPayloadDetector:
                 evidence = json_evidence(
                     {
                         "encoding": payload.encoding,
+                        "transformation_chain": list(payload.transformation_chain or (payload.encoding,)),
                         "original_excerpt": excerpt(payload.original),
                         "decoded_excerpt": excerpt(payload.decoded),
-                        "suspicious_after_decoding": suspicious,
                     }
                 )
 
@@ -92,10 +92,32 @@ class EncodedPayloadDetector:
                             "Decode and review encoded MCP tool metadata. Remove hidden "
                             "instructions and keep metadata human-readable where possible."
                         ),
+                        fingerprint_parts=(payload.encoding, payload.original),
                     )
                 )
 
         return findings
+
+
+def derive_encoded_texts(tool: ToolMetadata) -> list[DerivedMetadataText]:
+    derived: list[DerivedMetadataText] = []
+
+    for field in iter_spec_metadata_text(tool):
+        for payload in find_decoded_payloads(field.value):
+            chain = payload.transformation_chain or (payload.encoding,)
+            derived.append(
+                DerivedMetadataText(
+                    value=payload.decoded,
+                    source_location=field.location,
+                    derived_location=f"{field.location}|decoded:{'|'.join(chain)}",
+                    transform=f"decoded:{payload.encoding}",
+                    transformation_chain=chain,
+                    original_excerpt=excerpt(payload.original),
+                    decode_confidence=_decode_confidence(payload),
+                )
+            )
+
+    return derived
 
 
 def find_decoded_payloads(text: str, *, max_depth: int = MAX_DECODE_DEPTH) -> list[DecodedPayload]:
@@ -110,6 +132,7 @@ def find_decoded_payloads(text: str, *, max_depth: int = MAX_DECODE_DEPTH) -> li
         decoded: str | None,
         *,
         require_suspicious: bool = False,
+        transformation_chain: tuple[str, ...] | None = None,
     ) -> None:
         # 디코딩 실패, 비가독 문자열, 중복 결과, 너무 긴 후보는 보고하지 않습니다.
         if len(payloads) >= MAX_DECODED_PAYLOADS:
@@ -126,7 +149,14 @@ def find_decoded_payloads(text: str, *, max_depth: int = MAX_DECODE_DEPTH) -> li
         if key in seen or decoded_key in seen_decoded:
             return
 
-        payloads.append(DecodedPayload(encoding, candidate, decoded))
+        payloads.append(
+            DecodedPayload(
+                encoding,
+                candidate,
+                decoded,
+                transformation_chain or (encoding,),
+            )
+        )
         seen.add(key)
         seen_decoded.add(decoded_key)
 
@@ -202,9 +232,22 @@ def find_decoded_payloads(text: str, *, max_depth: int = MAX_DECODE_DEPTH) -> li
                     nested_payload.encoding,
                     nested_payload.original,
                     nested_payload.decoded,
+                    transformation_chain=(
+                        payload.transformation_chain + nested_payload.transformation_chain
+                    ),
                 )
 
     return payloads
+
+
+def _decode_confidence(payload: DecodedPayload) -> str:
+    if payload.encoding in {"base64", "base64url"}:
+        if len(payload.original.rstrip("=")) < LONG_BASE64_CANDIDATE_LENGTH:
+            return "low"
+        return "medium"
+    if payload.encoding == "rot13":
+        return "low"
+    return "medium"
 
 
 def decode_base64_candidate(candidate: str) -> str | None:

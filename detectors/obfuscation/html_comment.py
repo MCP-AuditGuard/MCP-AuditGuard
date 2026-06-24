@@ -1,15 +1,17 @@
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
+from functools import lru_cache
 
 from core.models import Finding, ToolMetadata
 from detectors.obfuscation.common import (
-    contains_suspicious_phrase,
     excerpt,
-    iter_metadata_text,
+    iter_spec_metadata_text,
     json_evidence,
     make_finding,
 )
+from detectors.obfuscation.derived_text import DerivedMetadataText
 
 
 # tool metadata 안에 숨겨진 HTML/CSS/Script 계열 마크업을 찾는 패턴입니다.
@@ -61,47 +63,105 @@ MARKUP_PATTERNS = (
 )
 
 
+@dataclass(frozen=True)
+class MarkupHiddenText:
+    markup_type: str
+    category: str
+    prefix: str
+    title: str
+    recommendation: str
+    hidden_text: str
+    full_match: str
+    span: tuple[int, int]
+
+
 class HtmlCommentDetector:
     name = "html_comment"
 
     def detect(self, tool: ToolMetadata) -> list[Finding]:
-        # metadata의 숨겨진 마크업 본문을 추출하고, 그 안의 suspicious phrase를 검사합니다.
+        # metadata의 숨겨진 마크업 본문을 추출하되, MCP03 의도 판정은 별도 detector에 맡깁니다.
         findings: list[Finding] = []
 
-        for field in iter_metadata_text(tool):
-            seen_spans: set[tuple[int, int]] = set()
-
-            for markup_type, pattern, category, prefix, title, recommendation in MARKUP_PATTERNS:
-                for match in pattern.finditer(field.value):
-                    if match.span() in seen_spans:
-                        continue
-                    seen_spans.add(match.span())
-
-                    hidden_text = match.group(1).strip()
-                    suspicious = contains_suspicious_phrase(hidden_text)
-                    severity = "high" if suspicious else "medium"
-                    confidence = "high" if suspicious else "medium"
-
-                    evidence = json_evidence(
-                        {
-                            "markup_type": markup_type,
-                            "hidden_text_excerpt": excerpt(hidden_text),
-                            "full_match_excerpt": excerpt(match.group(0)),
-                            "suspicious_instruction": suspicious,
-                        }
+        for field in iter_spec_metadata_text(tool):
+            for hidden in find_markup_hidden_texts(field.value):
+                evidence = json_evidence(
+                    {
+                        "markup_type": hidden.markup_type,
+                        "hidden_text_excerpt": excerpt(hidden.hidden_text),
+                        "full_match_excerpt": excerpt(hidden.full_match),
+                    }
+                )
+                findings.append(
+                    make_finding(
+                        prefix=hidden.prefix,
+                        category=hidden.category,
+                        severity="medium",
+                        confidence="medium",
+                        title=hidden.title,
+                        tool=tool,
+                        location=field.location,
+                        evidence=evidence,
+                        recommendation=hidden.recommendation,
+                        fingerprint_parts=(hidden.markup_type, hidden.hidden_text),
                     )
-                    findings.append(
-                        make_finding(
-                            prefix=prefix,
-                            category=category,
-                            severity=severity,
-                            confidence=confidence,
-                            title=title,
-                            tool=tool,
-                            location=field.location,
-                            evidence=evidence,
-                            recommendation=recommendation,
-                        )
-                    )
+                )
 
         return findings
+
+
+def derive_markup_hidden_texts(tool: ToolMetadata) -> list[DerivedMetadataText]:
+    derived: list[DerivedMetadataText] = []
+
+    for field in iter_spec_metadata_text(tool):
+        for hidden in find_markup_hidden_texts(field.value):
+            if not hidden.hidden_text:
+                continue
+
+            derived.append(
+                DerivedMetadataText(
+                    value=hidden.hidden_text,
+                    source_location=field.location,
+                    derived_location=f"{field.location}|hidden:{hidden.markup_type}",
+                    transform=f"hidden:{hidden.markup_type}",
+                    transformation_chain=(f"hidden:{hidden.markup_type}",),
+                    original_excerpt=excerpt(hidden.full_match),
+                    decode_confidence="high",
+                )
+            )
+
+    return derived
+
+
+@lru_cache(maxsize=2048)
+def find_markup_hidden_texts(text: str) -> tuple[MarkupHiddenText, ...]:
+    if not _has_markup_signature(text):
+        return ()
+
+    hidden_texts: list[MarkupHiddenText] = []
+    seen_spans: set[tuple[int, int]] = set()
+
+    for markup_type, pattern, category, prefix, title, recommendation in MARKUP_PATTERNS:
+        for match in pattern.finditer(text):
+            if match.span() in seen_spans:
+                continue
+            seen_spans.add(match.span())
+
+            hidden_texts.append(
+                MarkupHiddenText(
+                    markup_type=markup_type,
+                    category=category,
+                    prefix=prefix,
+                    title=title,
+                    recommendation=recommendation,
+                    hidden_text=match.group(1).strip(),
+                    full_match=match.group(0),
+                    span=match.span(),
+                )
+            )
+
+    return tuple(hidden_texts)
+
+
+def _has_markup_signature(text: str) -> bool:
+    lowered = text.lower()
+    return "<!--" in text or "/*" in text or "<script" in lowered

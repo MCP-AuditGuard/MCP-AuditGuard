@@ -6,9 +6,9 @@ from typing import Any
 from core.models import Finding
 from detectors.tool_poisoning.hidden_instruction import (
     find_rule_matches,
-    iter_text_values,
     load_rules,
 )
+from detectors.tool_poisoning.text_chunks import collect_text_chunks
 
 
 def detect_cross_tool_instructions(tool: Any, rules_path: str | Path | None = None) -> list[Finding]:
@@ -42,27 +42,10 @@ class CrossToolInstructionDetector:
 
 
 def _candidate_texts(tool: Any) -> list[tuple[str, str]]:
-    candidates: list[tuple[str, str]] = []
-
-    for field_name in ("title", "description", "annotations", "meta", "input_schema"):
-        value = _get_field(tool, field_name)
-        if value:
-            candidates.extend(iter_text_values(value, _location_name(field_name)))
-
-    return candidates
-
-
-def _get_field(tool: Any, field_name: str) -> Any:
-    if isinstance(tool, dict):
-        if field_name == "meta":
-            return tool.get("meta") or tool.get("_meta")
-        if field_name == "input_schema":
-            return tool.get("input_schema") or tool.get("inputSchema")
-        return tool.get(field_name)
-    return getattr(tool, field_name, None)
-
-
-def _location_name(field_name: str) -> str:
-    if field_name == "meta":
-        return "_meta"
-    return field_name
+    return [
+        (chunk.location, chunk.text)
+        for chunk in collect_text_chunks(
+            tool,
+            fields=("title", "description", "annotations", "input_schema"),
+        )
+    ]

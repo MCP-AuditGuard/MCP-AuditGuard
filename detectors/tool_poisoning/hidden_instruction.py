@@ -1,28 +1,19 @@
 from __future__ import annotations
 
-import re
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 from core.models import Finding
 from core.redaction import redact_text
+from detectors.rule_engine import (
+    DEFAULT_RULES_PATH,
+    find_rule_matches as find_rule_engine_matches,
+    load_rules,
+    match_pattern,
+)
+from detectors.tool_poisoning.text_chunks import iter_text_values
 
-
-DEFAULT_RULES_PATH = Path(__file__).resolve().parents[2] / "rules" / "tool_poisoning.yaml"
 OWASP_CATEGORY = "MCP03"
-
-
-def load_rules(path: str | Path | None = None, category: str | None = None) -> list[dict[str, Any]]:
-    rules_path = Path(path) if path else DEFAULT_RULES_PATH
-    with rules_path.open("r", encoding="utf-8") as rule_file:
-        data = yaml.safe_load(rule_file) or {}
-
-    rules = data.get("rules", [])
-    if category is None:
-        return rules
-    return [rule for rule in rules if rule.get("category") == category]
 
 
 def detect_hidden_instructions(tool: Any, rules_path: str | Path | None = None) -> list[Finding]:
@@ -60,22 +51,16 @@ def find_rule_matches(
 ) -> list[Finding]:
     findings: list[Finding] = []
 
-    for rule in rules:
-        for pattern in rule.get("patterns", []):
-            evidence = _match_pattern(text, pattern, rule.get("type", "keyword"))
-            if evidence is None:
-                continue
-
-            findings.append(
-                build_finding(
-                    rule=rule,
-                    tool=tool,
-                    location=location,
-                    evidence=evidence,
-                    title=rule.get("title", default_title),
-                )
+    for match in find_rule_engine_matches(text=text, rules=rules):
+        findings.append(
+            build_finding(
+                rule=match.rule,
+                tool=tool,
+                location=location,
+                evidence=match.evidence,
+                title=match.rule.get("title", default_title),
             )
-            break
+        )
 
     return findings
 
@@ -109,33 +94,8 @@ def build_finding(
     )
 
 
-def iter_text_values(value: Any, prefix: str) -> list[tuple[str, str]]:
-    values: list[tuple[str, str]] = []
-
-    if isinstance(value, str):
-        values.append((prefix, value))
-    elif isinstance(value, dict):
-        for key, nested_value in value.items():
-            child_prefix = f"{prefix}.{key}" if prefix else str(key)
-            values.extend(iter_text_values(nested_value, child_prefix))
-    elif isinstance(value, list):
-        for index, nested_value in enumerate(value):
-            child_prefix = f"{prefix}[{index}]"
-            values.extend(iter_text_values(nested_value, child_prefix))
-
-    return values
-
-
 def _match_pattern(text: str, pattern: str, match_type: str) -> str | None:
-    if match_type == "regex":
-        match = re.search(pattern, text, flags=re.IGNORECASE)
-        return match.group(0) if match else None
-
-    lowered_text = text.lower()
-    lowered_pattern = pattern.lower()
-    if lowered_pattern not in lowered_text:
-        return None
-    return pattern
+    return match_pattern(text=text, pattern=pattern, match_type=match_type)
 
 
 def _get_field(tool: Any, field_name: str) -> Any:

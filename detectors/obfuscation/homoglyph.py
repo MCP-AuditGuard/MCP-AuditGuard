@@ -4,12 +4,12 @@ import unicodedata
 
 from core.models import Finding, ToolMetadata
 from detectors.obfuscation.common import (
-    contains_suspicious_phrase,
     excerpt,
-    iter_metadata_text,
+    iter_spec_metadata_text,
     json_evidence,
     make_finding,
 )
+from detectors.obfuscation.derived_text import DerivedMetadataText
 
 
 # 자주 악용되는 일부 confusable 문자의 사람이 읽을 수 있는 이름입니다.
@@ -100,21 +100,19 @@ class HomoglyphDetector:
     name = "homoglyph"
 
     def detect(self, tool: ToolMetadata) -> list[Finding]:
-        # confusable 문자를 ASCII skeleton으로 바꿨을 때 숨겨진 지시가 드러나는지 검사합니다.
+        # confusable 문자를 찾고, ASCII skeleton의 MCP03 판정은 별도 detector에 맡깁니다.
         findings: list[Finding] = []
 
-        for field in iter_metadata_text(tool):
+        for field in iter_spec_metadata_text(tool):
             found = detect_homoglyphs(field.value)
             if not found:
                 continue
 
             skeleton = skeletonize_confusables(field.value)
-            reveals_instruction = skeleton != field.value and contains_suspicious_phrase(skeleton)
-            severity = "high" if reveals_instruction else "medium"
-            confidence = "high" if reveals_instruction else "medium"
 
             evidence = json_evidence(
                 {
+                    "canonical_excerpt": excerpt(skeleton),
                     "text_excerpt": excerpt(field.value),
                     "skeleton_excerpt": excerpt(skeleton),
                     "homoglyphs": {
@@ -122,16 +120,16 @@ class HomoglyphDetector:
                         "items": found[:MAX_REPORTED_HOMOGLYPHS],
                         "truncated": len(found) > MAX_REPORTED_HOMOGLYPHS,
                     },
-                    "reveals_instruction_after_skeleton": reveals_instruction,
+                    "transforms": ["homoglyph_skeleton"],
                 }
             )
             findings.append(
                 make_finding(
-                    prefix="mcp03-homoglyph",
-                    category="obfuscation.homoglyph",
-                    severity=severity,
-                    confidence=confidence,
-                    title="Suspicious homoglyph characters found in tool metadata",
+                        prefix="mcp03-homoglyph",
+                        category="obfuscation.homoglyph",
+                        severity="medium",
+                        confidence="medium",
+                        title="Suspicious homoglyph characters found in tool metadata",
                     tool=tool,
                     location=field.location,
                     evidence=evidence,
@@ -139,10 +137,38 @@ class HomoglyphDetector:
                         "Replace confusable Unicode characters with plain ASCII and review "
                         "the metadata for hidden instructions."
                     ),
+                    fingerprint_parts=("homoglyph_skeleton", skeleton),
                 )
             )
 
         return findings
+
+
+def derive_homoglyph_texts(tool: ToolMetadata) -> list[DerivedMetadataText]:
+    derived: list[DerivedMetadataText] = []
+
+    for field in iter_spec_metadata_text(tool):
+        found = detect_homoglyphs(field.value)
+        if not found:
+            continue
+
+        skeleton = skeletonize_confusables(field.value)
+        if skeleton == field.value:
+            continue
+
+        derived.append(
+            DerivedMetadataText(
+                value=skeleton,
+                source_location=field.location,
+                derived_location=f"{field.location}|normalized:homoglyph_skeleton",
+                transform="normalized:homoglyph_skeleton",
+                transformation_chain=("homoglyph_skeleton",),
+                original_excerpt=excerpt(field.value),
+                decode_confidence="high",
+            )
+        )
+
+    return derived
 
 
 def detect_homoglyphs(text: str) -> list[dict[str, str | int]]:

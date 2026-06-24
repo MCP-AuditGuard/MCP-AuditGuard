@@ -9,6 +9,7 @@ from typing import Any, Iterable
 
 from core.models import Finding, ToolMetadata
 from core.redaction import redact_text
+from detectors.tool_poisoning.text_chunks import collect_text_chunks
 
 
 @dataclass(frozen=True)
@@ -190,6 +191,12 @@ def iter_metadata_text(tool: ToolMetadata) -> Iterable[MetadataText]:
         yield from _walk_text(child, f"raw.{key_text}")
 
 
+def iter_spec_metadata_text(tool: ToolMetadata) -> Iterable[MetadataText]:
+    # MCP03 spec 모드에서는 LLM이 도구 의미를 이해하는 데 쓰는 설명성 표면만 검사합니다.
+    for chunk in collect_text_chunks(tool):
+        yield MetadataText(location=chunk.location, value=chunk.text)
+
+
 def _walk_text(value: Any, location: str, depth: int = 0) -> Iterable[MetadataText]:
     # dict/list 내부의 모든 문자열 leaf를 location 경로와 함께 찾아냅니다.
     if depth > MAX_RECURSION_DEPTH or value is None:
@@ -311,6 +318,7 @@ def make_finding(
     location: str,
     evidence: str,
     recommendation: str,
+    fingerprint_parts: Iterable[str] | None = None,
 ) -> Finding:
     # detector별 결과를 공통 Finding 모델로 만들고, evidence 안의 secret은 먼저 redaction합니다.
     redacted_evidence, was_redacted = redact_text(evidence)
@@ -319,7 +327,7 @@ def make_finding(
         tool.server_name,
         tool.tool_name,
         location,
-        redacted_evidence,
+        *(fingerprint_parts or (prefix,)),
     )
 
     return Finding(

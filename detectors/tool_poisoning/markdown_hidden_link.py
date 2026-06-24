@@ -7,7 +7,7 @@ from core.models import Finding, ToolMetadata
 from detectors.obfuscation.common import (
     contains_suspicious_phrase,
     excerpt,
-    iter_metadata_text,
+    iter_spec_metadata_text,
     json_evidence,
     make_finding,
 )
@@ -25,7 +25,7 @@ class MarkdownHiddenLinkDetector:
     def detect(self, tool: ToolMetadata) -> list[Finding]:
         findings: list[Finding] = []
 
-        for field in iter_metadata_text(tool):
+        for field in iter_spec_metadata_text(tool):
             for match in MARKDOWN_LINK_RE.finditer(field.value):
                 label, url, title = match.group(1), match.group(2), match.group(3) or ""
                 decoded_url = unquote(url)
@@ -66,6 +66,7 @@ class MarkdownHiddenLinkDetector:
                             "Remove hidden instructions or dangerous URLs from Markdown links "
                             "in MCP tool metadata."
                         ),
+                        fingerprint_parts=("markdown_link", label, decoded_url, title),
                     )
                 )
 
