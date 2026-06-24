@@ -26,7 +26,7 @@ def detect_hidden_instructions(tool: Any, rules_path: str | Path | None = None) 
         tool=tool,
         location="description",
         rules=load_rules(rules_path, category="hidden_instruction"),
-        default_title="Hidden instruction in tool description",
+        default_title="도구 설명의 숨겨진 지시문",
     )
 
 
@@ -89,7 +89,7 @@ def build_finding(
         redacted=redacted,
         recommendation=rule.get(
             "recommendation",
-            "Review and remove suspicious instructions from tool metadata.",
+            "도구 메타데이터는 도구의 기능과 사용 조건을 설명하는 용도입니다. 사용자 의도와 다르게 동작하도록 유도하는 문구가 포함되어 있는지 확인하세요. 실제 기능 설명과 무관한 지시라면 제거하거나 안전한 설명으로 수정하세요.",
         ),
     )
 

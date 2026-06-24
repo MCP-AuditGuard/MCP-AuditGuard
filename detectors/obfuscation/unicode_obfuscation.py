@@ -86,13 +86,14 @@ class UnicodeObfuscationDetector:
                         category="obfuscation.zero_width_unicode",
                         severity="medium",
                         confidence="medium",
-                        title="Unicode obfuscation characters found in tool metadata",
+                        title="도구 메타데이터의 유니코드 난독화 문자",
                     tool=tool,
                     location=field.location,
                     evidence=evidence,
                     recommendation=(
-                        "Remove zero-width, bidi control, and tag Unicode characters from MCP tool metadata "
-                        "and review mathematical variants or heavy combining marks for hidden instructions."
+                        "MCP 도구 메타데이터는 사람이 읽을 수 있는 기능 설명을 제공하는 용도입니다. "
+                        "zero-width, bidi control, tag Unicode, 수학 문자 변형, 과도한 결합 문자 안에 숨겨진 지시문이 있는지 확인하세요. "
+                        "실제 기능 설명과 무관한 난독화 문자라면 제거하거나 일반 텍스트로 수정하세요."
                     ),
                     fingerprint_parts=(
                         "unicode_obfuscation",

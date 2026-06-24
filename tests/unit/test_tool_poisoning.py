@@ -223,7 +223,7 @@ def test_secret_exfiltration_is_critical_high_confidence() -> None:
     assert findings[0].owasp == "MCP03"
     assert findings[0].severity == "critical"
     assert findings[0].confidence == "high"
-    assert "explicit user approval" in findings[0].recommendation
+    assert "명시적인 사용자 승인" in findings[0].recommendation
 
 
 def test_detects_env_file_exfiltration_instruction() -> None:
@@ -278,7 +278,7 @@ def test_detects_supply_chain_action_steering() -> None:
     assert findings[0].owasp == "MCP03"
     assert findings[0].severity == "high"
     assert findings[0].confidence == "medium"
-    assert "pin an immutable version" in findings[0].recommendation
+    assert "고정된 버전" in findings[0].recommendation
 
 
 def test_benign_pinned_package_installation_is_not_supply_chain_steering() -> None:
@@ -319,7 +319,7 @@ def test_detects_command_execution_steering() -> None:
     assert findings[0].owasp == "MCP03"
     assert findings[0].severity == "high"
     assert findings[0].confidence == "high"
-    assert "command execution" in findings[0].recommendation
+    assert "명령 실행" in findings[0].recommendation
 
 
 def test_benign_user_confirmed_command_is_not_command_execution_steering() -> None:

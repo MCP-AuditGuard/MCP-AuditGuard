@@ -22,7 +22,7 @@ def detect_metadata_poisoning(tool: Any, rules_path: str | Path | None = None) -
                 tool=tool,
                 location=chunk.location,
                 rules=rules,
-                default_title="Suspicious instruction in tool metadata",
+                default_title="도구 메타데이터의 의심스러운 지시문",
             )
         )
 

@@ -16,8 +16,9 @@ from detectors.rule_engine import RuleMatch, find_rule_matches, load_rules
 OWASP_CATEGORY = "MCP03"
 CATEGORY = "tool_poisoning.obfuscated_hidden_instruction"
 RECOMMENDATION = (
-    "Remove obfuscated hidden instructions from MCP tool metadata. Keep metadata "
-    "human-readable and review encoded, hidden, or normalized text before publishing."
+    "MCP 도구 메타데이터는 사람이 읽을 수 있는 기능 설명을 제공하는 용도입니다. "
+    "인코딩, 숨김 주석, 유니코드 변형 등으로 실제 설명과 다른 지시문이 감춰져 있는지 확인하세요. "
+    "실제 기능 설명과 무관한 숨겨진 지시라면 제거하거나 명확한 설명으로 수정하세요."
 )
 
 SEVERITY_RANK = {
@@ -83,7 +84,7 @@ def _build_finding(
         owasp=OWASP_CATEGORY,
         severity=severity,  # type: ignore[arg-type]
         confidence=confidence,  # type: ignore[arg-type]
-        title="Hidden instruction revealed after obfuscation decoding",
+        title="난독화 해제 후 숨겨진 지시문 발견",
         target=f"{tool.server_name}.{tool.tool_name}",
         location=derived.derived_location,
         evidence=redacted_evidence,

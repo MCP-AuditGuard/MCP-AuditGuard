@@ -63,11 +63,11 @@ class EncodedPayloadDetector:
                 if payload.encoding in {"base64", "base64url"}:
                     severity = "low"
                     confidence = "low"
-                    title = f"{payload.encoding.upper()}-like encoded payload found in tool metadata"
+                    title = f"도구 메타데이터의 {payload.encoding.upper()} 유사 인코딩 페이로드"
                 else:
                     severity = "medium"
                     confidence = "medium"
-                    title = f"{payload.encoding.upper()} encoded payload found in tool metadata"
+                    title = f"도구 메타데이터의 {payload.encoding.upper()} 인코딩 페이로드"
 
                 evidence = json_evidence(
                     {
@@ -89,8 +89,9 @@ class EncodedPayloadDetector:
                         location=field.location,
                         evidence=evidence,
                         recommendation=(
-                            "Decode and review encoded MCP tool metadata. Remove hidden "
-                            "instructions and keep metadata human-readable where possible."
+                            "MCP 도구 메타데이터는 사람이 읽을 수 있는 기능 설명을 제공하는 용도입니다. "
+                            "인코딩된 문자열 안에 실제 설명과 다른 지시문이 숨겨져 있는지 복호화해 확인하세요. "
+                            "실제 기능 설명과 무관한 숨겨진 내용이라면 제거하거나 평문 설명으로 수정하세요."
                         ),
                         fingerprint_parts=(payload.encoding, payload.original),
                     )

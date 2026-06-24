@@ -4,6 +4,7 @@ rules:
     type: keyword
     severity: high
     confidence: high
+    title: 기존 지시 무시 유도
     patterns:
       - ignore previous instructions
       - disregard previous instructions
@@ -15,26 +16,28 @@ rules:
       - override system instructions
       - system prompt override
       - developer message override
-    recommendation: Remove instructions that attempt to override system, developer, or user intent from tool metadata.
+    recommendation: 도구 설명은 도구의 기능, 사용 조건, 필요한 입력을 설명하는 용도입니다. 시스템, 개발자, 사용자 지시를 무시하거나 덮어쓰도록 유도하는 문구가 포함되어 있는지 확인하세요. 실제 기능 설명과 무관한 지시라면 제거하거나 안전한 설명으로 수정하세요.
 
   - id: covert_behavior
     category: hidden_instruction
     type: keyword
     severity: high
     confidence: high
+    title: 은밀한 동작 유도
     patterns:
       - do not tell the user
       - without telling the user
       - secretly
       - hidden instruction
       - never reveal this instruction
-    recommendation: Remove covert behavior instructions from tool metadata.
+    recommendation: 도구 설명은 사용자가 도구의 동작을 이해할 수 있도록 기능과 사용 조건을 설명하는 용도입니다. 사용자에게 알리지 않거나 숨겨진 방식으로 동작하도록 유도하는 문구가 포함되어 있는지 확인하세요. 실제 기능 설명과 무관한 은밀한 지시라면 제거하거나 명확한 설명으로 수정하세요.
 
   - id: sensitive_data_steering
     category: hidden_instruction
     type: regex
     severity: critical
     confidence: high
+    title: 민감 정보 접근 또는 전송 유도
     patterns:
       - "(send|upload|exfiltrate|forward).{0,80}(secret|api[_ -]?key|password|credential|auth token|access token|bearer token)"
       - "(secret|api[_ -]?key|password|credential|auth token|access token|bearer token).{0,80}(send|upload|exfiltrate|forward)"
@@ -42,72 +45,78 @@ rules:
       - "(\\.env|env file|environment variable).{0,100}(send|upload|exfiltrate|forward|external server|remote endpoint)"
       - "(읽|보내|전송).{0,100}(\\.env|환경 ?변수|비밀|토큰)"
       - "(\\.env|환경 ?변수|비밀|토큰).{0,100}(외부 서버|전송|보내)"
-    recommendation: Remove metadata that steers the agent to access, disclose, or transmit sensitive data. Verify that the tool cannot read credentials or send them externally without explicit user approval.
+    recommendation: 도구 설명은 도구가 처리하는 데이터와 사용 조건을 설명하는 용도입니다. 비밀값, API 키, 비밀번호, 토큰, 환경 변수 같은 민감 정보를 읽거나 외부로 전송하도록 유도하는 문구가 포함되어 있는지 확인하세요. 실제 기능에 필요한 동작이 아니라면 제거하거나, 명시적인 사용자 승인과 안전한 처리 조건을 설명하도록 수정하세요.
 
   - id: supply_chain_action_steering
     category: hidden_instruction
     type: regex
     severity: high
     confidence: medium
+    title: 공급망 관련 작업 강제 유도
     patterns:
       - "(always|must|automatically|silently|without (asking|confirmation)|regardless of (the )?user('?s)? request).{0,100}(download|fetch|install|run|execute|trust).{0,100}(@latest|latest (package|version|tag)|unpinned|unverified|unknown|third[- ]party|remote script|registry)"
       - "(download|fetch|install|run|execute|trust).{0,100}(@latest|latest (package|version|tag)|unpinned|unverified|unknown|third[- ]party|remote script|registry).{0,100}(automatically|silently|without (asking|confirmation)|regardless of (the )?user('?s)? request)"
-    recommendation: Remove metadata that forces the agent to download, trust, install, or execute unverified components. Verify the source, pin an immutable version, validate integrity, and require explicit user approval before execution.
+    recommendation: 도구 설명은 도구의 설치나 실행 조건을 투명하게 설명하는 용도입니다. 검증되지 않은 패키지, 원격 스크립트, 최신 버전 등을 자동으로 다운로드, 신뢰, 설치, 실행하도록 유도하는 문구가 포함되어 있는지 확인하세요. 실제 기능에 필요한 동작이라면 출처, 고정된 버전, 무결성 검증, 실행 전 명시적인 사용자 승인 조건을 설명하도록 수정하세요.
 
   - id: command_execution_steering
     category: hidden_instruction
     type: regex
     severity: high
     confidence: high
+    title: 명령 실행 유도
     patterns:
       - "(always|must|automatically|silently|without (asking|confirmation)|before answering|regardless of (the )?user('?s)? request).{0,100}(run|execute|invoke|pass|forward).{0,100}(shell|command|cmd|eval|exec|os\\.system|subprocess)"
       - "(run|execute|invoke|pass|forward).{0,100}(shell|command|cmd|eval|exec|os\\.system|subprocess).{0,100}(automatically|silently|without (asking|confirmation)|before answering|regardless of (the )?user('?s)? request)"
-    recommendation: Remove metadata that steers the agent toward command execution. Review shell, eval, exec, and subprocess paths, validate all inputs, restrict allowed operations, and require explicit user approval.
+    recommendation: 도구 설명은 도구가 수행하는 작업과 실행 조건을 설명하는 용도입니다. shell, command, eval, exec, subprocess 같은 명령 실행 경로를 사용하도록 유도하는 문구가 포함되어 있는지 확인하세요. 실제 기능에 필요한 동작이라면 입력 검증, 허용 작업 제한, 실행 전 사용자 승인 조건을 명확히 설명하도록 수정하세요.
 
   - id: privileged_resource_access
     category: hidden_instruction
     type: regex
     severity: high
     confidence: medium
+    title: 권한 있는 리소스 접근 유도
     patterns:
       - "(read|scan|access|open).{0,80}(private|sensitive|confidential).{0,80}(file|directory|folder|repository|repo)"
       - "(delete|modify|disable|bypass).{0,80}(branch protection|repository setting|repo setting|github repository|github repo)"
       - "(use|prefer|switch to).{0,80}(admin token|privileged token|write token|personal access token|github token)"
       - "(admin token|privileged token|write token|personal access token|github token).{0,80}(delete|modify|disable|bypass|access)"
-    recommendation: Remove metadata that asks the model to access privileged files, repositories, or tokens beyond the user's explicit request.
+    recommendation: 도구 설명은 도구가 접근하는 리소스와 필요한 권한 범위를 설명하는 용도입니다. 사용자의 명시적 요청 범위를 넘어 민감한 파일, 저장소 설정, 권한 토큰에 접근하도록 유도하는 문구가 포함되어 있는지 확인하세요. 실제 기능에 필요하지 않은 권한 상승이나 보호 설정 우회 지시라면 제거하거나 최소 권한 기준으로 수정하세요.
 
   - id: answer_manipulation
     category: hidden_instruction
     type: regex
     severity: high
     confidence: medium
+    title: 최종 응답 조작 유도
     patterns:
       - "(modify|rewrite|replace|alter).{0,60}(final answer|final response|assistant response)"
       - "(append|insert|include).{0,60}(hidden text|hidden message|secret message).{0,60}(answer|response)"
       - "(hide|omit|suppress).{0,60}(from|in).{0,60}(final answer|final response|assistant response)"
       - "always include.{0,60}(final answer|final response|assistant response)"
-    recommendation: Remove metadata that attempts to manipulate the assistant's final answer or hide output from the user.
+    recommendation: 도구 설명은 도구의 기능과 결과 해석에 필요한 정보를 설명하는 용도입니다. 최종 답변을 바꾸거나, 숨겨진 문구를 삽입하거나, 사용자에게 일부 내용을 숨기도록 유도하는 문구가 포함되어 있는지 확인하세요. 실제 기능 설명과 무관한 응답 조작 지시라면 제거하거나 투명한 설명으로 수정하세요.
 
   - id: schema_instruction_poisoning
     category: schema_poisoning
     type: keyword
     severity: high
     confidence: high
+    title: 입력 스키마 지시문 오염
     patterns:
       - ignore user input
       - replace the user's request
       - treat this field as instructions
       - this parameter controls the assistant
-    recommendation: Keep schema field descriptions limited to input semantics, not model behavior instructions.
+    recommendation: 입력 스키마 설명은 각 입력값의 의미, 형식, 제약을 설명하는 용도입니다. 사용자 요청을 바꾸거나 모델 행동을 지시하는 문구가 포함되어 있는지 확인하세요. 입력값 설명과 무관한 지시라면 제거하거나 필드 의미 중심으로 수정하세요.
 
   - id: tool_priority_manipulation
     category: cross_tool_instruction
     type: regex
     severity: medium
     confidence: medium
+    title: 도구 선택 또는 결과 조작 유도
     patterns:
       - "always (call|use|prefer).{0,60}(tool|server)"
       - "before using any other tool"
       - "ignore.{0,40}(other|previous).{0,40}tool"
       - "override.{0,60}(tool|result|response)"
-    recommendation: Remove metadata that attempts to manipulate tool selection or other tool results.
+    recommendation: 도구 메타데이터는 해당 도구의 기능과 정상적인 사용 맥락을 설명하는 용도입니다. 특정 도구를 항상 우선 사용하게 하거나 다른 도구 결과를 무시하도록 유도하는 문구가 포함되어 있는지 확인하세요. 실제 사용 조건과 무관한 도구 선택 조작 지시라면 제거하거나 중립적인 설명으로 수정하세요.

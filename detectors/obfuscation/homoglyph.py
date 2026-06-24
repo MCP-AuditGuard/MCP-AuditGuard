@@ -129,13 +129,14 @@ class HomoglyphDetector:
                         category="obfuscation.homoglyph",
                         severity="medium",
                         confidence="medium",
-                        title="Suspicious homoglyph characters found in tool metadata",
+                        title="도구 메타데이터의 의심스러운 유사 문자",
                     tool=tool,
                     location=field.location,
                     evidence=evidence,
                     recommendation=(
-                        "Replace confusable Unicode characters with plain ASCII and review "
-                        "the metadata for hidden instructions."
+                        "MCP 도구 메타데이터는 사용자가 내용을 명확히 읽고 이해할 수 있도록 작성되는 용도입니다. "
+                        "일반 문자처럼 보이는 유사 유니코드 문자로 숨겨진 지시문이 포함되어 있는지 확인하세요. "
+                        "실제 기능 설명과 무관한 유사 문자라면 일반 ASCII 문자나 명확한 텍스트로 수정하세요."
                     ),
                     fingerprint_parts=("homoglyph_skeleton", skeleton),
                 )

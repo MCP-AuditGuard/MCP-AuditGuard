@@ -224,7 +224,7 @@ def load_semantic_signatures(path: str | Path = DEFAULT_SIGNATURES_PATH) -> list
                 recommendation=str(
                     raw_signature.get(
                         "recommendation",
-                        "Review semantically similar risky metadata.",
+                        "도구 메타데이터는 도구의 기능과 사용 조건을 설명하는 용도입니다. 이 결과는 키워드/정규식 직접 매칭이 아니라 의미 유사도 기반 보조 탐지이므로, 위험한 메타데이터와 의미적으로 유사한 문구가 있는지 직접 확인하세요. 실제 기능 설명과 무관한 위험 신호라면 제거하거나 안전한 설명으로 수정하세요.",
                     )
                 ),
                 examples=examples,
@@ -258,18 +258,23 @@ def load_keyword_rule_signatures() -> list[SemanticSignature]:
                 severity=str(rule.get("severity", "medium")),
                 confidence="medium",
                 threshold=KEYWORD_RULE_THRESHOLD,
-                title=f"Semantic match for {rule_id} keyword rule",
-                recommendation=str(
-                    rule.get(
-                        "recommendation",
-                        "Review metadata that is semantically similar to suspicious keyword rules.",
-                    )
-                ),
+                title=f"{rule.get('title', rule_id)} 유사 표현 탐지",
+                recommendation=_semantic_recommendation_for_rule(rule),
                 examples=examples,
             )
         )
 
     return signatures
+
+
+def _semantic_recommendation_for_rule(rule: dict[str, Any]) -> str:
+    title = str(rule.get("title") or rule.get("id") or "의심 룰")
+    return (
+        "검사 대상 필드는 도구의 기능, 입력 의미, 사용 조건을 설명하는 용도입니다. "
+        "이 결과는 키워드/정규식 직접 매칭이 아니라 의미 유사도 기반 보조 탐지이므로, "
+        f"매칭된 텍스트가 '{title}' 위험 신호에 실제로 해당하는지 직접 확인하세요. "
+        "실제 기능 설명과 무관한 위험 신호라면 제거하거나 안전한 설명으로 수정하세요."
+    )
 
 
 def _collect_text_chunks(tool: Any) -> list[tuple[str, str]]:

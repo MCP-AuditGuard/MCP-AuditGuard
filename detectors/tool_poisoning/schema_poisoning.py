@@ -24,7 +24,7 @@ def detect_schema_poisoning(tool: Any, rules_path: str | Path | None = None) -> 
                 tool=tool,
                 location=chunk.location,
                 rules=rules,
-                default_title="Suspicious instruction in input schema",
+                default_title="입력 스키마의 의심스러운 지시문",
             )
         )
 

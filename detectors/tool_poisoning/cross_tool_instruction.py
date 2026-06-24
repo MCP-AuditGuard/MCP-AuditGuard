@@ -22,7 +22,7 @@ def detect_cross_tool_instructions(tool: Any, rules_path: str | Path | None = No
                 tool=tool,
                 location=location,
                 rules=rules,
-                default_title="Cross-tool instruction in tool metadata",
+                default_title="도구 간 호출 조작 지시문",
             )
         )
 
