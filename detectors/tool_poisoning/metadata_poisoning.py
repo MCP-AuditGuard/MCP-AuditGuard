@@ -6,30 +6,25 @@ from typing import Any
 from core.models import Finding
 from detectors.tool_poisoning.hidden_instruction import (
     find_rule_matches,
-    iter_text_values,
     load_rules,
 )
+from detectors.tool_poisoning.text_chunks import collect_text_chunks
 
 
 def detect_metadata_poisoning(tool: Any, rules_path: str | Path | None = None) -> list[Finding]:
     findings: list[Finding] = []
     rules = load_rules(rules_path, category="hidden_instruction")
 
-    for field_name in ("title", "annotations", "meta"):
-        value = _get_field(tool, field_name)
-        if not value:
-            continue
-
-        for location, text in iter_text_values(value, _location_name(field_name)):
-            findings.extend(
-                find_rule_matches(
-                    text=text,
-                    tool=tool,
-                    location=location,
-                    rules=rules,
-                    default_title="Suspicious instruction in tool metadata",
-                )
+    for chunk in collect_text_chunks(tool, fields=("title", "annotations")):
+        findings.extend(
+            find_rule_matches(
+                text=chunk.text,
+                tool=tool,
+                location=chunk.location,
+                rules=rules,
+                default_title="도구 메타데이터의 의심스러운 지시문",
             )
+        )
 
     return findings
 
@@ -44,15 +39,3 @@ class MetadataPoisoningDetector:
 
     def detect(self, tool: Any) -> list[Finding]:
         return detect_metadata_poisoning(tool, self.rules_path)
-
-
-def _get_field(tool: Any, field_name: str) -> Any:
-    if isinstance(tool, dict):
-        if field_name == "meta":
-            return tool.get("meta") or tool.get("_meta")
-        return tool.get(field_name)
-    return getattr(tool, field_name, None)
-
-
-def _location_name(field_name: str) -> str:
-    return "_meta" if field_name == "meta" else field_name
