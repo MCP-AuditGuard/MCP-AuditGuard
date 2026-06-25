@@ -10,19 +10,23 @@ from detectors.tool_poisoning.cross_tool_instruction import CrossToolInstruction
 from detectors.tool_poisoning.hidden_instruction import HiddenInstructionDetector
 from detectors.tool_poisoning.markdown_hidden_link import MarkdownHiddenLinkDetector
 from detectors.tool_poisoning.metadata_poisoning import MetadataPoisoningDetector
+from detectors.tool_poisoning.obfuscated_hidden_instruction import (
+    ObfuscatedHiddenInstructionDetector,
+)
 from detectors.tool_poisoning.schema_poisoning import SchemaPoisoningDetector
 
 
 EXPECTED_DETECTOR_CLASSES = [
+    UnicodeObfuscationDetector,
+    EncodedPayloadDetector,
+    HtmlCommentDetector,
+    HomoglyphDetector,
+    ObfuscatedHiddenInstructionDetector,
     HiddenInstructionDetector,
     SchemaPoisoningDetector,
     MetadataPoisoningDetector,
     CrossToolInstructionDetector,
     MarkdownHiddenLinkDetector,
-    UnicodeObfuscationDetector,
-    EncodedPayloadDetector,
-    HtmlCommentDetector,
-    HomoglyphDetector,
     SemanticSimilarityDetector,
 ]
 

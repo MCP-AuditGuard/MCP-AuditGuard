@@ -199,5 +199,5 @@ def test_scan_runs_default_detectors_without_monkeypatch(tmp_path) -> None:
     result = runner.invoke(cli_main.app, ["scan", "--input", str(input_path)])
 
     assert result.exit_code == 0
-    assert "Hidden instruction in tool description" in result.output
+    assert "기존 지시 무시 유도" in result.output
     assert "demo.search" in result.output

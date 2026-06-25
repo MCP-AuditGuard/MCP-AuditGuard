@@ -4,12 +4,12 @@ import unicodedata
 
 from core.models import Finding, ToolMetadata
 from detectors.obfuscation.common import (
-    contains_suspicious_phrase,
     excerpt,
-    iter_metadata_text,
+    iter_spec_metadata_text,
     json_evidence,
     make_finding,
 )
+from detectors.obfuscation.derived_text import DerivedMetadataText
 
 
 # 화면에 보이지 않거나 단어 사이에 끼워 넣어 문구 탐지를 방해하는 zero-width 문자입니다.
@@ -54,22 +54,20 @@ class UnicodeObfuscationDetector:
     name = "unicode_obfuscation"
 
     def detect(self, tool: ToolMetadata) -> list[Finding]:
-        # Unicode 난독화 문자를 제거/정규화했을 때 hidden instruction이 드러나는지 확인합니다.
+        # Unicode 난독화 문자를 찾고, 정규화 결과의 MCP03 판정은 별도 detector에 맡깁니다.
         findings: list[Finding] = []
 
-        for field in iter_metadata_text(tool):
+        for field in iter_spec_metadata_text(tool):
             detected_chars = detect_unicode_obfuscation_chars(field.value)
             if not detected_chars:
                 continue
 
             normalized = normalize_unicode_obfuscation_text(field.value)
-            reveals_instruction = contains_suspicious_phrase(normalized)
-            severity = "high" if reveals_instruction else "medium"
-            confidence = "high" if reveals_instruction else "medium"
             detected_types = sorted({str(char["type"]) for char in detected_chars})
 
             evidence = json_evidence(
                 {
+                    "canonical_excerpt": excerpt(normalized),
                     "original_excerpt": excerpt(field.value),
                     "normalized_excerpt": excerpt(normalized),
                     "unicode_obfuscation_chars": {
@@ -78,28 +76,62 @@ class UnicodeObfuscationDetector:
                         "truncated": len(detected_chars) > MAX_REPORTED_CHARS,
                     },
                     "detected_types": detected_types,
-                    "reveals_instruction_after_normalization": reveals_instruction,
+                    "transforms": detected_types,
                 }
             )
 
             findings.append(
                 make_finding(
-                    prefix="mcp03-zero-width",
-                    category="obfuscation.zero_width_unicode",
-                    severity=severity,
-                    confidence=confidence,
-                    title="Unicode obfuscation characters found in tool metadata",
+                        prefix="mcp03-zero-width",
+                        category="obfuscation.zero_width_unicode",
+                        severity="medium",
+                        confidence="medium",
+                        title="도구 메타데이터의 유니코드 난독화 문자",
                     tool=tool,
                     location=field.location,
                     evidence=evidence,
                     recommendation=(
-                        "Remove zero-width, bidi control, and tag Unicode characters from MCP tool metadata "
-                        "and review mathematical variants or heavy combining marks for hidden instructions."
+                        "MCP 도구 메타데이터는 사람이 읽을 수 있는 기능 설명을 제공하는 용도입니다. "
+                        "zero-width, bidi control, tag Unicode, 수학 문자 변형, 과도한 결합 문자 안에 숨겨진 지시문이 있는지 확인하세요. "
+                        "실제 기능 설명과 무관한 난독화 문자라면 제거하거나 일반 텍스트로 수정하세요."
+                    ),
+                    fingerprint_parts=(
+                        "unicode_obfuscation",
+                        ",".join(detected_types),
+                        normalized,
                     ),
                 )
             )
 
         return findings
+
+
+def derive_unicode_normalized_texts(tool: ToolMetadata) -> list[DerivedMetadataText]:
+    derived: list[DerivedMetadataText] = []
+
+    for field in iter_spec_metadata_text(tool):
+        detected_chars = detect_unicode_obfuscation_chars(field.value)
+        if not detected_chars:
+            continue
+
+        normalized = normalize_unicode_obfuscation_text(field.value)
+        if normalized == field.value:
+            continue
+
+        detected_types = tuple(sorted({str(char["type"]) for char in detected_chars}))
+        derived.append(
+            DerivedMetadataText(
+                value=normalized,
+                source_location=field.location,
+                derived_location=f"{field.location}|normalized:unicode",
+                transform="normalized:unicode",
+                transformation_chain=detected_types or ("normalized:unicode",),
+                original_excerpt=excerpt(field.value),
+                decode_confidence="high",
+            )
+        )
+
+    return derived
 
 
 def detect_unicode_obfuscation_chars(text: str) -> list[dict[str, str | int]]:
