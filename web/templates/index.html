@@ -12,353 +12,1633 @@
 
     <link
         rel="stylesheet"
-        href="{{ url_for('static', path='/style.css') }}"
+        href="{{ url_for('static', path='/style.css') }}?v=20260625-findings-only"
     >
     <script
-        src="{{ url_for('static', path='/app.js') }}"
+        src="{{ url_for('static', path='/app.js') }}?v=20260625-findings-only"
         defer
     ></script>
 </head>
 
 <body>
-    <header class="app-header">
-        <div class="container">
-            <div>
-                <h1>MCP-AuditGuard</h1>
-
-                <p class="subtitle">
-                    MCP Tool Metadata Security Scanner
-                </p>
-            </div>
-
-            <span class="scan-type-badge">
-                Static Scan
-            </span>
-        </div>
-    </header>
-
-    <main class="container main-content">
-
-        <!-- 입력 영역 -->
-        <section class="panel">
-            <div class="section-heading">
-                <div>
-                    <h2>검사 대상 선택</h2>
-
-                    <p>
-                        tools.json 파일을 업로드하거나
-                        실습 샘플을 선택하세요.
-                    </p>
-                </div>
-            </div>
-
-            <div class="input-grid">
-
-                <!-- 파일 업로드 -->
-                <div class="input-card">
-                    <label for="tools-file">
-                        tools.json 파일 업로드
-                    </label>
-
-                    <input
-                        id="tools-file"
-                        name="tools-file"
-                        type="file"
-                        accept=".json,application/json"
+    <div class="app-shell">
+        <aside
+            class="app-sidebar"
+            aria-label="대시보드 탐색"
+        >
+            <a
+                class="brand"
+                href="/"
+                aria-label="MCP-AuditGuard 홈"
+            >
+                <span
+                    class="brand-mark"
+                    aria-hidden="true"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        focusable="false"
                     >
+                        <path d="M12 2.6 19 5.8v5.4c0 4.7-2.8 8.7-7 10.2-4.2-1.5-7-5.5-7-10.2V5.8l7-3.2Z"></path>
+                        <path d="m8.8 12.1 2.1 2.1 4.6-5"></path>
+                    </svg>
+                </span>
 
-                    <p class="input-help">
-                        로컬 PC에 있는 MCP tools.json 파일을
-                        선택합니다.
-                    </p>
-                </div>
+                <span class="brand-copy">
+                    <span class="brand-name">MCP-AuditGuard</span>
+                    <span class="brand-subtitle">Local Security Console</span>
+                </span>
+            </a>
 
-                <!-- 샘플 선택 -->
-                <div class="input-card">
-                    <label for="sample-select">
-                        실습 샘플 선택
-                    </label>
-
-                    <select
-                        id="sample-select"
-                        name="sample-select"
-                    >
-                        <option value="">
-                            샘플을 선택하세요
-                        </option>
-                    </select>
-
-                    <p class="input-help">
-                        vulnerable-lab에서 발견된 샘플이
-                        여기에 표시됩니다.
-                    </p>
-                </div>
-            </div>
-
-            <div class="scan-actions">
+            <nav
+                class="sidebar-nav"
+                aria-label="주요 메뉴"
+            >
                 <button
-                    id="scan-button"
-                    class="primary-button"
+                    class="sidebar-link is-active"
                     type="button"
+                    data-view-target="dashboard"
+                    aria-current="page"
                 >
-                    Scan
+                    <span
+                        class="sidebar-icon"
+                        aria-hidden="true"
+                    >
+                        ✓
+                    </span>
+                    <span>검사 결과</span>
                 </button>
-            </div>
-        </section>
 
-        <!-- 상태 및 오류 영역 -->
-        <section
-            id="status-panel"
-            class="status-panel"
-            aria-live="polite"
-        >
-            <span
-                id="status-indicator"
-                class="status-indicator status-idle"
-            ></span>
-
-            <span id="status-message">
-                검사할 파일이나 샘플을 선택하세요.
-            </span>
-        </section>
-
-        <!-- Summary 영역 -->
-        <section
-            id="summary-section"
-            class="panel"
-        >
-            <div class="section-heading">
-                <div>
-                    <h2>Scan Summary</h2>
-
-                    <p>
-                        검사 결과 요약이 여기에 표시됩니다.
-                    </p>
-                </div>
-            </div>
-
-            <div class="summary-grid">
-                <article class="summary-card">
-                    <span class="summary-label">
-                        Tools
-                    </span>
-
-                    <strong
-                        id="tool-count"
-                        class="summary-value"
-                    >
-                        -
-                    </strong>
-                </article>
-
-                <article class="summary-card">
-                    <span class="summary-label">
-                        Findings
-                    </span>
-
-                    <strong
-                        id="finding-count"
-                        class="summary-value"
-                    >
-                        -
-                    </strong>
-                </article>
-
-                <article class="summary-card">
-                    <span class="summary-label">
-                        Affected Targets
-                    </span>
-
-                    <strong
-                        id="affected-target-count"
-                        class="summary-value"
-                    >
-                        -
-                    </strong>
-                </article>
-
-                <article class="summary-card severity-critical">
-                    <span class="summary-label">
-                        Critical
-                    </span>
-
-                    <strong
-                        id="critical-count"
-                        class="summary-value"
-                    >
-                        -
-                    </strong>
-                </article>
-
-                <article class="summary-card severity-high">
-                    <span class="summary-label">
-                        High
-                    </span>
-
-                    <strong
-                        id="high-count"
-                        class="summary-value"
-                    >
-                        -
-                    </strong>
-                </article>
-
-                <article class="summary-card severity-medium">
-                    <span class="summary-label">
-                        Medium
-                    </span>
-
-                    <strong
-                        id="medium-count"
-                        class="summary-value"
-                    >
-                        -
-                    </strong>
-                </article>
-
-                <article class="summary-card severity-low">
-                    <span class="summary-label">
-                        Low
-                    </span>
-
-                    <strong
-                        id="low-count"
-                        class="summary-value"
-                    >
-                        -
-                    </strong>
-                </article>
-
-                <article class="summary-card severity-info">
-                    <span class="summary-label">
-                        Info
-                    </span>
-
-                    <strong
-                        id="info-count"
-                        class="summary-value"
-                    >
-                        -
-                    </strong>
-                </article>
-            </div>
-        </section>
-
-        <!-- Finding 영역 -->
-        <section
-            id="findings-section"
-            class="panel"
-        >
-            <div class="section-heading">
-                <div>
-                    <h2>Security Findings</h2>
-
-                    <p>
-                        탐지된 보안 이슈가 여기에 표시됩니다.
-                    </p>
-                </div>
-            </div>
-
-            <div
-                id="findings-empty"
-                class="empty-state"
-            >
-                아직 실행된 검사가 없습니다.
-            </div>
-
-            <div
-                id="findings-table-container"
-                class="table-container"
-                hidden
-            >
-                <table class="findings-table">
-                    <thead>
-                        <tr>
-                            <th>Severity</th>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Target</th>
-                            <th>Location</th>
-                            <th>Confidence</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="findings-table-body">
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Finding 상세 영역 -->
-        <section
-            id="finding-detail-section"
-            class="panel"
-        >
-            <div class="section-heading">
-                <div>
-                    <h2>Finding Detail</h2>
-
-                    <p>
-                        Finding을 선택하면 상세 정보가 표시됩니다.
-                    </p>
-                </div>
-            </div>
-
-            <div
-                id="finding-detail-empty"
-                class="empty-state"
-            >
-                선택된 Finding이 없습니다.
-            </div>
-
-            <div
-                id="finding-detail"
-                class="finding-detail"
-                hidden
-            >
-            </div>
-        </section>
-
-        <!-- 다운로드 영역 -->
-        <section
-            id="download-section"
-            class="panel download-panel"
-        >
-            <div>
-                <h2>Report Download</h2>
-
-                <p>
-                    스캔 완료 후 Markdown 또는 JSON 리포트를
-                    다운로드할 수 있습니다.
-                </p>
-            </div>
-
-            <div class="download-actions">
-                <a
-                    id="markdown-download"
-                    class="secondary-button disabled"
-                    href="#"
-                    aria-disabled="true"
+                <button
+                    class="sidebar-link"
+                    type="button"
+                    data-view-target="scan-start"
                 >
-                    Download Markdown
-                </a>
+                    <span
+                        class="sidebar-icon"
+                        aria-hidden="true"
+                    >
+                        ▶
+                    </span>
+                    <span>검사 시작</span>
+                </button>
 
-                <a
-                    id="json-download"
-                    class="secondary-button disabled"
-                    href="#"
-                    aria-disabled="true"
+                <button
+                    class="sidebar-link"
+                    type="button"
+                    data-view-target="server-management"
                 >
-                    Download JSON
-                </a>
-            </div>
-        </section>
-    </main>
+                    <span
+                        class="sidebar-icon"
+                        aria-hidden="true"
+                    >
+                        ▣
+                    </span>
+                    <span>MCP 서버 관리</span>
+                </button>
 
-    <footer class="app-footer">
-        <div class="container">
-            MCP-AuditGuard Local Web UI
+                <button
+                    class="sidebar-link"
+                    type="button"
+                    data-view-target="baseline-history"
+                >
+                    <span
+                        class="sidebar-icon"
+                        aria-hidden="true"
+                    >
+                        ◷
+                    </span>
+                    <span>기준선 이력</span>
+                </button>
+
+                <button
+                    class="sidebar-link"
+                    type="button"
+                    data-view-target="static-scan"
+                >
+                    <span
+                        class="sidebar-icon"
+                        aria-hidden="true"
+                    >
+                        ◇
+                    </span>
+                    <span>파일·샘플 검사</span>
+                </button>
+
+                <button
+                    class="sidebar-link"
+                    type="button"
+                    data-view-target="help"
+                >
+                    <span
+                        class="sidebar-icon"
+                        aria-hidden="true"
+                    >
+                        ?
+                    </span>
+                    <span>도움말</span>
+                </button>
+            </nav>
+
+            <section
+                class="sidebar-note"
+                aria-labelledby="sidebar-note-title"
+            >
+                <span
+                    class="sidebar-note-icon"
+                    aria-hidden="true"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        focusable="false"
+                    >
+                        <path d="M12 3 19 6.2v5.3c0 4.3-2.8 7.9-7 9.4-4.2-1.5-7-5.1-7-9.4V6.2L12 3Z"></path>
+                    </svg>
+                </span>
+
+                <div>
+                    <h2 id="sidebar-note-title">
+                        안전한 AI 사용
+                    </h2>
+
+                    <p>
+                        등록된 MCP 서버의 변경과 위험 신호를 한곳에서 확인합니다.
+                    </p>
+                </div>
+            </section>
+        </aside>
+
+        <div class="app-workspace">
+            <header class="workspace-header">
+                <div class="workspace-title-block">
+                    <p
+                        id="workspace-eyebrow"
+                        class="eyebrow"
+                    >
+                        검사 결과
+                    </p>
+                    <h1
+                        id="workspace-title"
+                        tabindex="-1"
+                    >
+                        AI 도구 안전검진
+                    </h1>
+                    <p id="workspace-subtitle">
+                        전체 MCP 서버의 현재 안전 상태를 확인합니다.
+                    </p>
+                </div>
+
+                <div class="header-meta">
+                    <div class="header-meta-item">
+                        <span>마지막 갱신</span>
+                        <strong id="dashboard-last-updated">
+                            아직 갱신되지 않음
+                        </strong>
+                    </div>
+
+                    <span class="local-mode-badge">
+                        로컬 모드
+                    </span>
+                </div>
+            </header>
+
+            <main class="workspace-main">
+                <section
+                    id="view-dashboard"
+                    class="view-container"
+                    data-view="dashboard"
+                    aria-labelledby="dashboard-view-title"
+                >
+                    <h2
+                        id="dashboard-view-title"
+                        class="view-heading"
+                    >
+                        AI 도구 안전검진
+                    </h2>
+
+                    <section
+                        id="dashboard-status-banner"
+                        class="status-banner status-banner-unscanned"
+                        aria-labelledby="dashboard-headline"
+                    >
+                        <div
+                            id="dashboard-status-icon"
+                            class="status-banner-icon"
+                            aria-hidden="true"
+                        >
+                            !
+                        </div>
+
+                        <div class="status-banner-copy">
+                            <p
+                                id="dashboard-status-label"
+                                class="status-label"
+                            >
+                                결과 대기
+                            </p>
+
+                            <h3 id="dashboard-headline">
+                                표시할 검사 결과가 없습니다.
+                            </h3>
+
+                            <p id="dashboard-description">
+                                검사 시작 화면에서 서버를 선택해 검사를 실행하세요.
+                            </p>
+                        </div>
+
+                        <div
+                            class="status-illustration"
+                            aria-hidden="true"
+                        >
+                            <svg
+                                viewBox="0 0 220 150"
+                                focusable="false"
+                            >
+                                <rect
+                                    x="28"
+                                    y="26"
+                                    width="124"
+                                    height="86"
+                                    rx="18"
+                                ></rect>
+                                <path d="M61 70h58M61 91h35"></path>
+                                <circle
+                                    cx="158"
+                                    cy="58"
+                                    r="28"
+                                ></circle>
+                                <path d="m145 58 9 9 18-21"></path>
+                                <path d="M54 126h121"></path>
+                            </svg>
+                        </div>
+                    </section>
+
+                    <section
+                        class="dashboard-summary"
+                        aria-label="MCP 서버 상태 요약"
+                    >
+                        <article class="metric-card metric-card-safe">
+                            <div
+                                class="metric-icon"
+                                aria-hidden="true"
+                            >
+                                ✓
+                            </div>
+                            <div>
+                                <span class="metric-label">안전</span>
+                                <strong
+                                    id="dashboard-safe-count"
+                                    class="metric-value"
+                                >
+                                    0
+                                </strong>
+                                <p>Critical/High/Medium/Low 0건</p>
+                            </div>
+                        </article>
+
+                        <article class="metric-card metric-card-warning">
+                            <div
+                                class="metric-icon"
+                                aria-hidden="true"
+                            >
+                                !
+                            </div>
+                            <div>
+                                <span class="metric-label">주의</span>
+                                <strong
+                                    id="dashboard-warning-count"
+                                    class="metric-value"
+                                >
+                                    0
+                                </strong>
+                                <p>Medium/Low Finding 있음</p>
+                            </div>
+                        </article>
+
+                        <article class="metric-card metric-card-danger">
+                            <div
+                                class="metric-icon"
+                                aria-hidden="true"
+                            >
+                                ×
+                            </div>
+                            <div>
+                                <span class="metric-label">위험</span>
+                                <strong
+                                    id="dashboard-danger-count"
+                                    class="metric-value"
+                                >
+                                    0
+                                </strong>
+                                <p>Critical/High Finding 있음</p>
+                            </div>
+                        </article>
+
+                    </section>
+
+                    <section
+                        class="content-grid"
+                        aria-label="대시보드 세부 영역"
+                    >
+                        <section
+                            class="dashboard-panel attention-panel"
+                            aria-labelledby="attention-title"
+                        >
+                            <div class="panel-heading">
+                                <div>
+                                    <p class="eyebrow">Review Queue</p>
+                                    <h2 id="attention-title">
+                                        확인이 필요한 항목
+                                    </h2>
+                                </div>
+                            </div>
+
+                            <div
+                                id="dashboard-attention-empty"
+                                class="empty-state"
+                            >
+                                <strong>현재 표시할 항목이 없습니다.</strong>
+                                <span>
+                                    MCP 서버를 검사하면 변경 사항과 위험 항목이
+                                    여기에 표시됩니다.
+                                </span>
+                            </div>
+
+                            <div
+                                id="dashboard-attention-list"
+                                class="attention-list"
+                                hidden
+                            ></div>
+
+                            <div
+                                id="attention-badge-templates"
+                                class="badge-template-list"
+                                hidden
+                            >
+                                <span class="attention-badge attention-badge-warning">주의</span>
+                                <span class="attention-badge attention-badge-danger">위험</span>
+                                <span class="attention-badge attention-badge-failed">검사 실패</span>
+                                <span class="attention-badge attention-badge-candidate">기준선 승인 대기</span>
+                                <span class="attention-badge attention-badge-config">설정 변경</span>
+                                <span class="attention-badge attention-badge-tool">Tool 변경</span>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+
+                <section
+                    id="view-scan-detail"
+                    class="view-container scan-detail-view"
+                    data-view="scan-detail"
+                    aria-labelledby="scan-detail-title"
+                    hidden
+                >
+                    <div class="scan-detail-header">
+                        <button
+                            id="scan-detail-back-button"
+                            class="secondary-button"
+                            type="button"
+                        >
+                            목록으로
+                        </button>
+
+                        <h2 id="scan-detail-title">
+                            MCP 서버 상세 결과
+                        </h2>
+                    </div>
+
+                    <section class="scan-detail-overview">
+                        <article
+                            id="scan-detail-risk-panel"
+                            class="scan-detail-risk-panel scan-detail-risk-warning"
+                            aria-labelledby="scan-detail-risk-title"
+                        >
+                            <span
+                                id="scan-detail-risk-icon"
+                                class="scan-detail-risk-icon"
+                                aria-hidden="true"
+                            >
+                                !
+                            </span>
+                            <div>
+                                <h3 id="scan-detail-risk-title">
+                                    왜 위험한가요?
+                                </h3>
+                                <p id="scan-detail-risk-description">
+                                    선택한 서버의 검사 결과를 불러오는 중입니다.
+                                </p>
+                            </div>
+                        </article>
+
+                        <article
+                            class="scan-detail-meta-panel"
+                            aria-label="검사 메타데이터"
+                        >
+                            <div
+                                id="scan-detail-meta"
+                                class="scan-detail-meta"
+                            ></div>
+                            <div
+                                id="scan-detail-severity-summary"
+                                class="scan-detail-severity-summary"
+                                aria-label="Severity 요약"
+                            ></div>
+                        </article>
+                    </section>
+
+                    <section class="scan-detail-main">
+                        <aside
+                            class="scan-detail-finding-panel"
+                            aria-labelledby="scan-detail-finding-list-title"
+                        >
+                            <h3 id="scan-detail-finding-list-title">
+                                발견된 항목
+                                <span id="scan-detail-finding-count">(0)</span>
+                            </h3>
+
+                            <div
+                                id="scan-detail-finding-empty"
+                                class="empty-state"
+                            >
+                                <strong>표시할 Finding이 없습니다.</strong>
+                                <span>
+                                    선택한 서버의 검사 상세가 있으면 여기에 표시됩니다.
+                                </span>
+                            </div>
+
+                            <div
+                                id="scan-detail-finding-list"
+                                class="scan-detail-finding-list"
+                                hidden
+                            ></div>
+                        </aside>
+
+                        <article
+                            class="scan-detail-finding-detail-panel"
+                            aria-labelledby="scan-detail-finding-detail-title"
+                        >
+                            <h3 id="scan-detail-finding-detail-title">
+                                Finding 상세
+                            </h3>
+
+                            <div
+                                id="scan-detail-finding-detail-empty"
+                                class="empty-state"
+                            >
+                                <strong>선택된 Finding이 없습니다.</strong>
+                                <span>
+                                    왼쪽 목록에서 항목을 선택하면 상세가 표시됩니다.
+                                </span>
+                            </div>
+
+                            <div
+                                id="scan-detail-finding-detail"
+                                class="scan-detail-finding-detail"
+                                hidden
+                            ></div>
+                        </article>
+                    </section>
+                </section>
+
+                <section
+                    id="view-scan-start"
+                    class="view-container"
+                    data-view="scan-start"
+                    aria-labelledby="scan-start-title"
+                    hidden
+                >
+                    <h2
+                        id="scan-start-title"
+                        class="view-heading"
+                    >
+                        MCP 서버 검사
+                    </h2>
+
+                    <div
+                        id="scan-setup-section"
+                        class="scan-phase-section"
+                    >
+                    <section
+                        class="dashboard-panel scan-start-panel"
+                        aria-labelledby="scan-options-title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">Scan Setup</p>
+                                <h3 id="scan-options-title">
+                                    검사 설정
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div class="scan-toolbar">
+                            <label
+                                class="toggle-control"
+                                for="scan-include-project-config"
+                            >
+                                <input
+                                    id="scan-include-project-config"
+                                    type="checkbox"
+                                >
+                                <span>프로젝트 설정 포함</span>
+                            </label>
+
+                            <button
+                                id="scan-refresh-servers-button"
+                                class="secondary-button"
+                                type="button"
+                            >
+                                서버 목록 새로고침
+                            </button>
+
+                            <button
+                                id="scan-select-all-button"
+                                class="secondary-button"
+                                type="button"
+                                disabled
+                                aria-disabled="true"
+                            >
+                                검사 가능한 서버 전체 선택
+                            </button>
+
+                            <button
+                                id="scan-clear-selection-button"
+                                class="secondary-button"
+                                type="button"
+                                disabled
+                                aria-disabled="true"
+                            >
+                                전체 선택 해제
+                            </button>
+                        </div>
+
+                        <div
+                            id="scan-server-status"
+                            class="inline-status"
+                            role="status"
+                            aria-live="polite"
+                        ></div>
+
+                        <div
+                            id="scan-server-error"
+                            class="inline-error"
+                            role="alert"
+                            aria-live="assertive"
+                            hidden
+                        ></div>
+                    </section>
+
+                    <section
+                        class="dashboard-panel"
+                        aria-labelledby="scan-server-list-title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">Server Selection</p>
+                                <h3 id="scan-server-list-title">
+                                    서버 선택 목록
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div
+                            id="scan-server-list"
+                            class="server-list"
+                            aria-live="polite"
+                        >
+                            <div
+                                id="scan-server-list-empty"
+                                class="empty-state"
+                            >
+                                <strong>
+                                    등록된 MCP 서버를 불러오면
+                                </strong>
+                                <span>
+                                    검사 가능한 서버가 여기에 표시됩니다.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="scan-selection-summary">
+                            <span>
+                                선택된 서버
+                                <strong id="scan-selected-count">0</strong>개
+                            </span>
+                            <span>
+                                검사 가능한 서버
+                                <strong id="scan-available-count">0</strong>개
+                            </span>
+                            <button
+                                id="scan-selected-servers-button"
+                                class="primary-button"
+                                type="button"
+                                disabled
+                                aria-disabled="true"
+                            >
+                                선택한 서버 검사
+                            </button>
+                        </div>
+                    </section>
+
+                    </div>
+
+                    <div
+                        id="scan-running-section"
+                        class="scan-phase-section"
+                        hidden
+                    >
+                        <section
+                            id="scan-progress-panel"
+                            class="dashboard-panel progress-panel"
+                            aria-labelledby="scan-progress-title"
+                            hidden
+                        >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">Progress</p>
+                                <h3 id="scan-progress-title">
+                                    MCP 서버를 검사하고 있어요
+                                </h3>
+                            </div>
+                            <div class="progress-count">
+                                <strong id="scan-progress-current">0</strong>
+                                <span>/</span>
+                                <strong id="scan-progress-total">0</strong>
+                            </div>
+                        </div>
+
+                        <p
+                            id="scan-progress-label"
+                            class="progress-label"
+                        >
+                            대기 중
+                        </p>
+
+                        <progress
+                            id="scan-progress-bar"
+                            max="0"
+                            value="0"
+                            aria-label="MCP 서버 검사 진행률"
+                        ></progress>
+
+                        <div class="current-server-row">
+                            <span>현재 검사 중인 서버</span>
+                            <strong id="scan-current-server-name">-</strong>
+                        </div>
+
+                        <div
+                            id="scan-progress-server-list"
+                            class="progress-server-list"
+                            aria-label="서버별 진행 목록"
+                        ></div>
+                        </section>
+
+                    </div>
+
+                </section>
+
+                <section
+                    id="view-server-management"
+                    class="view-container"
+                    data-view="server-management"
+                    aria-labelledby="server-management-title"
+                    hidden
+                >
+                    <h2
+                        id="server-management-title"
+                        class="view-heading"
+                    >
+                        MCP 서버 관리
+                    </h2>
+
+                    <div class="server-management-grid">
+                        <section
+                            class="dashboard-panel"
+                            aria-labelledby="server-management-list-title"
+                        >
+                            <div class="panel-heading">
+                                <div>
+                                <p class="eyebrow">Registered Servers</p>
+                                    <h3 id="server-management-list-title">
+                                        등록된 서버 목록
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div
+                                id="server-management-status"
+                                class="inline-status"
+                                role="status"
+                                aria-live="polite"
+                            ></div>
+
+                            <div
+                                id="server-management-error"
+                                class="inline-error"
+                                role="alert"
+                                aria-live="assertive"
+                                hidden
+                            ></div>
+
+                            <div
+                                id="server-management-list"
+                                class="server-list"
+                                aria-live="polite"
+                            >
+                                <div
+                                    id="server-management-list-empty"
+                                    class="empty-state"
+                                >
+                                    <strong>표시할 MCP 서버가 없습니다.</strong>
+                                    <span>
+                                        서버 목록을 새로고침하면 등록된 서버가
+                                        여기에 표시됩니다.
+                                    </span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section
+                            id="server-management-detail"
+                            class="dashboard-panel server-detail-panel"
+                            aria-labelledby="server-management-detail-title"
+                        >
+                            <div class="panel-heading">
+                                <div>
+                                    <p class="eyebrow">Safe Detail</p>
+                                    <h3 id="server-management-detail-title">
+                                        서버 상세
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div
+                                id="server-management-detail-empty"
+                                class="empty-state"
+                            >
+                                왼쪽 목록에서 서버를 선택하세요.
+                            </div>
+
+                            <div
+                                id="server-management-detail-content"
+                                class="server-detail-sections"
+                                hidden
+                            >
+                                <section
+                                    class="detail-section"
+                                    aria-labelledby="server-basic-info-title"
+                                >
+                                    <h4 id="server-basic-info-title">
+                                        기본 정보
+                                    </h4>
+                                    <dl class="detail-definition-list">
+                                        <div>
+                                            <dt>서버 이름</dt>
+                                            <dd id="server-name">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>제품</dt>
+                                            <dd id="server-product">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>범위</dt>
+                                            <dd id="server-scope">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>연결 방식</dt>
+                                            <dd id="server-transport">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>활성 상태</dt>
+                                            <dd id="server-enabled-state">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>지원 상태</dt>
+                                            <dd id="server-support-state">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>검사 가능 여부</dt>
+                                            <dd id="server-can-scan">-</dd>
+                                        </div>
+                                    </dl>
+                                </section>
+
+                                <section
+                                    class="detail-section"
+                                    aria-labelledby="server-monitoring-status-title"
+                                >
+                                    <h4 id="server-monitoring-status-title">
+                                        검사·기준선 검토 상태
+                                    </h4>
+                                    <dl class="detail-definition-list">
+                                        <div>
+                                            <dt>마지막 검사 상태</dt>
+                                            <dd id="server-last-scan-status">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>마지막 검사 시각</dt>
+                                            <dd id="server-last-scan-at">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>기준선 상태</dt>
+                                            <dd id="server-baseline-lifecycle">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>비교 상태</dt>
+                                            <dd id="server-comparison-status">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>검증 상태</dt>
+                                            <dd id="server-verification-status">-</dd>
+                                        </div>
+                                    </dl>
+                                </section>
+
+                                <section
+                                    class="detail-section"
+                                    aria-labelledby="server-connection-summary-title"
+                                >
+                                    <h4 id="server-connection-summary-title">
+                                        연결 요약
+                                    </h4>
+                                    <dl class="detail-definition-list">
+                                        <div>
+                                            <dt>실행 프로그램 이름</dt>
+                                            <dd id="server-command-basename">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>인자 개수</dt>
+                                            <dd id="server-argument-count">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>환경변수 참조 개수</dt>
+                                            <dd id="server-env-reference-count">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>원격 Origin</dt>
+                                            <dd id="server-remote-origin">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>TLS 검증 여부</dt>
+                                            <dd id="server-tls-verified">-</dd>
+                                        </div>
+                                    </dl>
+                                </section>
+
+                                <section
+                                    class="detail-section"
+                                    aria-labelledby="server-baseline-relation-title"
+                                >
+                                    <h4 id="server-baseline-relation-title">
+                                        기준선 관계
+                                    </h4>
+                                    <dl class="detail-definition-list">
+                                        <div>
+                                            <dt>현재 승인 기준선 ID</dt>
+                                            <dd id="server-current-approved-id">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Pending Candidate 수</dt>
+                                            <dd id="server-pending-candidate-count">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>거절 Candidate 수</dt>
+                                            <dd id="server-rejected-candidate-count">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>관련 승인 Target 수</dt>
+                                            <dd id="server-related-approved-target-count">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>State Version</dt>
+                                            <dd id="server-state-version">-</dd>
+                                        </div>
+                                    </dl>
+
+                                    <div class="baseline-revoke-actions">
+                                        <button
+                                            id="server-revoke-baseline-button"
+                                            class="baseline-revoke-button"
+                                            type="button"
+                                            hidden
+                                            disabled
+                                            aria-disabled="true"
+                                        >
+                                            기준선 삭제
+                                        </button>
+                                    </div>
+
+                                    <section
+                                        id="baseline-revoke-panel"
+                                        class="baseline-revoke-panel"
+                                        aria-labelledby="baseline-revoke-title"
+                                        hidden
+                                    >
+                                        <h5 id="baseline-revoke-title">
+                                            현재 승인 기준선을 삭제하시겠습니까?
+                                        </h5>
+
+                                        <p id="baseline-revoke-description">
+                                            삭제 후에는 이 서버에 비교 기준선이 없어집니다.
+                                            기존 기준선 문서와 승인·삭제 기록은 감사 이력으로 보존됩니다.
+                                            다음 정상 검사는 새로운 기준선 후보를 생성할 수 있습니다.
+                                        </p>
+
+                                        <dl
+                                            id="baseline-revoke-summary"
+                                            class="baseline-revoke-summary"
+                                        ></dl>
+
+                                        <div class="field-group">
+                                            <label for="baseline-revoke-reason-code">
+                                                처리 사유 코드
+                                            </label>
+
+                                            <input
+                                                id="baseline-revoke-reason-code"
+                                                name="baseline-revoke-reason-code"
+                                                type="text"
+                                                pattern="[a-z0-9_]{1,64}"
+                                                maxlength="64"
+                                                placeholder="user_revoked_baseline"
+                                            >
+
+                                            <p class="field-help">
+                                                선택 입력입니다. 비워 두면 서버가 안전한 기본 사유 코드를 사용합니다.
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            id="baseline-revoke-error"
+                                            class="inline-error"
+                                            role="alert"
+                                            aria-live="assertive"
+                                            hidden
+                                        ></div>
+
+                                        <div class="baseline-revoke-confirm-actions">
+                                            <button
+                                                id="baseline-revoke-confirm-button"
+                                                class="primary-button baseline-revoke-confirm-button"
+                                                type="button"
+                                            >
+                                                기준선 삭제 확인
+                                            </button>
+
+                                            <button
+                                                id="baseline-revoke-cancel-button"
+                                                class="secondary-button"
+                                                type="button"
+                                            >
+                                                취소
+                                            </button>
+                                        </div>
+                                    </section>
+                                </section>
+
+                                <section
+                                    id="candidate-review-section"
+                                    class="detail-section candidate-review-section"
+                                    aria-labelledby="candidate-review-title"
+                                >
+                                    <h4 id="candidate-review-title">
+                                        기준선 후보 검토
+                                    </h4>
+
+                                    <div
+                                        id="candidate-review-status"
+                                        class="inline-status"
+                                        role="status"
+                                        aria-live="polite"
+                                    ></div>
+
+                                    <div
+                                        id="candidate-review-error"
+                                        class="inline-error"
+                                        role="alert"
+                                        aria-live="assertive"
+                                        hidden
+                                    ></div>
+
+                                    <div
+                                        id="candidate-list"
+                                        class="candidate-list"
+                                        aria-label="Pending Candidate 목록"
+                                    ></div>
+
+                                    <div
+                                        id="candidate-list-empty"
+                                        class="empty-state"
+                                    >
+                                        <strong>검토할 기준선 후보가 없습니다.</strong>
+                                        <span>
+                                            서버 검사 후 승인 대기 후보가 생기면
+                                            여기에 표시됩니다.
+                                        </span>
+                                    </div>
+
+                                    <div
+                                        id="candidate-detail-empty"
+                                        class="empty-state"
+                                    >
+                                        <strong>Candidate를 선택하세요.</strong>
+                                        <span>
+                                            승인 대기 후보를 선택하면 상세 정보와
+                                            변경 내용을 확인할 수 있습니다.
+                                        </span>
+                                    </div>
+
+                                    <div
+                                        id="candidate-detail"
+                                        class="candidate-detail"
+                                        hidden
+                                    >
+                                        <div
+                                            id="candidate-basic-info"
+                                            class="candidate-detail-block"
+                                        ></div>
+
+                                        <div
+                                            id="candidate-snapshot-summary"
+                                            class="candidate-detail-block"
+                                        ></div>
+
+                                        <div
+                                            id="candidate-config-summary"
+                                            class="candidate-detail-block"
+                                        ></div>
+
+                                        <div
+                                            id="candidate-comparison-summary"
+                                            class="candidate-detail-block"
+                                        ></div>
+
+                                        <div
+                                            id="candidate-tool-diff"
+                                            class="candidate-detail-block"
+                                        ></div>
+
+                                        <div class="candidate-action-row">
+                                            <button
+                                                id="candidate-approve-button"
+                                                class="candidate-approve-button"
+                                                type="button"
+                                                disabled
+                                                aria-disabled="true"
+                                            >
+                                                기준선 승인
+                                            </button>
+
+                                            <button
+                                                id="candidate-reject-button"
+                                                class="candidate-reject-button"
+                                                type="button"
+                                                disabled
+                                                aria-disabled="true"
+                                            >
+                                                후보 거절
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <section
+                                        id="candidate-decision-panel"
+                                        class="candidate-decision-panel"
+                                        aria-labelledby="candidate-decision-title"
+                                        hidden
+                                    >
+                                        <h5 id="candidate-decision-title">
+                                            기준선 후보 처리 확인
+                                        </h5>
+
+                                        <p id="candidate-decision-description">
+                                            기준선 후보 처리 방식을 확인하세요.
+                                        </p>
+
+                                        <dl
+                                            id="candidate-decision-summary"
+                                            class="candidate-decision-summary"
+                                        ></dl>
+
+                                        <div class="field-group">
+                                            <label for="candidate-reason-code">
+                                                처리 사유 코드
+                                            </label>
+
+                                            <input
+                                                id="candidate-reason-code"
+                                                name="candidate-reason-code"
+                                                type="text"
+                                                pattern="[a-z0-9_]{1,64}"
+                                                maxlength="64"
+                                                placeholder="reviewed_change"
+                                            >
+
+                                            <p class="field-help">
+                                                선택 입력입니다. 영문 소문자,
+                                                숫자, 밑줄만 사용할 수 있습니다.
+                                            </p>
+                                        </div>
+
+                                        <div class="candidate-decision-actions">
+                                            <button
+                                                id="candidate-decision-confirm-button"
+                                                class="primary-button"
+                                                type="button"
+                                            >
+                                                처리 확인
+                                            </button>
+
+                                            <button
+                                                id="candidate-decision-cancel-button"
+                                                class="secondary-button"
+                                                type="button"
+                                            >
+                                                취소
+                                            </button>
+                                        </div>
+                                    </section>
+                                </section>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+                <section
+                    id="view-baseline-history"
+                    class="view-container"
+                    data-view="baseline-history"
+                    aria-labelledby="baseline-history-title"
+                    hidden
+                >
+                    <h2
+                        id="baseline-history-title"
+                        class="view-heading"
+                    >
+                        기준선 이력
+                    </h2>
+
+                    <div class="baseline-history-grid">
+                        <section
+                            class="dashboard-panel"
+                            aria-labelledby="baseline-history-server-title"
+                        >
+                            <div class="panel-heading">
+                                <div>
+                                    <p class="eyebrow">Server</p>
+                                    <h3 id="baseline-history-server-title">
+                                        서버 선택
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div
+                                id="baseline-history-status"
+                                class="inline-status"
+                                role="status"
+                                aria-live="polite"
+                            ></div>
+
+                            <div
+                                id="baseline-history-error"
+                                class="inline-error"
+                                role="alert"
+                                aria-live="assertive"
+                                hidden
+                            ></div>
+
+                            <div
+                                id="baseline-history-server-list"
+                                class="server-list"
+                            >
+                                <div
+                                    id="baseline-history-server-list-empty"
+                                    class="empty-state"
+                                >
+                                    <strong>표시할 서버가 없습니다.</strong>
+                                    <span>
+                                        서버를 불러오면 기준선 이력을 조회할 대상을
+                                        선택할 수 있습니다.
+                                    </span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section
+                            class="dashboard-panel"
+                            aria-labelledby="baseline-history-events-title"
+                        >
+                            <div class="panel-heading">
+                                <div>
+                                    <p class="eyebrow">Lifecycle Events</p>
+                                    <h3 id="baseline-history-events-title">
+                                        기준선 Lifecycle 이벤트
+                                    </h3>
+                                </div>
+                                <button
+                                    id="baseline-history-delete-button"
+                                    class="secondary-button baseline-history-delete-button"
+                                    type="button"
+                                    disabled
+                                    aria-disabled="true"
+                                >
+                                    이력 삭제
+                                </button>
+                            </div>
+
+                            <p class="baseline-history-note">
+                                기준선 후보의 승인·거절과 승인 기준선 변경 기록을 확인합니다.
+                            </p>
+
+                            <section
+                                id="baseline-history-delete-confirm-panel"
+                                class="baseline-history-delete-confirm-panel"
+                                aria-labelledby="baseline-history-delete-confirm-title"
+                                hidden
+                            >
+                                <div>
+                                    <h4 id="baseline-history-delete-confirm-title">
+                                        기준선 이력을 삭제할까요?
+                                    </h4>
+                                    <p id="baseline-history-delete-confirm-summary">
+                                        선택한 서버의 기준선 이력과 기준선 감시 상태를 초기화합니다.
+                                    </p>
+                                </div>
+
+                                <div class="baseline-history-delete-confirm-actions">
+                                    <button
+                                        id="baseline-history-delete-confirm-button"
+                                        class="primary-button baseline-history-delete-confirm-button"
+                                        type="button"
+                                    >
+                                        이력 삭제 확인
+                                    </button>
+
+                                    <button
+                                        id="baseline-history-delete-cancel-button"
+                                        class="secondary-button"
+                                        type="button"
+                                    >
+                                        취소
+                                    </button>
+                                </div>
+                            </section>
+
+                            <div
+                                id="baseline-history-list"
+                                class="baseline-history-list"
+                            >
+                                <div
+                                    id="baseline-history-empty"
+                                    class="empty-state"
+                                >
+                                    <strong>표시할 기준선 이력이 없습니다.</strong>
+                                    <span>
+                                        서버를 선택하면 저장된 기준선 승인·거절·삭제 기록이 표시됩니다.
+                                    </span>
+                                </div>
+                            </div>
+
+                            <dl
+                                class="history-field-template"
+                                hidden
+                            >
+                                <div>
+                                    <dt>이벤트 시각</dt>
+                                    <dd>-</dd>
+                                </div>
+                                <div>
+                                    <dt>이벤트 종류</dt>
+                                    <dd>-</dd>
+                                </div>
+                                <div>
+                                    <dt>Candidate ID</dt>
+                                    <dd>-</dd>
+                                </div>
+                                <div>
+                                    <dt>Baseline ID</dt>
+                                    <dd>-</dd>
+                                </div>
+                                <div>
+                                    <dt>이전 승인 기준선</dt>
+                                    <dd>-</dd>
+                                </div>
+                                <div>
+                                    <dt>새 승인 기준선</dt>
+                                    <dd>-</dd>
+                                </div>
+                                <div>
+                                    <dt>안전한 사유 코드</dt>
+                                    <dd>-</dd>
+                                </div>
+                            </dl>
+                        </section>
+                    </div>
+                </section>
+
+                <section
+                    id="view-static-scan"
+                    class="view-container static-scan-view"
+                    data-view="static-scan"
+                    aria-labelledby="static-scan-view-title"
+                    hidden
+                >
+                    <h2
+                        id="static-scan-view-title"
+                        class="view-heading"
+                    >
+                        파일·샘플 검사
+                    </h2>
+
+                    <section
+                        id="static-scan-panel"
+                        class="scan-card"
+                        aria-labelledby="static-scan-title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">Static Scanner</p>
+                                <h3 id="static-scan-title">
+                                    검사 대상 선택
+                                </h3>
+                                <p>
+                                    tools.json 파일 또는 등록된 테스트 샘플을
+                                    검사합니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="scan-form-grid">
+                            <div class="field-group">
+                                <label for="tools-file">
+                                    tools.json 파일 업로드
+                                </label>
+
+                                <input
+                                    id="tools-file"
+                                    name="tools-file"
+                                    type="file"
+                                    accept=".json,application/json"
+                                >
+
+                                <p class="field-help">
+                                    로컬 PC의 MCP tools.json 파일을 선택합니다.
+                                </p>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="sample-select">
+                                    연습 샘플 선택
+                                </label>
+
+                                <select
+                                    id="sample-select"
+                                    name="sample-select"
+                                >
+                                    <option value="">
+                                        샘플을 선택하세요
+                                    </option>
+                                </select>
+
+                                <p class="field-help">
+                                    vulnerable-lab에서 발견한 샘플이 표시됩니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="scan-actions">
+                            <button
+                                id="scan-button"
+                                class="primary-button"
+                                type="button"
+                            >
+                                검사 시작
+                            </button>
+                        </div>
+                    </section>
+
+                    <section
+                        id="status-panel"
+                        class="status-panel"
+                        aria-live="polite"
+                    >
+                        <span
+                            id="status-indicator"
+                            class="status-indicator status-idle"
+                        ></span>
+
+                        <span id="status-message">
+                            검사할 파일이나 샘플을 선택하세요.
+                        </span>
+                    </section>
+
+                    <section
+                        id="summary-section"
+                        class="dashboard-panel"
+                        aria-labelledby="scan-summary-title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">Scan Output</p>
+                                <h3 id="scan-summary-title">Scan Summary</h3>
+                                <p>검사 결과 요약이 여기에 표시됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="summary-grid">
+                            <article class="scan-summary-card">
+                                <span>Tools</span>
+                                <strong id="tool-count">-</strong>
+                            </article>
+
+                            <article class="scan-summary-card">
+                                <span>Findings</span>
+                                <strong id="finding-count">-</strong>
+                            </article>
+
+                            <article class="scan-summary-card">
+                                <span>Affected Targets</span>
+                                <strong id="affected-target-count">-</strong>
+                            </article>
+
+                            <article class="scan-summary-card severity-critical">
+                                <span>Critical</span>
+                                <strong id="critical-count">-</strong>
+                            </article>
+
+                            <article class="scan-summary-card severity-high">
+                                <span>High</span>
+                                <strong id="high-count">-</strong>
+                            </article>
+
+                            <article class="scan-summary-card severity-medium">
+                                <span>Medium</span>
+                                <strong id="medium-count">-</strong>
+                            </article>
+
+                            <article class="scan-summary-card severity-low">
+                                <span>Low</span>
+                                <strong id="low-count">-</strong>
+                            </article>
+
+                            <article class="scan-summary-card severity-info">
+                                <span>Info</span>
+                                <strong id="info-count">-</strong>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section
+                        id="findings-section"
+                        class="dashboard-panel"
+                        aria-labelledby="findings-title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">Finding Table</p>
+                                <h3 id="findings-title">Security Findings</h3>
+                                <p>탐지된 보안 이슈가 여기에 표시됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div
+                            id="findings-empty"
+                            class="empty-state"
+                        >
+                            아직 실행한 검사가 없습니다.
+                        </div>
+
+                        <div
+                            id="findings-table-container"
+                            class="table-container"
+                            hidden
+                        >
+                            <table class="findings-table">
+                                <thead>
+                                    <tr>
+                                        <th>Severity</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Target</th>
+                                        <th>Location</th>
+                                        <th>Confidence</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="findings-table-body"></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section
+                        id="finding-detail-section"
+                        class="dashboard-panel"
+                        aria-labelledby="finding-detail-title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">Finding Detail</p>
+                                <h3 id="finding-detail-title">Finding Detail</h3>
+                                <p>Finding을 선택하면 상세 정보가 표시됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div
+                            id="finding-detail-empty"
+                            class="empty-state"
+                        >
+                            선택된 Finding이 없습니다.
+                        </div>
+
+                        <div
+                            id="finding-detail"
+                            class="finding-detail"
+                            hidden
+                        ></div>
+                    </section>
+
+                    <section
+                        id="download-section"
+                        class="download-panel"
+                        aria-labelledby="download-title"
+                    >
+                        <div>
+                            <p class="eyebrow">Report</p>
+                            <h3 id="download-title">Report Download</h3>
+                            <p>
+                                스캔 완료 후 Markdown 또는 JSON 리포트를
+                                다운로드할 수 있습니다.
+                            </p>
+                        </div>
+
+                        <div class="download-actions">
+                            <a
+                                id="markdown-download"
+                                class="secondary-button disabled"
+                                href="#"
+                                aria-disabled="true"
+                            >
+                                Download Markdown
+                            </a>
+
+                            <a
+                                id="json-download"
+                                class="secondary-button disabled"
+                                href="#"
+                                aria-disabled="true"
+                            >
+                                Download JSON
+                            </a>
+                        </div>
+                    </section>
+                </section>
+
+                <section
+                    id="view-help"
+                    class="view-container"
+                    data-view="help"
+                    aria-labelledby="help-title"
+                    hidden
+                >
+                    <h2
+                        id="help-title"
+                        class="view-heading"
+                    >
+                        도움말
+                    </h2>
+
+                    <section
+                        class="dashboard-panel help-panel"
+                        aria-label="화면별 도움말"
+                    >
+                        <article class="help-item">
+                            <h3>검사 결과</h3>
+                            <p>전체 상태를 확인합니다.</p>
+                        </article>
+
+                        <article class="help-item">
+                            <h3>검사 시작</h3>
+                            <p>검사할 MCP 서버를 선택하고 순서대로 검사합니다.</p>
+                        </article>
+
+                        <article class="help-item">
+                            <h3>MCP 서버 관리</h3>
+                            <p>등록 상태와 안전한 연결 요약을 확인합니다.</p>
+                        </article>
+
+                        <article class="help-item">
+                            <h3>기준선 이력</h3>
+                            <p>후보 승인·거절과 승인 기준선 변경 기록을 확인합니다.</p>
+                        </article>
+
+                        <article class="help-item">
+                            <h3>파일·샘플 검사</h3>
+                            <p>tools.json 파일이나 테스트 샘플을 검사합니다.</p>
+                        </article>
+                    </section>
+                </section>
+            </main>
         </div>
-    </footer>
+    </div>
 </body>
 </html>
