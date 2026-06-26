@@ -695,7 +695,7 @@ svg {
 
 .scan-detail-overview {
     display: grid;
-    grid-template-columns: minmax(280px, 0.34fr) minmax(0, 0.66fr);
+    grid-template-columns: 1fr;
     gap: 18px;
     align-items: stretch;
 }
@@ -841,6 +841,7 @@ svg {
     display: grid;
     max-height: min(64vh, 620px);
     overflow-y: auto;
+    overflow-x: hidden;
     overscroll-behavior: contain;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-medium);
@@ -867,6 +868,8 @@ svg {
     gap: 12px;
     align-items: center;
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
     padding: 14px 16px;
     color: var(--color-text-primary);
     text-align: left;
@@ -904,19 +907,26 @@ svg {
 
 .scan-detail-finding-item strong {
     display: block;
+    min-width: 0;
     overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .scan-detail-finding-meta {
+    min-width: 0;
     color: var(--color-text-secondary);
     font-size: 12px;
     font-weight: 800;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .scan-detail-finding-arrow {
     color: var(--color-text-secondary);
     font-size: 22px;
     font-weight: 900;
+    justify-self: end;
 }
 
 .scan-detail-finding-detail {
@@ -1190,6 +1200,16 @@ svg {
 .status-badge-neutral,
 .status-badge-progress-queued,
 .status-badge-progress-skipped {
+    color: var(--color-text-secondary);
+    background: #eef2f6;
+}
+
+.status-badge-history-present {
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+}
+
+.status-badge-history-empty {
     color: var(--color-text-secondary);
     background: #eef2f6;
 }

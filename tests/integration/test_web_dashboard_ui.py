@@ -420,11 +420,20 @@ def test_dashboard_static_assets_and_health_route_are_available() -> None:
     assert "scan-detail-severity-summary" in css.text
     assert "scan-detail-severity-critical" in css.text
     assert "scan-detail-severity-info" not in css.text
+    scan_detail_overview_style = css.text.split(
+        ".scan-detail-overview {",
+        maxsplit=1,
+    )[1].split("}", maxsplit=1)[0]
+    assert "grid-template-columns: 1fr" in scan_detail_overview_style
+    assert "minmax(280px" not in scan_detail_overview_style
     assert "scan-detail-process-panel" not in css.text
     assert "scan-detail-process-issue-list" not in css.text
     assert "scan-detail-finding-list" in css.text
     assert "scan-detail-definition-list" in css.text
     assert "max-height: min(64vh, 620px)" in css.text
+    assert "overflow-x: hidden" in css.text
+    assert "overflow-wrap: anywhere" in css.text
+    assert "word-break: break-word" in css.text
     assert "max-height: min(68vh, 720px)" in css.text
     assert "server-detail-sections::-webkit-scrollbar" in css.text
     assert "overscroll-behavior: contain" in css.text
@@ -435,6 +444,8 @@ def test_dashboard_static_assets_and_health_route_are_available() -> None:
     assert "server-identity-row" in css.text
     assert "baseline-server-identity" in css.text
     assert "baseline-history-availability" in css.text
+    assert "status-badge-history-present" in css.text
+    assert "status-badge-history-empty" in css.text
     assert "baseline-history-delete-button" in css.text
     assert "baseline-history-delete-confirm-panel" in css.text
     assert "baseline-history-delete-confirm-actions" in css.text
@@ -465,6 +476,13 @@ def test_dashboard_static_assets_and_health_route_are_available() -> None:
     assert "normalizeServerListResponse" in javascript.text
     assert "normalizeServerItem" in javascript.text
     assert "classifyServerStatus" in javascript.text
+    assert "classifySeveritySummary" in javascript.text
+    assert "buildServerListPresentation" in javascript.text
+    assert "getServerScanStatusBadge" in javascript.text
+    assert "appendServerListBadges" in javascript.text
+    assert "normalizeSeveritySummary" in javascript.text
+    assert "last_finding_summary" in javascript.text
+    assert "lastFindingSummary" in javascript.text
     assert "hasPersistedMonitoringState" in javascript.text
     assert "isMonitoringNotFoundError" in javascript.text
     assert "runSelectedServerScans" in javascript.text
@@ -528,6 +546,15 @@ def test_dashboard_static_assets_and_health_route_are_available() -> None:
     assert "historyIds" in javascript.text
     assert "이력 있음" in javascript.text
     assert "이력 없음" in javascript.text
+    assert "history-present" in javascript.text
+    assert "history-empty" in javascript.text
+    assert "Tool Metadata 변경" in javascript.text
+    assert "연결 설정 변경" in javascript.text
+    assert "등록 위치 변경" in javascript.text
+    assert "비교 실패" in javascript.text
+    assert "이전 거절과 동일" in javascript.text
+    assert "getServerReviewBadges" not in javascript.text
+    assert "기준선 후보 검토" not in javascript.text
     assert "installCompactBaselineHistoryStyles" not in javascript.text
     assert "저장된 상태 있음" not in javascript.text
     assert "아직 이력 없음" not in javascript.text
@@ -570,6 +597,9 @@ def test_dashboard_static_assets_and_health_route_are_available() -> None:
         maxsplit=1,
     )[0]
     assert "[\"위험도\", finding.severity || severity]" in scan_detail_finding_detail
+    assert "\"지문\"" not in scan_detail_finding_detail
+    assert "fingerprint_hash_prefix" not in scan_detail_finding_detail
+    assert "finding.fingerprint" not in scan_detail_finding_detail
 
     candidate_list_item = javascript.text.split(
         "function createCandidateListItem",
@@ -631,7 +661,13 @@ def test_dashboard_static_assets_and_health_route_are_available() -> None:
     )[1].split("function renderScanProgressPanel", 1)[0]
     assert "null" in batch_status_function
     assert 'status: "queued"' not in batch_status_function
-    assert "if (batchStatus)" in javascript.text
+
+    scan_server_list_item = javascript.text.split(
+        "function createScanServerListItem",
+        1,
+    )[1].split("function appendMetaText", 1)[0]
+    assert "getBatchStatusForServer(server.selectionId)" not in scan_server_list_item
+    assert "appendServerListBadges(badges, presentation.badges)" in scan_server_list_item
 
     target_detail_function = javascript.text.split(
         "function selectServerForManagement",

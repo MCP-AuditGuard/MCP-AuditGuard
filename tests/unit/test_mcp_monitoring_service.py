@@ -50,7 +50,7 @@ from core.mcp_monitoring_service import (
     MonitoringScanError,
     MonitoringServiceError,
 )
-from core.models import ToolMetadata
+from core.models import Finding, ToolMetadata
 from core.scan_result import ScanResult
 
 
@@ -150,8 +150,10 @@ def make_dynamic_result(
     status: DynamicScanStatus = DynamicScanStatus.SUCCESS,
     tools: list[ToolMetadata] | None = None,
     with_scan_result: bool = True,
+    findings: list[Finding] | None = None,
 ) -> DynamicScanResult:
     tools = tools if tools is not None else [make_tool(server_name=server.server_name)]
+    findings = findings if findings is not None else []
     collected_tools = [
         CollectedTool(
             tool_id=f"{index + 1:020x}",
@@ -173,7 +175,7 @@ def make_dynamic_result(
             started_at=FIXED_TIME,
             completed_at=FIXED_TIME,
             tools=tools,
-            findings=[],
+            findings=findings,
         )
         if with_scan_result
         else None
@@ -184,6 +186,25 @@ def make_dynamic_result(
         collected_tools=collected_tools,
         cleanup=make_cleanup(),
         scan_result=scan_result,
+    )
+
+
+def make_finding(
+    *,
+    severity: str = "high",
+    target: str = "docs.search",
+) -> Finding:
+    return Finding(
+        id=f"TEST-{severity}",
+        category="tool_poisoning",
+        owasp="MCP03",
+        severity=severity,
+        confidence="high",
+        title=f"{severity} finding",
+        target=target,
+        location="description",
+        evidence="synthetic evidence",
+        recommendation="Review the tool metadata.",
     )
 
 
@@ -285,6 +306,36 @@ def test_scan_creates_initial_candidate_from_successful_scan(tmp_path: Path) -> 
     ) == result.candidate
 
 
+def test_successful_scan_persists_last_finding_summary(tmp_path: Path) -> None:
+    context = make_context(tmp_path)
+    server = make_server()
+    dynamic_result = make_dynamic_result(
+        server,
+        findings=[
+            make_finding(severity="high"),
+            make_finding(severity="medium"),
+        ],
+    )
+    service, repo, _discovery, _runner = make_service(
+        tmp_path,
+        [server],
+        dynamic_result,
+    )
+
+    result = asyncio.run(service.scan_monitored_server(context, server.selection_id))
+
+    summary = result.monitoring_state.last_finding_summary
+    assert summary is not None
+    assert summary.high == 1
+    assert summary.medium == 1
+    assert summary.critical == 0
+    persisted = repo.load_target_state(
+        result.monitoring_identity.monitoring_target_key
+    )
+    assert persisted is not None
+    assert persisted.last_finding_summary == summary
+
+
 def test_scan_failure_updates_state_without_candidate(tmp_path: Path) -> None:
     context = make_context(tmp_path)
     server = make_server()
@@ -305,6 +356,7 @@ def test_scan_failure_updates_state_without_candidate(tmp_path: Path) -> None:
     )
     assert result.monitoring_state.verification_status == VerificationStatus.UNAVAILABLE
     assert result.monitoring_state.pending_candidate_ids == []
+    assert result.monitoring_state.last_finding_summary is None
 
 
 def test_snapshot_value_error_updates_state_without_candidate(

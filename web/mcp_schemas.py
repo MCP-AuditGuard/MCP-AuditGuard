@@ -20,6 +20,7 @@ from core.mcp_monitoring_models import (
     BaselineHistoryRecord,
     ConfigurationFingerprint,
     MonitoringCandidate,
+    MonitoringFindingSummary,
     MonitoringIdentity,
     MonitoredServerState,
     ToolChange,
@@ -264,6 +265,27 @@ class BaselineComparisonResponse(_WebModel):
         )
 
 
+class MonitoringFindingSummaryResponse(_WebModel):
+    critical: int = Field(ge=0)
+    high: int = Field(ge=0)
+    medium: int = Field(ge=0)
+    low: int = Field(ge=0)
+    info: int = Field(ge=0)
+
+    @classmethod
+    def from_core(
+        cls,
+        summary: MonitoringFindingSummary,
+    ) -> MonitoringFindingSummaryResponse:
+        return cls(
+            critical=summary.critical,
+            high=summary.high,
+            medium=summary.medium,
+            low=summary.low,
+            info=summary.info,
+        )
+
+
 class MonitoringStateResponse(_WebModel):
     monitoring_group_key: str
     monitoring_target_key: str
@@ -276,6 +298,7 @@ class MonitoringStateResponse(_WebModel):
     history_ids: list[str] = Field(default_factory=list)
     last_scan_status: str
     last_scan_at: datetime | None = None
+    last_finding_summary: MonitoringFindingSummaryResponse | None = None
     last_seen_selection_id: str | None = None
     baseline_lifecycle: str
     comparison_status: str
@@ -297,6 +320,13 @@ class MonitoringStateResponse(_WebModel):
             history_ids=list(state.history_ids),
             last_scan_status=_enum_value(state.last_scan_status),
             last_scan_at=state.last_scan_at,
+            last_finding_summary=(
+                MonitoringFindingSummaryResponse.from_core(
+                    state.last_finding_summary
+                )
+                if state.last_finding_summary is not None
+                else None
+            ),
             last_seen_selection_id=state.last_seen_selection_id,
             baseline_lifecycle=_enum_value(state.baseline_lifecycle),
             comparison_status=_enum_value(state.comparison_status),

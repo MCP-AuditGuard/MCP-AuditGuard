@@ -591,6 +591,16 @@ class BaselineHistoryRecord(_FrozenModel):
         return _ensure_utc(value)
 
 
+class MonitoringFindingSummary(_FrozenModel):
+    """Persisted Finding severity counts for the latest scan result."""
+
+    critical: int = Field(default=0, ge=0)
+    high: int = Field(default=0, ge=0)
+    medium: int = Field(default=0, ge=0)
+    low: int = Field(default=0, ge=0)
+    info: int = Field(default=0, ge=0)
+
+
 class MonitoredServerState(_FrozenModel):
     schema_version: Literal["mcp-monitoring-storage-v1"] = (
         MONITORING_STORAGE_SCHEMA_VERSION
@@ -610,6 +620,7 @@ class MonitoredServerState(_FrozenModel):
     history_ids: list[HistoryId] = Field(default_factory=list)
     last_scan_status: MonitoringScanStatus = MonitoringScanStatus.NOT_SCANNED
     last_scan_at: datetime | None = None
+    last_finding_summary: MonitoringFindingSummary | None = None
     last_seen_selection_id: str | None = None
     baseline_lifecycle: BaselineLifecycleStatus = BaselineLifecycleStatus.NONE
     comparison_status: ComparisonStatus = ComparisonStatus.NOT_COMPARED

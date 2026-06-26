@@ -1260,6 +1260,13 @@ function normalizeServerItem(
     const historyIds = Array.isArray(monitoringState.history_ids)
         ? monitoringState.history_ids
         : [];
+    const hasLastFindingSummary = Object.prototype.hasOwnProperty.call(
+        monitoringState,
+        "last_finding_summary"
+    );
+    const lastFindingSummary = hasLastFindingSummary
+        ? normalizeSeveritySummary(monitoringState.last_finding_summary)
+        : existingServer?.lastFindingSummary || null;
 
     return {
         selectionId,
@@ -1321,6 +1328,7 @@ function normalizeServerItem(
             monitoringState.last_scan_at ||
             existingServer?.lastScanAt ||
             null,
+        lastFindingSummary,
         baselineLifecycle:
             monitoringState.baseline_lifecycle ||
             existingServer?.baselineLifecycle ||
@@ -1410,6 +1418,21 @@ function numberOrNull(value) {
     return typeof value === "number" && Number.isFinite(value)
         ? value
         : null;
+}
+
+
+function normalizeSeveritySummary(summary) {
+    if (!summary || typeof summary !== "object") {
+        return null;
+    }
+
+    return {
+        critical: numberOrZero(summary.critical),
+        high: numberOrZero(summary.high),
+        medium: numberOrZero(summary.medium),
+        low: numberOrZero(summary.low),
+        info: numberOrZero(summary.info),
+    };
 }
 
 
@@ -2047,6 +2070,15 @@ function classifySecurityFindingStatus(scanResult) {
         scanResult?.dynamic_scan_result?.scan_result
     );
     const severity = getSeveritySummary(scanResult);
+
+    return classifySeveritySummary(severity, hasScanResult);
+}
+
+
+function classifySeveritySummary(
+    severity,
+    hasScanResult
+) {
     const dangerFindingCount = severity.critical + severity.high;
     const warningFindingCount = severity.medium + severity.low;
 
@@ -2140,126 +2172,109 @@ function classifyServerStatus(
     server,
     currentSessionScanResult = null
 ) {
-    const severity = getSeveritySummary(currentSessionScanResult);
+    const hasCurrentScanResult = Boolean(
+        currentSessionScanResult?.dynamic_scan_result?.scan_result
+    );
+
+    if (hasCurrentScanResult) {
+        return classifySecurityFindingStatus(currentSessionScanResult);
+    }
+
+    if (server?.lastFindingSummary) {
+        return classifySeveritySummary(server.lastFindingSummary, true);
+    }
+
+    return classifySecurityFindingStatus(null);
+}
+
+
+function buildServerListPresentation(server) {
+    const currentSessionScanResult =
+        mcpUiState.scanBatch.resultsBySelectionId.get(server.selectionId);
+    const securityClassification = classifyServerStatus(
+        server,
+        currentSessionScanResult
+    );
+    const badges = [];
+
+    if (securityClassification.counted) {
+        badges.push({
+            tone: securityClassification.status,
+            label: displayRepresentativeStatus(securityClassification.status),
+            title: securityClassification.reason,
+        });
+    }
+
+    badges.push(getServerScanStatusBadge(server, currentSessionScanResult));
+
+    return {
+        badges,
+        reason: !server.canScan
+            ? server.safeActionReason || "검사 불가"
+            : "",
+    };
+}
+
+
+function getServerScanStatusBadge(
+    server,
+    currentSessionScanResult = null
+) {
     const dynamicStatus =
         currentSessionScanResult?.dynamic_scan_result?.status || null;
-    const hasCurrentScanResult = Boolean(currentSessionScanResult);
     const resultState = currentSessionScanResult?.monitoring_state || null;
-    const lastScanStatus =
-        server.lastScanStatus || resultState?.last_scan_status;
-    const baselineLifecycle =
-        server.baselineLifecycle || resultState?.baseline_lifecycle;
-    const comparisonStatus =
-        server.comparisonStatus || resultState?.comparison_status;
-    const verificationStatus =
-        server.verificationStatus || resultState?.verification_status;
-    const comparison =
-        server.lastComparison ||
-        currentSessionScanResult?.comparison_result;
+    const status =
+        dynamicStatus ||
+        resultState?.last_scan_status ||
+        server.lastScanStatus ||
+        "not_scanned";
 
-    if (
-        severity.critical > 0 ||
-        severity.high > 0 ||
-        dynamicStatus === "failed" ||
-        dynamicStatus === "timed_out"
-    ) {
+    if (!server.canScan) {
         return {
-            status: "danger",
-            reason: "검사에서 위험한 Finding이 발견되었거나 검사가 실패했습니다.",
-            priority: 1,
-        };
-    }
-
-    if (
-        severity.medium > 0 ||
-        severity.low > 0
-    ) {
-        return {
-            status: "warning",
-            reason: "검사에서 확인이 필요한 Finding이 발견되었습니다.",
-            priority: 3,
-        };
-    }
-
-    if (
-        hasCurrentScanResult &&
-        currentSessionScanResult?.dynamic_scan_result?.scan_result &&
-        severity.critical === 0 &&
-        severity.high === 0 &&
-        severity.medium === 0 &&
-        severity.low === 0
-    ) {
-        return {
-            status: "safe",
-            reason: "이번 검사에서 보안 Finding이 발견되지 않았습니다.",
-            priority: 5,
-        };
-    }
-
-    if (
-        lastScanStatus === "failed" ||
-        lastScanStatus === "timed_out" ||
-        verificationStatus === "unavailable"
-    ) {
-        return {
-            status: "danger",
-            reason: "위험하거나 검사를 완료하지 못했습니다.",
-            priority: 1,
-        };
-    }
-
-    if (
-        lastScanStatus === "partial_success" ||
-        verificationStatus === "review_required" ||
-        baselineLifecycle === "candidate_pending" ||
-        baselineLifecycle === "rejected" ||
-        comparisonStatus === "changed" ||
-        comparisonStatus === "comparison_failed" ||
-        Boolean(currentSessionScanResult?.registration_changed) ||
-        Boolean(currentSessionScanResult?.configuration_changed) ||
-        Boolean(comparison?.registration_changed) ||
-        Boolean(comparison?.configuration_changed) ||
-        !server.canScan
-    ) {
-        return {
-            status: "warning",
-            reason: !server.canScan
-                ? "검사 불가 상태입니다."
-                : "검토가 필요한 상태입니다.",
-            priority: 3,
-        };
-    }
-
-    if (
-        lastScanStatus === "success" &&
-        baselineLifecycle === "approved" &&
-        comparisonStatus === "matched" &&
-        verificationStatus === "verified" &&
-        severity.critical === 0 &&
-        severity.high === 0 &&
-        severity.medium === 0 &&
-        severity.low === 0
-    ) {
-        return {
-            status: "safe",
-            reason: "승인된 기준선과 일치합니다.",
-            priority: 5,
-        };
-    }
-
-    if (!lastScanStatus || lastScanStatus === "not_scanned") {
-        return {
-            status: "unscanned",
-            reason: "아직 검사하지 않았습니다.",
-            priority: 5,
+            tone: "warning",
+            label: "검사 불가",
+            title: server.safeActionReason || "이 서버는 검사할 수 없습니다.",
         };
     }
 
     return {
-        status: "unscanned",
-        reason: "안전 상태를 확인하려면 검사가 필요합니다.",
-        priority: 5,
+        tone: scanStatusBadgeTone(status),
+        label: displayScanStatus(status),
+        title: "서버의 최근 검사 실행 상태입니다.",
     };
+}
+
+
+function scanStatusBadgeTone(status) {
+    if (status === "success" || status === "partial_success") {
+        return "safe";
+    }
+
+    if (status === "failed" || status === "timed_out") {
+        return "danger";
+    }
+
+    if (status === "scanning") {
+        return "warning";
+    }
+
+    return "neutral";
+}
+
+
+function appendServerListBadges(
+    container,
+    badges
+) {
+    container.replaceChildren();
+
+    for (const badge of badges) {
+        const element = createStatusBadge(badge.tone, badge.label);
+        if (badge.title) {
+            element.title = badge.title;
+        }
+        container.appendChild(element);
+    }
 }
 
 
@@ -2656,11 +2671,7 @@ function createScanServerListItem(server) {
     const meta = document.createElement("span");
     const badges = document.createElement("span");
     const reason = document.createElement("span");
-    const batchStatus = getBatchStatusForServer(server.selectionId);
-    const classification = classifyServerStatus(
-        server,
-        mcpUiState.scanBatch.resultsBySelectionId.get(server.selectionId)
-    );
+    const presentation = buildServerListPresentation(server);
 
     label.className = "server-select-item";
     label.classList.toggle(
@@ -2692,29 +2703,7 @@ function createScanServerListItem(server) {
     appendLabeledMetaText(meta, "범위", displayScope(server.scope));
 
     badges.className = "server-badge-row";
-    badges.appendChild(
-        createStatusBadge(
-            classification.status,
-            displayRepresentativeStatus(classification.status)
-        )
-    );
-    badges.appendChild(
-        createStatusBadge(
-            "neutral",
-            displayScanStatus(server.lastScanStatus)
-        )
-    );
-    badges.appendChild(
-        createStatusBadge(
-            "neutral",
-            displayVerificationStatus(server.verificationStatus)
-        )
-    );
-    if (batchStatus) {
-        badges.appendChild(
-            createProgressBadge(batchStatus.status)
-        );
-    }
+    appendServerListBadges(badges, presentation.badges);
 
     content.appendChild(title);
     content.appendChild(meta);
@@ -2722,7 +2711,7 @@ function createScanServerListItem(server) {
 
     if (!server.canScan) {
         reason.className = "server-safe-reason";
-        reason.textContent = server.safeActionReason || "검사 불가";
+        reason.textContent = presentation.reason || "검사 불가";
         content.appendChild(reason);
     }
 
@@ -2890,10 +2879,7 @@ function createServerManagementListItem(server) {
     const title = document.createElement("strong");
     const meta = document.createElement("span");
     const badges = document.createElement("span");
-    const classification = classifyServerStatus(
-        server,
-        mcpUiState.scanBatch.resultsBySelectionId.get(server.selectionId)
-    );
+    const presentation = buildServerListPresentation(server);
 
     button.className = "server-management-item";
     button.type = "button";
@@ -2914,18 +2900,7 @@ function createServerManagementListItem(server) {
     appendLabeledMetaText(meta, "범위", displayScope(server.scope));
 
     badges.className = "server-badge-row";
-    badges.appendChild(
-        createStatusBadge(
-            classification.status,
-            displayRepresentativeStatus(classification.status)
-        )
-    );
-    badges.appendChild(
-        createStatusBadge(
-            "neutral",
-            displayScanStatus(server.lastScanStatus)
-        )
-    );
+    appendServerListBadges(badges, presentation.badges);
 
     button.appendChild(title);
     button.appendChild(meta);
@@ -4835,14 +4810,14 @@ function getBaselineHistoryAvailability(server) {
 
     if (getBaselineHistoryCountForServer(server) > 0) {
         return {
-            tone: "safe",
+            tone: "history-present",
             label: "이력 있음",
             description: "저장된 기준선 Lifecycle 이벤트가 있습니다.",
         };
     }
 
     return {
-        tone: "unscanned",
+        tone: "history-empty",
         label: "이력 없음",
         description: "아직 저장된 감시 상태나 기준선 이력이 없습니다.",
     };
@@ -5884,10 +5859,6 @@ function renderScanDetailFindingDetail(finding) {
             ["대상", finding.target],
             ["위치", finding.location],
             ["민감정보 마스킹", finding.redacted],
-            [
-                "지문",
-                finding.fingerprint_hash_prefix || finding.fingerprint,
-            ],
         ]
     );
 

@@ -32,6 +32,7 @@ from core.mcp_monitoring_models import (
     ConfigurationFingerprint,
     FieldPresence,
     MonitoringCandidate,
+    MonitoringFindingSummary,
     MonitoringIdentity,
     MonitoringScanStatus,
     MonitoredServerState,
@@ -247,6 +248,44 @@ def test_server_list_response_total_matches_server_count() -> None:
     assert response.total == 2
     assert response.total == len(response.servers)
     assert response.include_trusted_project_config is False
+
+
+def test_server_list_response_includes_last_finding_summary() -> None:
+    item = _list_item(
+        selection_id="codex:user:docs",
+        target_key=TARGET_KEY,
+        server_name="docs",
+    )
+    item = item.model_copy(
+        update={
+            "monitoring_state": item.monitoring_state.model_copy(
+                update={
+                    "last_finding_summary": MonitoringFindingSummary(
+                        critical=1,
+                        high=2,
+                        medium=3,
+                        low=4,
+                    )
+                }
+            )
+        }
+    )
+
+    response = McpServerListResponse.from_core(
+        MonitoredServerListResult(
+            servers=[item],
+            discovery_result=McpDiscoveryResult(),
+        )
+    )
+    payload = response.model_dump()
+
+    assert payload["servers"][0]["monitoring_state"]["last_finding_summary"] == {
+        "critical": 1,
+        "high": 2,
+        "medium": 3,
+        "low": 4,
+        "info": 0,
+    }
 
 
 def test_history_list_response_total_matches_record_count() -> None:

@@ -49,6 +49,7 @@ from core.mcp_monitoring_models import (
     BaselineLifecycleStatus,
     ComparisonStatus,
     ConfigurationFingerprint,
+    MonitoringFindingSummary,
     MonitoringCandidate,
     MonitoringIdentity,
     MonitoringScanStatus,
@@ -706,6 +707,7 @@ class McpMonitoringService:
     ) -> MonitoredScanResult:
         now = self._now()
         scan_status = self._monitoring_scan_status(dynamic_result.status)
+        finding_summary = self._finding_summary(dynamic_result)
         snapshot_result = self._snapshot_from_dynamic_result(dynamic_result, now)
         snapshot = snapshot_result.snapshot
         related_keys = self._related_target_keys(identity.monitoring_group_key)
@@ -729,6 +731,7 @@ class McpMonitoringService:
                 state,
                 identity=identity,
                 scan_status=scan_status,
+                finding_summary=finding_summary,
                 selection_id=server.selection_id,
                 comparison_result=None,
                 comparison_status=ComparisonStatus.COMPARISON_FAILED,
@@ -786,6 +789,7 @@ class McpMonitoringService:
                 state,
                 identity=identity,
                 scan_status=scan_status,
+                finding_summary=finding_summary,
                 selection_id=server.selection_id,
                 comparison_result=comparison_result,
                 comparison_status=comparison_result.comparison_status,
@@ -822,6 +826,7 @@ class McpMonitoringService:
                 state,
                 identity=identity,
                 scan_status=scan_status,
+                finding_summary=finding_summary,
                 selection_id=server.selection_id,
                 comparison_result=comparison_result,
                 comparison_status=self._comparison_status(comparison_result),
@@ -866,6 +871,7 @@ class McpMonitoringService:
                 state,
                 identity=identity,
                 scan_status=scan_status,
+                finding_summary=finding_summary,
                 selection_id=server.selection_id,
                 comparison_result=comparison_result,
                 comparison_status=self._comparison_status(comparison_result),
@@ -929,6 +935,7 @@ class McpMonitoringService:
             state,
             identity=identity,
             scan_status=scan_status,
+            finding_summary=finding_summary,
             selection_id=server.selection_id,
             comparison_result=comparison_result,
             comparison_status=self._comparison_status(comparison_result),
@@ -1301,12 +1308,30 @@ class McpMonitoringService:
 
         return _SnapshotBuildResult(snapshot=snapshot)
 
+    def _finding_summary(
+        self,
+        dynamic_result: DynamicScanResult,
+    ) -> MonitoringFindingSummary | None:
+        if dynamic_result.scan_result is None:
+            return None
+
+        severity = dynamic_result.scan_result.summary.by_severity
+
+        return MonitoringFindingSummary(
+            critical=severity.critical,
+            high=severity.high,
+            medium=severity.medium,
+            low=severity.low,
+            info=severity.info,
+        )
+
     def _scan_state(
         self,
         state: MonitoredServerState,
         *,
         identity: MonitoringIdentity,
         scan_status: MonitoringScanStatus,
+        finding_summary: MonitoringFindingSummary | None,
         selection_id: str,
         comparison_result: BaselineComparisonResult | None,
         comparison_status: ComparisonStatus,
@@ -1327,6 +1352,7 @@ class McpMonitoringService:
             pending_candidate_ids=pending_ids,
             last_scan_status=scan_status,
             last_scan_at=now,
+            last_finding_summary=finding_summary,
             last_seen_selection_id=selection_id,
             baseline_lifecycle=(
                 baseline_lifecycle_override
