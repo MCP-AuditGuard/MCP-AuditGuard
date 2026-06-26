@@ -115,6 +115,7 @@ const mcpUiState = {
     },
     candidateReview: {
         selectedCandidateId: null,
+        expandedCandidateId: null,
         candidateDetailsById: new Map(),
         loadingCandidateId: null,
         error: null,
@@ -404,6 +405,22 @@ const elements = {
         "scan-detail-finding-detail-empty"
     ),
 
+    scanDetailBaselineSection: document.getElementById(
+        "scan-detail-baseline-section"
+    ),
+    scanDetailBaselineEmpty: document.getElementById(
+        "scan-detail-baseline-empty"
+    ),
+    scanDetailBaselineContent: document.getElementById(
+        "scan-detail-baseline-content"
+    ),
+    scanDetailComparisonSummary: document.getElementById(
+        "scan-detail-comparison-summary"
+    ),
+    scanDetailToolDiff: document.getElementById(
+        "scan-detail-tool-diff"
+    ),
+
     includeProjectConfigToggle: document.getElementById(
         "scan-include-project-config"
     ),
@@ -486,16 +503,6 @@ const elements = {
     serverCurrentApprovedId: document.getElementById(
         "server-current-approved-id"
     ),
-    serverPendingCandidateCount: document.getElementById(
-        "server-pending-candidate-count"
-    ),
-    serverRejectedCandidateCount: document.getElementById(
-        "server-rejected-candidate-count"
-    ),
-    serverRelatedApprovedTargetCount: document.getElementById(
-        "server-related-approved-target-count"
-    ),
-    serverStateVersion: document.getElementById("server-state-version"),
     serverRevokeBaselineButton: document.getElementById(
         "server-revoke-baseline-button"
     ),
@@ -2637,6 +2644,7 @@ function openCandidateReviewFromResult(item) {
 
     if (item.candidateId) {
         mcpUiState.candidateReview.selectedCandidateId = item.candidateId;
+        mcpUiState.candidateReview.expandedCandidateId = item.candidateId;
         maybeLoadSelectedCandidateDetail();
         renderCandidateReview();
     }
@@ -3114,26 +3122,6 @@ function renderServerManagementDetail() {
         elements.serverCurrentApprovedId,
         state.current_approved_id || selectedServer.currentApprovedId
     );
-    setText(
-        elements.serverPendingCandidateCount,
-        Array.isArray(state.pending_candidate_ids)
-            ? state.pending_candidate_ids.length
-            : selectedServer.pendingCandidateCount
-    );
-    setText(
-        elements.serverRejectedCandidateCount,
-        Array.isArray(state.rejected_candidate_ids)
-            ? state.rejected_candidate_ids.length
-            : selectedServer.rejectedCandidateCount
-    );
-    setText(
-        elements.serverRelatedApprovedTargetCount,
-        selectedServer.relatedApprovedTargetCount
-    );
-    setText(
-        elements.serverStateVersion,
-        state.state_version ?? selectedServer.stateVersion
-    );
     renderBaselineRevocationControls(selectedServer, state);
 }
 
@@ -3441,6 +3429,7 @@ function getLatestSafeSummary(server) {
 
 function resetCandidateReviewStateForServerChange() {
     mcpUiState.candidateReview.selectedCandidateId = null;
+    mcpUiState.candidateReview.expandedCandidateId = null;
     mcpUiState.candidateReview.loadingCandidateId = null;
     mcpUiState.candidateReview.error = null;
     mcpUiState.candidateReview.decisionMode = null;
@@ -3462,6 +3451,7 @@ function ensureCandidateSelectionForCurrentServer() {
 
     if (!server || !pendingIds.length) {
         mcpUiState.candidateReview.selectedCandidateId = null;
+        mcpUiState.candidateReview.expandedCandidateId = null;
         mcpUiState.candidateReview.decisionMode = null;
         mcpUiState.candidateReview.decisionCandidateId = null;
         renderCandidateReview();
@@ -3474,6 +3464,7 @@ function ensureCandidateSelectionForCurrentServer() {
     ) {
         mcpUiState.candidateReview.selectedCandidateId =
             getPreferredPendingCandidateId(server, pendingIds);
+        mcpUiState.candidateReview.expandedCandidateId = null;
         mcpUiState.candidateReview.decisionMode = null;
         mcpUiState.candidateReview.decisionCandidateId = null;
     }
@@ -3531,39 +3522,6 @@ function getPreferredPendingCandidateId(
 }
 
 
-function isCandidateLinkedToCurrentScanResult(
-    server,
-    candidate
-) {
-    if (!server || !candidate) {
-        return false;
-    }
-
-    const result = mcpUiState.scanBatch.resultsBySelectionId.get(
-        server.selectionId
-    );
-
-    if (!result) {
-        return false;
-    }
-
-    const resultCandidateId = result?.candidate?.candidate_id || null;
-
-    if (resultCandidateId) {
-        return resultCandidateId === candidate.candidate_id;
-    }
-
-    const resultScanId =
-        result?.dynamic_scan_result?.scan_result?.scan_id || null;
-
-    return Boolean(
-        resultScanId &&
-        candidate.scan_id &&
-        resultScanId === candidate.scan_id
-    );
-}
-
-
 function renderCandidateReview() {
     const server = findServerBySelectionId(
         mcpUiState.serverManagement.selectedSelectionId
@@ -3599,11 +3557,13 @@ function renderCandidateReview() {
         !pendingIds.includes(review.selectedCandidateId)
     ) {
         review.selectedCandidateId = null;
+        review.expandedCandidateId = null;
         review.decisionMode = null;
         review.decisionCandidateId = null;
     }
 
     if (!pendingIds.length) {
+        review.expandedCandidateId = null;
         showCandidateListEmpty(
             "검토할 기준선 후보가 없습니다.",
             "서버 검사 후 승인 대기 후보가 생기면 여기에 표시됩니다."
@@ -3631,6 +3591,7 @@ function renderCandidateReview() {
     }
 
     renderCandidateDetail();
+
     renderCandidateDecisionPanel();
 }
 
@@ -3674,23 +3635,29 @@ function createCandidateListItem(candidateId) {
     const button = document.createElement("button");
     const title = document.createElement("strong");
     const meta = document.createElement("span");
-    const server = findServerBySelectionId(
-        mcpUiState.serverManagement.selectedSelectionId
-    );
     const detail = mcpUiState.candidateReview.candidateDetailsById.get(
         candidateId
     );
-    const linkedToCurrentScan = isCandidateLinkedToCurrentScanResult(
-        server,
-        detail
-    );
+
+    const isSelected =
+        mcpUiState.candidateReview.selectedCandidateId === candidateId;
+    const isExpanded =
+        mcpUiState.candidateReview.expandedCandidateId === candidateId;
 
     button.className = "candidate-list-item";
     button.type = "button";
     button.dataset.candidateId = candidateId;
     button.disabled = mcpUiState.candidateReview.decisionRunning;
+    button.setAttribute(
+        "aria-controls",
+        "candidate-basic-info candidate-snapshot-summary candidate-config-summary"
+    );
+    button.setAttribute("aria-expanded", String(isExpanded));
+    button.title = isExpanded
+        ? "Candidate 요약 정보 접기"
+        : "Candidate 요약 정보 펼치기";
 
-    if (mcpUiState.candidateReview.selectedCandidateId === candidateId) {
+    if (isSelected) {
         button.classList.add("is-selected");
         button.setAttribute("aria-current", "true");
     }
@@ -3706,10 +3673,16 @@ function createCandidateListItem(candidateId) {
         appendMetaText(meta, displayScanStatus(detail.dynamic_scan_status));
         appendMetaText(meta, `Tool ${detail.snapshot?.tool_count ?? "-"}`);
 
-        if (linkedToCurrentScan) {
+        if (detail.comparison_result) {
+            const comparison = detail.comparison_result;
+
             appendMetaText(
                 meta,
-                `변경 Tool ${detail.comparison_result?.changed_count ?? 0}`
+                [
+                    `추가 ${comparison.added_count ?? 0}`,
+                    `삭제 ${comparison.removed_count ?? 0}`,
+                    `변경 ${comparison.changed_count ?? 0}`,
+                ].join(" / ")
             );
         }
     } else {
@@ -3728,18 +3701,35 @@ function createCandidateListItem(candidateId) {
 
 
 function selectCandidateForReview(candidateId) {
-    if (mcpUiState.candidateReview.decisionRunning) {
+    const review = mcpUiState.candidateReview;
+
+    if (review.decisionRunning) {
         return;
     }
 
-    mcpUiState.candidateReview.selectedCandidateId = candidateId;
-    mcpUiState.candidateReview.error = null;
-    mcpUiState.candidateReview.decisionMode = null;
-    mcpUiState.candidateReview.decisionCandidateId = null;
-    mcpUiState.candidateReview.decisionError = null;
-    mcpUiState.candidateReview.decisionSuccess = null;
+    const shouldCollapse =
+        review.selectedCandidateId === candidateId &&
+        review.expandedCandidateId === candidateId;
+    const candidateChanged = review.selectedCandidateId !== candidateId;
+
+    review.selectedCandidateId = candidateId;
+    review.expandedCandidateId = shouldCollapse
+        ? null
+        : candidateId;
+    review.error = null;
+
+    if (candidateChanged) {
+        review.decisionMode = null;
+        review.decisionCandidateId = null;
+        review.decisionError = null;
+        review.decisionSuccess = null;
+    }
+
     renderCandidateReview();
-    maybeLoadSelectedCandidateDetail();
+
+    if (!shouldCollapse) {
+        maybeLoadSelectedCandidateDetail();
+    }
 }
 
 
@@ -3890,14 +3880,12 @@ function renderCandidateDetail() {
     renderCandidateBasicInfo(candidate);
     renderCandidateSnapshotSummary(candidate);
     renderCandidateConfigSummary(candidate);
-    const linkedToCurrentScan = isCandidateLinkedToCurrentScanResult(
-        server,
-        candidate
-    );
-
-    renderCandidateComparisonSummary(candidate, linkedToCurrentScan);
-    renderCandidateToolDiff(candidate, linkedToCurrentScan);
+    renderCandidateComparisonSummary(candidate);
+    renderCandidateToolDiff(candidate);
     renderCandidateDecisionControls(candidate, server);
+    setCandidateSupplementalBlocksHidden(
+        review.expandedCandidateId !== candidateId
+    );
 
     const targetState = getTargetStateForServer(server);
     const candidateStatusMessage = isCandidatePending(
@@ -3912,6 +3900,13 @@ function renderCandidateDetail() {
         candidateStatusMessage,
         false
     );
+}
+
+
+function setCandidateSupplementalBlocksHidden(hidden) {
+    elements.candidateBasicInfo.hidden = hidden;
+    elements.candidateSnapshotSummary.hidden = hidden;
+    elements.candidateConfigSummary.hidden = hidden;
 }
 
 
@@ -4031,174 +4026,58 @@ function renderCandidateConfigSummary(candidate) {
 }
 
 
-function renderCandidateComparisonSummary(
-    candidate,
-    linkedToCurrentScan
-) {
+function renderCandidateComparisonSummary(candidate) {
     const comparison = candidate.comparison_result;
     const fragment = document.createDocumentFragment();
 
-    fragment.appendChild(createCandidateBlockTitle("기준선 비교 요약"));
-
-    if (!linkedToCurrentScan) {
-        fragment.appendChild(
-            createEmptyState(
-                "현재 화면의 검사 결과가 없습니다.",
-                "다시 검사하면 이번 검사와 연결된 기준선 비교가 표시됩니다."
-            )
-        );
-        elements.candidateComparisonSummary.replaceChildren(fragment);
-        return;
-    }
+    fragment.appendChild(
+        createCandidateBlockTitle("기준선 비교 요약")
+    );
 
     if (!comparison) {
         fragment.appendChild(
             createEmptyState(
-                "최초 기준선 후보입니다.",
-                "비교할 승인 기준선이 없으므로 현재 Snapshot을 검토한 뒤 승인 여부를 결정하세요."
+                "비교할 승인 기준선이 없습니다.",
+                "최초 기준선 후보이거나 저장된 비교 결과가 없습니다."
             )
         );
+
         elements.candidateComparisonSummary.replaceChildren(fragment);
         return;
     }
 
-    const cardGrid = document.createElement("div");
-    cardGrid.className = "comparison-summary-grid";
-
-    for (const [label, value] of [
-        ["추가 Tool", comparison.added_count],
-        ["삭제 Tool", comparison.removed_count],
-        ["변경 Tool", comparison.changed_count],
-        ["변경 없음 Tool", comparison.unchanged_count],
-    ]) {
-        const card = document.createElement("article");
-        const labelElement = document.createElement("span");
-        const valueElement = document.createElement("strong");
-
-        card.className = "comparison-summary-card";
-        labelElement.textContent = label;
-        valueElement.textContent = valueOrDash(value);
-        card.appendChild(labelElement);
-        card.appendChild(valueElement);
-        cardGrid.appendChild(card);
-    }
-
-    fragment.appendChild(cardGrid);
     fragment.appendChild(
-        createDefinitionGrid(
-            [
-                ["비교 상태", displayComparisonStatus(comparison.comparison_status)],
-                ["기준선 일치", displayBooleanValue(comparison.matched)],
-                ["등록 위치 변경", displayBooleanValue(comparison.registration_changed)],
-                ["연결 설정 변경", displayBooleanValue(comparison.configuration_changed)],
-                ["승인 Snapshot ID", comparison.approved_snapshot_id],
-                ["현재 Snapshot ID", comparison.current_snapshot_id],
-                ["승인 Snapshot Hash Prefix", comparison.approved_snapshot_hash_prefix],
-                ["현재 Snapshot Hash Prefix", comparison.current_snapshot_hash_prefix],
-                ["비교 오류 코드", comparison.comparison_error_code],
-            ]
+        createComparisonSummaryDetails(
+            comparison,
+            candidate.candidate_id
         )
     );
-
-    const badges = document.createElement("div");
-    badges.className = "server-badge-row";
-
-    if (comparison.registration_changed) {
-        badges.appendChild(createStatusBadge("warning", "등록 위치 변경"));
-    }
-
-    if (comparison.configuration_changed) {
-        badges.appendChild(createStatusBadge("warning", "연결 설정 변경"));
-    }
-
-    if ((comparison.changed_count || 0) > 0) {
-        badges.appendChild(createStatusBadge("warning", "Tool Metadata 변경"));
-    }
-
-    if (comparison.matched) {
-        badges.appendChild(createStatusBadge("safe", "기준선 일치"));
-    }
-
-    if (comparison.comparison_status === "comparison_failed") {
-        badges.appendChild(createStatusBadge("danger", "비교 실패"));
-        fragment.appendChild(
-            createEmptyState(
-                "기준선 비교를 완료하지 못했습니다.",
-                `안전한 오류 코드: ${valueOrDash(comparison.comparison_error_code)}`
-            )
-        );
-    }
-
-    if (badges.children.length) {
-        fragment.appendChild(badges);
-    }
 
     elements.candidateComparisonSummary.replaceChildren(fragment);
 }
 
 
-function renderCandidateToolDiff(
-    candidate,
-    linkedToCurrentScan
-) {
+function renderCandidateToolDiff(candidate) {
     const comparison = candidate.comparison_result;
     const fragment = document.createDocumentFragment();
 
     fragment.appendChild(
-        createCandidateBlockTitle(
-            linkedToCurrentScan
-                ? "Tool Metadata 변경"
-                : "Tool 변경 목록"
-        )
+        createCandidateBlockTitle("Tool Metadata 변경")
     );
-
-    if (!linkedToCurrentScan) {
-        fragment.appendChild(
-            createEmptyState(
-                "현재 화면의 검사 결과가 없습니다.",
-                "다시 검사하면 이번 검사에서 확인한 Tool 변경 목록이 표시됩니다."
-            )
-        );
-        elements.candidateToolDiff.replaceChildren(fragment);
-        return;
-    }
 
     if (!comparison) {
         fragment.appendChild(
             createEmptyState(
                 "비교할 Tool 변경 목록이 없습니다.",
-                "최초 기준선 후보는 승인 기준선과의 Diff가 없습니다."
+                "최초 기준선 후보이거나 저장된 비교 결과가 없습니다."
             )
         );
-        elements.candidateToolDiff.replaceChildren(fragment);
-        return;
-    }
-
-    const changes = Array.isArray(comparison.tool_changes)
-        ? comparison.tool_changes.filter(
-            (change) => change.change_type !== "unchanged"
-        )
-        : [];
-
-    if (!changes.length) {
+    } else {
         fragment.appendChild(
-            createEmptyState(
-                "표시할 Tool 변경이 없습니다.",
-                "추가, 삭제, 변경된 Tool만 기본 표시합니다."
-            )
+            createToolDiffFragment(comparison)
         );
-        elements.candidateToolDiff.replaceChildren(fragment);
-        return;
     }
 
-    const list = document.createElement("div");
-    list.className = "tool-diff-list";
-
-    for (const change of changes) {
-        list.appendChild(createToolDiffItem(change));
-    }
-
-    fragment.appendChild(list);
     elements.candidateToolDiff.replaceChildren(fragment);
 }
 
@@ -4535,6 +4414,7 @@ async function submitCandidateDecision() {
         review.decisionMode = null;
         review.decisionCandidateId = null;
         review.selectedCandidateId = null;
+        review.expandedCandidateId = null;
         await refreshAfterCandidateDecision(
             server.monitoringTargetKey,
             server.selectionId,
@@ -5534,6 +5414,7 @@ function renderScanDetail() {
     renderScanDetailRisk(detail);
     renderScanDetailMeta(detail);
     renderScanDetailSeveritySummary(detail);
+    renderScanDetailBaselineComparison(detail);
     renderScanDetailFindingList(detail);
     renderScanDetailFindingDetail(
         detail.findings[detail.selectedFindingIndex] || null
@@ -5558,12 +5439,22 @@ function getScanDetailData() {
 
     mcpUiState.scanDetail.selectedFindingIndex = selectedFindingIndex;
 
+    const comparison =
+        result?.comparison_result ||
+        result?.candidate?.comparison_result ||
+        null;
+
     return {
         selectionId,
         server,
         result,
         scan,
         findings,
+        comparison,
+        candidate: result?.candidate || null,
+        candidateCreated: Boolean(result?.candidate_created),
+        candidateReused: Boolean(result?.candidate_reused),
+        rejectedSameSnapshot: Boolean(result?.rejected_same_snapshot),
         severity: getSeveritySummary(result),
         dynamicStatus: result?.dynamic_scan_result?.status || null,
         selectedFindingIndex,
@@ -5722,6 +5613,213 @@ function renderScanDetailSeveritySummary(detail) {
     elements.scanDetailSeveritySummary.replaceChildren(fragment);
 }
 
+
+function renderScanDetailBaselineComparison(detail) {
+    const comparison = detail.comparison;
+
+    elements.scanDetailComparisonSummary.replaceChildren();
+    elements.scanDetailToolDiff.replaceChildren();
+
+    if (!comparison) {
+        elements.scanDetailBaselineEmpty.hidden = false;
+        elements.scanDetailBaselineContent.hidden = true;
+
+        const message = getScanDetailBaselineEmptyMessage(detail);
+
+        elements.scanDetailBaselineEmpty.replaceChildren(
+            createInlineStrong(message.title),
+            createInlineSpan(message.description)
+        );
+
+        return;
+    }
+
+    elements.scanDetailBaselineEmpty.hidden = true;
+    elements.scanDetailBaselineContent.hidden = false;
+
+    renderScanDetailComparisonSummary(comparison, detail);
+    renderScanDetailToolDiff(comparison);
+}
+
+function getScanDetailBaselineEmptyMessage(detail) {
+    if (detail.candidateCreated && !detail.comparison) {
+        return {
+            title: "최초 기준선 후보가 생성되었습니다.",
+            description:
+                "비교할 승인 기준선이 없어 현재 Snapshot이 최초 후보로 생성되었습니다.",
+        };
+    }
+
+    if (detail.rejectedSameSnapshot) {
+        return {
+            title: "이전에 거절한 변경과 동일합니다.",
+            description:
+                "동일한 Snapshot이므로 새로운 비교 후보가 생성되지 않았습니다.",
+        };
+    }
+
+    if (!detail.result) {
+        return {
+            title: "표시할 검사 결과가 없습니다.",
+            description:
+                "현재 브라우저 세션에 해당 서버의 검사 결과가 없습니다.",
+        };
+    }
+
+    return {
+        title: "기준선 비교 결과가 없습니다.",
+        description:
+            "승인 기준선이 없거나 이번 검사에서 비교 결과가 생성되지 않았습니다.",
+    };
+}
+
+function renderScanDetailComparisonSummary(
+    comparison,
+    detail
+) {
+    const fragment = document.createDocumentFragment();
+
+    fragment.appendChild(
+        createCandidateBlockTitle("기준선 비교 요약")
+    );
+    fragment.appendChild(
+        createComparisonSummaryDetails(
+            comparison,
+            detail.candidate?.candidate_id || null
+        )
+    );
+
+    elements.scanDetailComparisonSummary.replaceChildren(fragment);
+}
+
+
+function renderScanDetailToolDiff(comparison) {
+    const fragment = document.createDocumentFragment();
+
+    fragment.appendChild(
+        createCandidateBlockTitle("Tool Metadata 변경")
+    );
+    fragment.appendChild(
+        createToolDiffFragment(comparison)
+    );
+
+    elements.scanDetailToolDiff.replaceChildren(fragment);
+}
+
+
+function createComparisonSummaryDetails(
+    comparison,
+    candidateId
+) {
+    const details = document.createElement("details");
+    const summary = document.createElement("summary");
+    const cardGrid = document.createElement("span");
+    const body = document.createElement("div");
+    const detailItems = [
+        [
+            "승인 기준선 Tool 스냅샷 ID",
+            comparison.approved_snapshot_id,
+        ],
+        [
+            "후보 Tool 스냅샷 ID",
+            comparison.current_snapshot_id,
+        ],
+        [
+            "승인 기준선 Tool 스냅샷 해시",
+            comparison.approved_snapshot_hash_prefix,
+        ],
+        [
+            "후보 Tool 스냅샷 해시",
+            comparison.current_snapshot_hash_prefix,
+        ],
+        [
+            "MCP 등록 정보 변경",
+            displayChangePresence(
+                comparison.registration_changed
+            ),
+        ],
+        [
+            "MCP 연결 설정 변경",
+            displayChangePresence(
+                comparison.configuration_changed
+            ),
+        ],
+        [
+            "기준선 비교 실패 코드",
+            comparison.comparison_error_code,
+        ],
+        [
+            "Candidate ID",
+            candidateId,
+        ],
+    ];
+
+    details.className =
+        "tool-diff-item comparison-summary-details";
+    summary.className = "comparison-summary-toggle";
+    summary.title = "기준선 비교 세부정보 열기";
+    cardGrid.className = "comparison-summary-grid";
+    body.className = "tool-diff-body";
+
+    for (const [label, value, tone] of [
+        ["추가 Tool", comparison.added_count, "added"],
+        ["삭제 Tool", comparison.removed_count, "removed"],
+        ["변경 Tool", comparison.changed_count, "changed"],
+        ["변경 없음 Tool", comparison.unchanged_count, "unchanged"],
+    ]) {
+        const card = document.createElement("span");
+        const labelElement = document.createElement("span");
+        const valueElement = document.createElement("strong");
+
+        card.className =
+            `comparison-summary-card comparison-summary-card-${tone}`;
+        labelElement.textContent = label;
+        valueElement.textContent = valueOrDash(value);
+
+        card.appendChild(labelElement);
+        card.appendChild(valueElement);
+        cardGrid.appendChild(card);
+    }
+
+    summary.appendChild(cardGrid);
+    body.appendChild(createDefinitionGrid(detailItems));
+    details.appendChild(summary);
+    details.appendChild(body);
+
+    return details;
+}
+
+
+function createToolDiffFragment(comparison) {
+    const fragment = document.createDocumentFragment();
+    const changes = Array.isArray(comparison?.tool_changes)
+        ? comparison.tool_changes.filter(
+            (change) => change.change_type !== "unchanged"
+        )
+        : [];
+
+    if (!changes.length) {
+        fragment.appendChild(
+            createEmptyState(
+                "표시할 Tool 변경이 없습니다.",
+                "추가, 삭제 또는 변경된 Tool이 없습니다."
+            )
+        );
+
+        return fragment;
+    }
+
+    const list = document.createElement("div");
+    list.className = "tool-diff-list";
+
+    for (const change of changes) {
+        list.appendChild(createToolDiffItem(change));
+    }
+
+    fragment.appendChild(list);
+
+    return fragment;
+}
 
 function getSafeScanDetailSource(detail) {
     const scan = detail.scan || {};
@@ -6778,6 +6876,15 @@ function displayMappedValue(
     }
 
     return mapping[value] || String(value);
+}
+
+
+function displayChangePresence(value) {
+    if (typeof value !== "boolean") {
+        return "-";
+    }
+
+    return value ? "있음" : "없음";
 }
 
 

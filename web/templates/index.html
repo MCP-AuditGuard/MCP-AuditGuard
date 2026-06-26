@@ -15,7 +15,7 @@
         href="{{ url_for('static', path='/style.css') }}?v=20260626-scan-detail-rows"
     >
     <script
-        src="{{ url_for('static', path='/app.js') }}?v=20260626-scan-detail-rows"
+        src="{{ url_for('static', path='/app.js') }}?v=20260626-candidate-detail-toggle-1"
         defer
     ></script>
 </head>
@@ -446,6 +446,50 @@
                         </article>
                     </section>
 
+                    <section
+                        id="scan-detail-baseline-section"
+                        class="dashboard-panel scan-detail-baseline-section"
+                        aria-labelledby="scan-detail-baseline-title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">Baseline Comparison</p>
+                                <h3 id="scan-detail-baseline-title">
+                                    기준선 비교
+                                </h3>
+                                <p>
+                                    승인 기준선과 이번 검사에서 수집한 Tool Metadata의 차이를 확인합니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            id="scan-detail-baseline-empty"
+                            class="empty-state"
+                        >
+                            <strong>표시할 기준선 비교 결과가 없습니다.</strong>
+                            <span>
+                                승인 기준선이 없거나 이번 검사에서 비교 결과가 생성되지 않았습니다.
+                            </span>
+                        </div>
+
+                        <div
+                            id="scan-detail-baseline-content"
+                            hidden
+                        >
+                            <div
+                                id="scan-detail-comparison-summary"
+                                class="candidate-detail-block"
+                            ></div>
+
+                            <div
+                                id="scan-detail-tool-diff"
+                                class="candidate-detail-block"
+                            ></div>
+                        </div>
+                    </section>
+
+
                     <section class="scan-detail-main">
                         <aside
                             class="scan-detail-finding-panel"
@@ -498,6 +542,9 @@
                             ></div>
                         </article>
                     </section>
+
+                    
+
                 </section>
 
                 <section
@@ -844,7 +891,7 @@
                                             <dd id="server-baseline-lifecycle">-</dd>
                                         </div>
                                         <div>
-                                            <dt>비교 상태</dt>
+                                            <dt>최근 기준선 비교 결과</dt>
                                             <dd id="server-comparison-status">-</dd>
                                         </div>
                                         <div>
@@ -890,28 +937,12 @@
                                     aria-labelledby="server-baseline-relation-title"
                                 >
                                     <h4 id="server-baseline-relation-title">
-                                        기준선 관계
+                                        현재 승인 기준선
                                     </h4>
                                     <dl class="detail-definition-list">
                                         <div>
                                             <dt>현재 승인 기준선 ID</dt>
                                             <dd id="server-current-approved-id">-</dd>
-                                        </div>
-                                        <div>
-                                            <dt>Pending Candidate 수</dt>
-                                            <dd id="server-pending-candidate-count">-</dd>
-                                        </div>
-                                        <div>
-                                            <dt>거절 Candidate 수</dt>
-                                            <dd id="server-rejected-candidate-count">-</dd>
-                                        </div>
-                                        <div>
-                                            <dt>관련 승인 Target 수</dt>
-                                            <dd id="server-related-approved-target-count">-</dd>
-                                        </div>
-                                        <div>
-                                            <dt>State Version</dt>
-                                            <dd id="server-state-version">-</dd>
                                         </div>
                                     </dl>
 
@@ -1040,11 +1071,12 @@
                                     <div
                                         id="candidate-detail-empty"
                                         class="empty-state"
+                                        hidden
                                     >
                                         <strong>Candidate를 선택하세요.</strong>
                                         <span>
-                                            승인 대기 후보를 선택하면 상세 정보와
-                                            변경 내용을 확인할 수 있습니다.
+                                            위 후보 카드를 누르면 상세 정보와
+                                            변경 내용을 펼쳐서 확인할 수 있습니다.
                                         </span>
                                     </div>
 
