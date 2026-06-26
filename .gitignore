@@ -13,10 +13,12 @@ __pycache__/
 .venv/
 venv/
 env/
+.venv-build/
 
 # Build and packaging artifacts
 build/
 dist/
+release/
 *.egg-info/
 
 # Local environment files
