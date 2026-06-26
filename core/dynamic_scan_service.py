@@ -164,7 +164,7 @@ async def _run_dynamic_scan(
         issues=issues,
     )
 
-    if _can_scan_snapshot(snapshot=snapshot, stages=stages):
+    if _can_scan_snapshot(stages=stages):
         try:
             collected_tools = _evaluate_and_collect(
                 server=server,
@@ -232,23 +232,6 @@ async def _run_dynamic_scan(
                     warnings=scan_result.warnings,
                 )
             )
-    elif (
-        not snapshot.tools
-        and _snapshot_reached_tool_collection(stages)
-    ):
-        stages[DynamicScanStage.SCAN] = DynamicStageStatus.FAILED
-
-        issues.append(
-            _issue(
-                server,
-                stage=DynamicScanStage.SCAN,
-                code="no_tools_collected",
-                safe_message=(
-                    "No valid MCP tool metadata was available to scan."
-                ),
-            )
-        )
-
     status = _final_status(
         stages=stages,
         issues=issues,
@@ -634,26 +617,15 @@ def _issue_stage_status(
     return None
 
 
-def _snapshot_reached_tool_collection(
+def _can_scan_snapshot(
+    *,
     stages: Mapping[DynamicScanStage, DynamicStageStatus],
 ) -> bool:
     return (
         stages[DynamicScanStage.LIST_TOOLS]
         == DynamicStageStatus.SUCCEEDED
-    )
-
-
-def _can_scan_snapshot(
-    *,
-    snapshot: McpSnapshotResult,
-    stages: Mapping[DynamicScanStage, DynamicStageStatus],
-) -> bool:
-    return (
-        bool(snapshot.tools)
-        and stages[DynamicScanStage.LIST_TOOLS]
-        != DynamicStageStatus.SKIPPED
         and stages[DynamicScanStage.METADATA_VALIDATION]
-        != DynamicStageStatus.FAILED
+        == DynamicStageStatus.SUCCEEDED
     )
 
 

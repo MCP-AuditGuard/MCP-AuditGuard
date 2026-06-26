@@ -455,11 +455,50 @@ def test_collection_failure_skips_policy_and_scan(
     assert statuses[DynamicScanStage.SCAN] == DynamicStageStatus.SKIPPED
 
 
-def test_successful_empty_tool_list_is_failed_without_running_scanner(
+def test_successful_empty_tool_list_returns_successful_empty_scan(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     server = make_server()
     install_snapshot(monkeypatch, make_snapshot(server))
+    scanner_calls = install_scanner(monkeypatch)
+
+    result = run_scan(server)
+    statuses = stage_statuses(result)
+
+    assert result.status == DynamicScanStatus.SUCCESS
+    assert statuses[DynamicScanStage.LIST_TOOLS] == (
+        DynamicStageStatus.SUCCEEDED
+    )
+    assert statuses[DynamicScanStage.METADATA_VALIDATION] == (
+        DynamicStageStatus.SUCCEEDED
+    )
+    assert statuses[DynamicScanStage.SCAN] == DynamicStageStatus.SUCCEEDED
+    assert scanner_calls[0]["tools"] == []
+    assert result.collected_tools == []
+    assert result.scan_result is not None
+    assert result.scan_result.tools == []
+    assert result.scan_result.findings == []
+    assert not any(
+        issue.code == "no_tools_collected"
+        for issue in result.issues
+    )
+
+
+def test_all_invalid_tool_metadata_remains_failed_without_scanning(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    server = make_server()
+    metadata_issue = DynamicScanIssue(
+        stage=DynamicScanStage.METADATA_VALIDATION,
+        code="all_tool_metadata_invalid",
+        level=IssueLevel.ERROR,
+        safe_message="No valid MCP tool metadata could be collected.",
+        server_id=server.selection_id,
+    )
+    install_snapshot(
+        monkeypatch,
+        make_snapshot(server, issues=[metadata_issue]),
+    )
 
     def fail_if_scanned(**kwargs):
         raise AssertionError("scanner must not run")
@@ -474,16 +513,14 @@ def test_successful_empty_tool_list_is_failed_without_running_scanner(
     statuses = stage_statuses(result)
 
     assert result.status == DynamicScanStatus.FAILED
+    assert result.scan_result is None
     assert statuses[DynamicScanStage.LIST_TOOLS] == (
         DynamicStageStatus.SUCCEEDED
     )
     assert statuses[DynamicScanStage.METADATA_VALIDATION] == (
-        DynamicStageStatus.SUCCEEDED
+        DynamicStageStatus.FAILED
     )
-    assert statuses[DynamicScanStage.SCAN] == DynamicStageStatus.FAILED
-    assert [issue.code for issue in result.issues] == [
-        "no_tools_collected"
-    ]
+    assert statuses[DynamicScanStage.SCAN] == DynamicStageStatus.SKIPPED
 
 
 def test_configuration_failure_skips_connection_and_scan(
