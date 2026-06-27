@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Protocol
 
 
-DEFAULT_EMBEDDING_MODEL_PATH = Path("models/embedding/bge-small-en-v1.5")
+from core.runtime_paths import embedding_model_directory
 
 
 class EmbeddingUnavailableError(RuntimeError):
@@ -26,9 +26,13 @@ class SentenceTransformerEmbeddingProvider:
 
     def __init__(
         self,
-        model_path: str | Path = DEFAULT_EMBEDDING_MODEL_PATH,
+        model_path: str | Path | None = None,
     ) -> None:
-        self.model_path = Path(model_path)
+        self.model_path = (
+            Path(model_path)
+            if model_path is not None
+            else embedding_model_directory()
+        )
         self._model = None
 
     @property
@@ -62,9 +66,20 @@ class SentenceTransformerEmbeddingProvider:
             raise EmbeddingUnavailableError(
                 "sentence-transformers is not installed. "
                 "Install the semantic extra to enable semantic similarity detection."
+                "similarity detection."
             ) from error
 
-        self._model = SentenceTransformer(str(self.model_path))
+        try:
+            self._model = SentenceTransformer(
+                str(self.model_path),
+                local_files_only=True,
+            )
+        except Exception as error:
+            raise EmbeddingUnavailableError(
+                "local embedding model could not be loaded: "
+                f"{self.model_path}: {error}"
+            ) from error
+        
         return self._model
 
 

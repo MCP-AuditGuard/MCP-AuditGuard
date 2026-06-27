@@ -26,6 +26,9 @@ dev = [
 semantic = [
     "sentence-transformers>=3.0",
 ]
+build = [
+    "pyinstaller>=6.0,<7",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]

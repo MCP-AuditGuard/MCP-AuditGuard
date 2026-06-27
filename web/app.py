@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from fastapi.responses import HTMLResponse
@@ -9,6 +7,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from core.exceptions import ScanServiceError
+from core.runtime_paths import (
+    web_static_directory,
+    web_templates_directory,
+)
 from core.mcp_baseline_repository import (
     MonitoringConflictError,
     MonitoringIntegrityError,
@@ -30,9 +32,8 @@ from web.routers.samples import router as samples_router
 from web.routers.reports import router as reports_router
 from web.security import LocalWebSecurityMiddleware
 
-WEB_ROOT = Path(__file__).resolve().parent
-TEMPLATES_DIR = WEB_ROOT / "templates"
-STATIC_DIR = WEB_ROOT / "static"
+TEMPLATES_DIR = web_templates_directory()
+STATIC_DIR = web_static_directory()
 
 app = FastAPI(
     title="MCP-AuditGuard Local API",
@@ -73,7 +74,6 @@ def show_home_page(
         context={},
     )
 
-
 @app.get(
     "/health",
     tags=["system"],
@@ -83,7 +83,6 @@ def health_check() -> dict[str, str]:
         "status": "ok",
         "service": "mcp-auditguard",
     }
-
 
 @app.exception_handler(ScanServiceError)
 async def handle_scan_service_error(
